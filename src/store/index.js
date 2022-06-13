@@ -83,7 +83,6 @@ export default createStore({
     mutations: {
         SET_DISPLAY_WIDTH(state,innerWidth){
             state.display_width = innerWidth;
-            console.log('lol');
         }
     },
     actions: {},
