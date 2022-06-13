@@ -77,8 +77,51 @@ export default createStore({
                 price:'15 000 RUB'
             },
         ],
-    },
+        FooterNavLeft:[
+            {
+                name: '2021 noblesnob.com',
+                path: ''
 
+            },
+            {
+                name: 'конфидециальность',
+                path: ''
+
+            },
+            {
+                name: 'ОФЕРТА',
+                path: ''
+            },
+            {
+                name: 'ПАРТНЕРСТВО',
+                path: ''
+            },
+            {
+                name: 'ВАКАНСИИ',
+                path: ''
+            }
+        ],
+        FooterNavRight:[
+            {
+                name: 'о нас',
+                path: ''
+
+            },
+            {
+                name: 'доставка и оплата',
+                path: ''
+
+            },
+            {
+                name: 'возврат товара',
+                path: ''
+            },
+            {
+                name: 'контакты',
+                path: ''
+            }
+        ],
+    },
     getters: {},
     mutations: {
         SET_DISPLAY_WIDTH(state,innerWidth){

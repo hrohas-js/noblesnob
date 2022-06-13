@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="$store.state.display_width >= 1024">
+  <nav v-if="$store.state.display_width >= 1024 || page =='footer'">
     <router-link v-for="item in menuItems" :to="item.path" :key="item.name">{{ item.name }}</router-link>
   </nav>
   <nav v-else>
@@ -17,7 +17,7 @@
 <script>
 export default {
   name: 'HeaderNav',
-  props: ['menuItems', 'menuItemsMobile']
+  props: ['menuItems', 'menuItemsMobile','page']
 }
 </script>
 
