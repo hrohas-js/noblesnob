@@ -121,12 +121,20 @@ export default createStore({
                 path: ''
             }
         ],
+        CabinetIn:'registration',
+        ForgetPassword:false
     },
     getters: {},
     mutations: {
         SET_DISPLAY_WIDTH(state,innerWidth){
             state.display_width = innerWidth;
-        }
+        },
+        SET_CABINETIN(state,choose){
+            state.CabinetIn = choose;
+        },
+        SET_FORGETPASSWORD(state,boolean){
+            state.ForgetPassword = boolean;
+        },
     },
     actions: {},
     modules: {}
