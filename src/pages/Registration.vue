@@ -8,12 +8,14 @@
           <input type="submit" class="active" value="СОЗДАТЬ АККАУНТ">
           <input type="submit" value="Войти">
         </div>
-        <input type="text" placeholder="ИМЯ">
-        <input type="text" placeholder="ФАМИЛИЯ">
-        <input type="text" placeholder="EMAIL">
-        <input type="text" placeholder="ТЕЛЕФОН">
-        <input type="text" placeholder="ПАРОЛЬ">
-        <input type="text" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ">
+        <div class="__form__main-info">
+          <input type="text" placeholder="ИМЯ">
+          <input type="text" placeholder="ФАМИЛИЯ">
+          <input type="text" placeholder="EMAIL">
+          <input type="text" placeholder="ТЕЛЕФОН">
+          <input type="text" placeholder="ПАРОЛЬ">
+          <input type="text" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ">
+        </div>
       </div>
     </div>
     <Footer></Footer>
@@ -56,6 +58,14 @@ input {
 
 .registration__form {
   width: rem(648);
+
+  input {
+    margin-bottom: rem(24);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .registration__choose-action {
@@ -65,12 +75,6 @@ input {
   input[type='submit'] {
     position: absolute;
     width: 50%;
-    transition: all 0.2s;
-
-    &:hover {
-      background-color: #3ADD9D;
-      color: white;
-    }
   }
 
   input[type='submit']:nth-child(2) {
@@ -84,5 +88,16 @@ input {
     right: 0;
     border-left: none;
   }
+}
+
+.__form__main-info {
+ input{
+   padding:0 rem(16);
+
+   &::placeholder{
+     border-left: 1px solid #3ADD9D;
+     padding-left: rem(10);
+   }
+ }
 }
 </style>
