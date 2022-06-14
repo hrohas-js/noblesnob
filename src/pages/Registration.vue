@@ -16,6 +16,17 @@
           <input type="text" placeholder="ПАРОЛЬ">
           <input type="text" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ">
         </div>
+        <div class="registration__fallow">
+          <h1>ПОДПИШИТЕСЬ НА РАССЫЛКУ И БУДЬТЕ В КУРСЕ НОВИНОК, АКЦИЙ И ТРЕНДОВ</h1>
+          <div class="__fallow__items">
+            <CustomFolofingChackbox :page="'registration'"></CustomFolofingChackbox>
+          </div>
+          <div>
+            <div class="__registration-button">
+              РЕГИСТРАЦИЯ
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <Footer></Footer>
@@ -25,10 +36,11 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CustomFolofingChackbox from "@/components/CustomFallowCheckbox";
 
 export default {
   name: 'Registration',
-  components: {Footer, Header}
+  components: {CustomFolofingChackbox, Footer, Header}
 }
 </script>
 
@@ -49,6 +61,7 @@ input {
 
 .registration__container {
   display: flex;
+  flex: 1 0 auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -60,11 +73,7 @@ input {
   width: rem(648);
 
   input {
-    margin-bottom: rem(24);
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    margin-bottom: rem(33);
   }
 }
 
@@ -91,13 +100,31 @@ input {
 }
 
 .__form__main-info {
- input{
-   padding:0 rem(16);
+  input {
+    padding: 0 rem(16);
 
-   &::placeholder{
-     border-left: 1px solid #3ADD9D;
-     padding-left: rem(10);
-   }
- }
+    &::placeholder {
+      border-left: 1px solid #3ADD9D;
+      padding-left: rem(10);
+    }
+  }
+}
+
+.registration__fallow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h1 {
+    text-align: center;
+  }
+}
+
+.__registration-button {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: rem(71);
+  background-color: #3ADD9D;
+  padding: rem(11) rem(92);
+  color: white;
 }
 </style>

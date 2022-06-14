@@ -61,15 +61,15 @@ h1, h2, h3, h4, h5 {
 }
 
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  min-height: 100vh;
   max-width: rem(1440);
+  margin: 0 auto;
 }
 
 .container {
   padding:rem(16) rem(35) 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 

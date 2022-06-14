@@ -24,7 +24,7 @@ export default {
 
 <style scoped lang="scss">
 header{
-
+  flex: 0 0 auto;
 }
 .header__container{
   display: flex;

@@ -21,6 +21,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+footer{
+  flex: 0 0 auto;
+}
 .footer__container,.footer-ico{
   display: flex;
   justify-content: space-between;

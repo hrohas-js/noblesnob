@@ -1,6 +1,6 @@
 <template>
   <div class="Custom-Fallow-Checkbox">
-  <div class="__following__agree-fallow">
+  <div class="__following__agree-fallow" :class="{registration:page=='registration' , contactForm:page=='contactForm'}">
     <div class="__agree-fallow__item">
       <input type="radio" id="fallow" name="agreefollow">
       <label for="fallow">ПОДПИСАТЬСЯ</label>
@@ -20,6 +20,7 @@
 <script>
 export default {
   name:'CustomFolofingChackbox',
+  props:['page']
 }
 </script>
 
@@ -27,8 +28,13 @@ export default {
 .__following__agree-fallow {
   display: flex;
   justify-content: center;
-  gap: rem(25);
   margin-top: rem(25);
+}
+.contactForm{
+  gap: rem(25);
+}
+.registration{
+  gap:rem(95);
 }
 .__agree-fallow__item, .agree-rule {
   display: flex;

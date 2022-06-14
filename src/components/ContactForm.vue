@@ -12,7 +12,7 @@
           <input type="email">
           <input type="submit" value="подписка">
         </div>
-        <CustomFolofingChackbox></CustomFolofingChackbox>
+        <CustomFolofingChackbox :page="'contactrForm'"></CustomFolofingChackbox>
       </div>
     </div>
   </div>
