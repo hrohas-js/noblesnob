@@ -85,40 +85,40 @@ export default createStore({
             },
             {
                 name: 'конфидециальность',
-                path: ''
+                path: '/about/confident'
 
             },
             {
                 name: 'ОФЕРТА',
-                path: ''
+                path: '/about/oferta'
             },
             {
                 name: 'ПАРТНЕРСТВО',
-                path: ''
+                path: '/about/partnership'
             },
             {
                 name: 'ВАКАНСИИ',
-                path: ''
+                path: '/about/vacancy'
             }
         ],
         FooterNavRight:[
             {
                 name: 'о нас',
-                path: ''
+                path: '/about/aboutUs'
 
             },
             {
                 name: 'доставка и оплата',
-                path: ''
+                path: '/about/delivery'
 
             },
             {
                 name: 'возврат товара',
-                path: ''
+                path: '/about/payback'
             },
             {
                 name: 'контакты',
-                path: ''
+                path: '/about/contact'
             }
         ],
         CabinetIn:'registration',

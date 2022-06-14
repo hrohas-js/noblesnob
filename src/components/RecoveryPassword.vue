@@ -24,6 +24,12 @@ export default {
   data:()=>({
     phone:false
   }),
+  methods:{
+    goBack(){
+      this.$store.commit('SET_CABINETIN','auf');
+      this.$store.commit('SET_FORGETPASSWORD', false)
+    }
+  }
 }
 </script>
 
