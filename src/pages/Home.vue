@@ -11,6 +11,7 @@
             <img src="@/assets/jpg/GCDS_banner.jpg" alt="banner by brand">
           </div>
         </div>
+        <div class="new-title">новинки</div>
         <div class="goods">
           <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good"></GoodsItem>
         </div>
@@ -66,5 +67,38 @@ main{
 }
 .contact-form{
   padding-top:rem(40);
+}
+.new-title {
+  margin-bottom: rem(33);
+  font-size: rem(24);
+  text-transform: uppercase;
+}
+
+@media (max-width: em(1440, 16)) and (min-width: em(1024, 16)) {
+  .main__container {
+    padding: calc(0rem + (143 - 0) * ((100vw - 64rem) / (1440 - 1024))) calc(0rem + (233 - 0) * ((100vw - 64rem) / (1440 - 1024))) calc(0rem + (151 - 0) * ((100vw - 64rem) / (1440 - 1024)));
+  }
+}
+
+@media (max-width: em(1023, 16)) {
+  .main__container {
+    padding: 0;
+  }
+}
+@media (max-width: em(724, 16)) and (min-width: em(220, 16)){
+  .main__container {
+    margin-left: calc(-0.3125rem + (-16 + 5) * ((100vw - 13.75rem) / (724 - 220)));
+    margin-right: calc(-0.3125rem + (-16 + 5) * ((100vw - 13.75rem) / (724 - 220)));
+  }
+  .__banner__item {
+    &:first-child {
+      margin-bottom: rem(35);
+    }
+  }
+  .goods {
+    min-width: 100%;
+    overflow-x: auto;
+    gap: rem(25);
+  }
 }
 </style>
