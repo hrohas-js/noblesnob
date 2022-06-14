@@ -1,5 +1,5 @@
 <template>
-  <div class="goods__item">
+  <div class="goods__item" :class="{mainItem:$route.path == '/'}">
       <div class="goods__item__image">
         <img :src="good.picture" alt="some photo">
       </div>
@@ -29,6 +29,9 @@ export default {
   &:last-child{
     margin-bottom: 0;
   }
+}
+.mainItem {
+  min-width: rem(175);
 }
 .goods__item__name,.goods__item__price{
   text-transform: uppercase;
