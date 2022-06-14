@@ -100,5 +100,8 @@ main{
     overflow-x: auto;
     gap: rem(25);
   }
+  .goods::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>

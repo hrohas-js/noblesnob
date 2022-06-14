@@ -68,4 +68,21 @@ h2 {
   color: white;
   text-transform: uppercase;
 }
+@media (max-width: em(768, 16)) {
+  .contact-form__contact-following {
+    gap: 0;
+    flex-direction: column;
+  }
+  h2 {
+    text-align: center;
+  }
+  .contact-form__our-contact {
+    text-align: center;
+  }
+  .contact-form__following {
+    margin-top: rem(30);
+    border-top: 1.5px solid black;
+    padding: rem(30) rem(35) 0 rem(35);
+  }
+}
 </style>

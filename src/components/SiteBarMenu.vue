@@ -42,16 +42,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .site-bar-menu__item {
   padding-bottom: rem(10);
-
-  &:last-child {
-    padding-bottom: 0;
-  }
 
   a {
     font-size: rem(18);
     text-transform: uppercase;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
   }
 }
 
@@ -73,5 +74,25 @@ export default {
 }
 .dress {
   font-family: "Partner Condensed Bold";
+}
+
+@media (max-width: em(768, 16)) {
+  .site-bar-menu__item {
+
+    a {
+      display: flex;
+      justify-content: space-between;
+      font-size: rem(46);
+
+      &:after {
+        display: inline-block;
+        content: url("https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/arrow.svg");
+      }
+    }
+
+    &:first-child a:after {
+      content: none;
+    }
+  }
 }
 </style>
