@@ -1,0 +1,77 @@
+<template>
+  <div class="site-bar-menu">
+    <menu>
+      <li class="site-bar-menu__item">
+        <router-link to="">Все категории</router-link>
+      </li>
+      <li class="site-bar-menu__item" :class="{'dress':showSubMenu}" @click="this.showSubMenu = !this.showSubMenu">
+        <router-link to="">Одежда</router-link>
+        <ul class="site-bar-menu__sub-menu" v-if="showSubMenu">
+          <li class="site-bar-menu__item __sub-menu__item">Куртки и бомберы</li>
+          <li class="site-bar-menu__item __sub-menu__item">Пуховики</li>
+          <li class="site-bar-menu__item __sub-menu__item">Мех и дубленки</li>
+          <li class="site-bar-menu__item __sub-menu__item">Пиджаки</li>
+        </ul>
+      </li>
+      <li class="site-bar-menu__item">
+        <router-link to="">Акссесуары</router-link>
+      </li>
+      <li class="site-bar-menu__item">
+        <router-link to="">Обувь</router-link>
+      </li>
+      <li class="site-bar-menu__item">
+        <router-link to="">Сумки</router-link>
+      </li>
+      <li class="site-bar-menu__item __item-brand">
+        <router-link to="">Бренды</router-link>
+      </li>
+      <li class="site-bar-menu__item __item-brand">
+        <router-link to="">GCDS</router-link>
+      </li>
+    </menu>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'SiteBarMenu',
+  data: () => ({
+    showSubMenu: false
+  }),
+}
+</script>
+
+<style scoped lang="scss">
+.site-bar-menu__item {
+  padding-bottom: rem(10);
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  a {
+    font-size: rem(18);
+    text-transform: uppercase;
+  }
+}
+
+.site-bar-menu__sub-menu {
+  transform: translateX(rem(20));
+  padding-top: rem(10);
+}
+
+.__sub-menu__item {
+  text-transform: none;
+  font-family: "Partner Condensed";
+  cursor: pointer;
+}
+.__item-brand{
+  margin-top: rem(40);
+  &:last-child{
+    margin-top: 0;
+  }
+}
+.dress {
+  font-family: "Partner Condensed Bold";
+}
+</style>

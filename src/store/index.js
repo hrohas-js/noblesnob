@@ -5,7 +5,7 @@ export default createStore({
         headerNavLeft: [
             {
                 name: 'ДЛЯ НЕГО',
-                path: ''
+                path: '/catalog'
 
             },
             {
@@ -34,7 +34,7 @@ export default createStore({
             },
             {
                 name: 'вход',
-                path: ''
+                path: '/registration'
 
             },
             {

@@ -24,7 +24,7 @@ export default {
 
 <style scoped lang="scss">
 header{
-  padding:rem(16) rem(35) 0;
+
 }
 .header__container{
   display: flex;
@@ -32,9 +32,6 @@ header{
   align-items: center;
 }
   @media (max-width: em(1440, 16)) and (min-width: em(1024, 16)){
-    header{
-      padding:rem(16) calc(1rem + (35 - 16) * ((100vw - 64rem) / (1440 - 1024))) 0;
-    }
   }
   @media (max-width: em(724, 16)) and (min-width: em(220, 16)){
     header{
