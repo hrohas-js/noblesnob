@@ -1,6 +1,6 @@
 <template>
   <nav v-if="$store.state.display_width >= 1024 || page =='footer'">
-    <router-link v-for="item in menuItems" :to="item.path" :key="item.name">{{ item.name }}</router-link>
+    <router-link v-for="item in menuItems" :to="item.path" :key="item.name" @click="this.rebootForm">{{ item.name }}</router-link>
   </nav>
   <nav v-else>
     <div class="header-nav__container" v-if="menuItemsMobile == 'left'">
@@ -17,7 +17,13 @@
 <script>
 export default {
   name: 'HeaderNav',
-  props: ['menuItems', 'menuItemsMobile','page']
+  props: ['menuItems', 'menuItemsMobile','page'],
+  methods:{
+    rebootForm(){
+      this.$store.commit('SET_CABINETIN','registration');
+      this.$store.commit('SET_FORGETPASSWORD', false);
+    }
+  }
 }
 </script>
 
