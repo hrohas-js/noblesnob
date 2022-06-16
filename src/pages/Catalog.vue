@@ -46,9 +46,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-main{
-  flex: 1 0 auto;
-}
+
 .catalog__main-container {
   display: flex;
   justify-content: space-between;

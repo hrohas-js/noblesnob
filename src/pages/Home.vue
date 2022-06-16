@@ -42,9 +42,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-main{
-  flex: 1 0 auto;
-}
 .main__container {
   padding: rem(143) rem(233) rem(151);
 }

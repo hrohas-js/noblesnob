@@ -66,20 +66,49 @@ h1, h2, h3, h4, h5 {
 }
 
 .container {
-  padding:rem(16) rem(35) 0;
+  padding: rem(16) rem(35) 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  main{
+    flex: 1 0 auto;
+  }
 }
 
+//cтили страниц футера
+.__content__item {
+  margin-bottom: rem(120);
 
+  h2 {
+    font-family: "Partner Condensed Bold";
+    font-size: rem(20);
+    margin-bottom: rem(35);
+    text-transform: uppercase;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    margin-bottom: rem(40);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.nomb{
+  margin-bottom: 0;
+}
 @media (max-width: em(1440, 16)) and (min-width: em(1024, 16)) {
   .container {
     padding: rem(16) calc(1rem + (35 - 16) * ((100vw - 64rem) / (1440 - 1024))) 0;
   }
 }
-@media (max-width: em(724, 16)) and (min-width: em(220, 16)){
-  .container{
+
+@media (max-width: em(724, 16)) and (min-width: em(220, 16)) {
+  .container {
     padding: calc(0.5rem + (16 - 8) * ((100vw - 13.75rem) / (724 - 220))) calc(0.3125rem + (16 - 5) * ((100vw - 13.75rem) / (724 - 220))) 0;
   }
 }

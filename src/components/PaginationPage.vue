@@ -1,6 +1,6 @@
 <template>
   <div class="pagination">
-    <div class="pagination__item">1</div>
+    <div class="pagination__item active">1</div>
     <div class="pagination__item">2</div>
     <div class="pagination__item">3</div>
     <div class="pagination__item">4</div>
@@ -19,6 +19,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.active{
+  background-color: #39dd9d;
+  color:white;
+}
 .pagination{
   display: flex;
   gap: rem(20);

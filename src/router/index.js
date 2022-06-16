@@ -3,6 +3,7 @@ const Home = () => import("@/pages/Home");
 const Catalog = () => import("@/pages/Catalog");
 const Registration = () =>  import("@/pages/Registration");
 const About = () => import("@/pages/About");
+const Product = () => import("@/pages/Product");
 const routes = [
   {
     path:'/',
@@ -23,6 +24,11 @@ const routes = [
     path: '/about/:aboutVariant',
     name: 'About',
     component:About
+  },
+  {
+    path: '/product/:id',
+    name: 'Product',
+    component:Product
   }
 ]
 

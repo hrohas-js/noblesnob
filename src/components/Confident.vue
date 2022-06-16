@@ -85,13 +85,8 @@
         писем рекламного характера на указный Клиентом электронный адрес.<br>Клиент может отказаться от получения рассылок, от получения рекламной и другой информации без объяснения причин
         одним из указанных способов:<br>Выбрать параметры рассылки или отказаться от нее в настройках учетной записи (ссылка «Мой профиль», раздел «Личные
         данные») на Сайте;<br>
-        Обратиться в Службу по работе с клиентами Noblesnob.com, направив электронное письмо на адрес hi@noblesnob.com или
+        Обратиться в Службу по работе с клиентами <a href="Noblesnob.com">Noblesnob.com</a>, направив электронное письмо на адрес <a href="mailto:hi@noblesnob.com">hi@noblesnob.com</a>или
         связавшись со специалистами службы поддержки клиентов по телефонам <a href="tel:8 (985) 427 37 57">8 (985) 427 37 57</a>.</p>
-
-
-
-
-
 
   </div>
 </template>
@@ -103,21 +98,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h2{
-  font-family: "Partner Condensed Bold";
-  font-size: rem(20);
-  margin-bottom: rem(35);
-  &:last-child{
-    margin-bottom: 0;
-  }
-}
-p{
-  margin-bottom: rem(40);
-  &:last-child{
-    margin-bottom: 0;
-  }
-}
-.__content__item{
-  margin-bottom: rem(120);
-}
 </style>

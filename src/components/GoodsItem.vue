@@ -1,39 +1,44 @@
 <template>
-  <div class="goods__item" :class="{mainItem:$route.path == '/'}">
+  <router-link :to="'/product/'+good.id">
+    <div class="goods__item" :class="{mainItem:$route.path == '/'}">
       <div class="goods__item__image">
         <img :src="good.picture" alt="some photo">
       </div>
-    <div class="goods__item__content">
-      <p class="goods__item__name __content__item">{{good.name}}</p>
-      <p class="goods__item__description __content__item">{{good.description}}</p>
-      <p class="goods__item__price __content__item">{{good.price}}</p>
+      <div class="goods__item__content">
+        <p class="goods__item__name __content__item">{{ good.name }}</p>
+        <p class="goods__item__description __content__item">{{ good.description }}</p>
+        <p class="goods__item__price __content__item">{{ good.price }}</p>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
 export default {
-  name:'GoodsItem',
-  props:['good']
+  name: 'GoodsItem',
+  props: ['good']
 }
 </script>
 
 <style scoped lang="scss">
-.goods__item__image{
+.goods__item__image {
   margin-bottom: rem(36);
 }
-.__content__item{
+
+.__content__item {
   font-size: rem(10);
   margin-bottom: rem(6);
 
-  &:last-child{
+  &:last-child {
     margin-bottom: 0;
   }
 }
+
 .mainItem {
   min-width: rem(175);
 }
-.goods__item__name,.goods__item__price{
+
+.goods__item__name, .goods__item__price {
   text-transform: uppercase;
 }
 </style>

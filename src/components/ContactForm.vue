@@ -2,7 +2,7 @@
   <div class="contact-form__container">
     <div class="contact-form__contact-following">
       <div class="contact-form__our-contact">
-        <H2>НУЖНА ПОМОЩЬ С ЗАКАЗОМ?</H2>
+        <h2>НУЖНА ПОМОЩЬ С ЗАКАЗОМ?</h2>
         <a href="tel='+79854273757'">+7 985 427-37-57</a>
         <p>MAIL TO : <a href="mailto='hi@noblesnob.com'">hi@noblesnob.com</a></p>
       </div>
@@ -12,7 +12,7 @@
           <input type="email">
           <input type="submit" value="подписка">
         </div>
-        <CustomFolofingChackbox :page="'contactrForm'"></CustomFolofingChackbox>
+        <CustomFolofingChackbox :page="'contactForm'"></CustomFolofingChackbox>
       </div>
     </div>
   </div>

@@ -55,24 +55,28 @@ export default createStore({
             {
                 picture:'https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/goodsItems/suit.jpg',
                 name:'Melampo',
+                id:'1',
                 description:'Цветочный принт',
                 price:'15 000 RUB'
             },
             {
                 picture:'https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/goodsItems/shoose.jpg',
                 name:'Melampo',
+                id:'2',
                 description:'Цветочный принт',
                 price:'15 000 RUB'
             },
             {
                 picture:'https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/goodsItems/jacket.jpg',
                 name:'Melampo',
+                id:'3',
                 description:'Цветочный принт',
                 price:'15 000 RUB'
             },
             {
                 picture:' https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/goodsItems/sandals.jpg',
                 name:'Melampo',
+                id:'4',
                 description:'Цветочный принт',
                 price:'15 000 RUB'
             },
