@@ -29,6 +29,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: rem(25);
+  gap: rem(20);
 }
 .contactForm{
   gap: rem(25);

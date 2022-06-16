@@ -1,13 +1,15 @@
 <template>
   <footer>
     <div class="footer__container">
-      <header-nav :page="'footer'" :menuItems="$store.state.FooterNavLeft"></header-nav>
+      <header-nav :page="'footer'" :menuItems="$store.state.FooterNavLeft" v-if="$store.state.display_width > 768"></header-nav>
+      <div v-else class="region">страна/регион: россия</div>
       <div class="footer-ico">
         <a href=""><img src="@/assets/png/social/telegrammIco.png" alt="telegramm social"></a>
         <a href=""><img src="@/assets/png/social/facebookIco.png" alt="facebook social"></a>
         <a href=""><img src="@/assets/png/social/insagramIco.png" alt="instagram social"></a>
       </div>
       <header-nav :page="'footer'" :menuItems="$store.state.FooterNavRight"></header-nav>
+      <router-link v-if="$store.state.display_width <= 768" to="/" class="region">2021 noblesnob.com</router-link>
     </div>
   </footer>
 </template>
@@ -31,5 +33,18 @@ footer{
 }
 .footer-ico{
   gap:rem(12);
+}
+.region {
+  font-size: rem(12);
+  text-transform: uppercase;
+}
+
+@media (max-width: em(768, 16)) {
+  footer {
+    margin-top: rem(50);
+  }
+  .footer__container {
+    flex-direction: column;
+  }
 }
 </style>
