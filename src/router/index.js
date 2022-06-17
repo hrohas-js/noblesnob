@@ -4,6 +4,8 @@ const Catalog = () => import("@/pages/Catalog");
 const Registration = () =>  import("@/pages/Registration");
 const About = () => import("@/pages/About");
 const Product = () => import("@/pages/Product");
+const Basket = () => import("@/pages/Basket");
+const WishList = () => import("@/pages/WishList");
 const routes = [
   {
     path:'/',
@@ -29,6 +31,16 @@ const routes = [
     path: '/product/:id',
     name: 'Product',
     component:Product
+  },
+  {
+    path: '/basket',
+    name:'Basket',
+    component:Basket
+  },
+  {
+    path: '/wishlist',
+    name:'Wishlist',
+    component:WishList
   }
 ]
 

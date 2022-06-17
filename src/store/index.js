@@ -39,11 +39,11 @@ export default createStore({
             },
             {
                 name: 'избранное',
-                path: ''
+                path: '/wishlist'
             },
             {
                 name: 'корзина',
-                path: ''
+                path: '/basket'
             },
             {
                 name: 'поиск',
@@ -126,7 +126,8 @@ export default createStore({
             }
         ],
         CabinetIn:'registration',
-        ForgetPassword:false
+        ForgetPassword:false,
+        sizeTable:false
     },
     getters: {},
     mutations: {
@@ -139,6 +140,9 @@ export default createStore({
         SET_FORGETPASSWORD(state,boolean){
             state.ForgetPassword = boolean;
         },
+        SER_SIZE_TABLE(state,boolean){
+            state.sizeTable = boolean
+        }
     },
     actions: {},
     modules: {}

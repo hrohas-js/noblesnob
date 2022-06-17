@@ -9,6 +9,10 @@
         <p class="goods__item__description __content__item">{{ good.description }}</p>
         <p class="goods__item__price __content__item">{{ good.price }}</p>
       </div>
+      <div class="goods__buttons" v-if="page == 'wishlist'">
+        <div class="__item">Добавить в корзину</div>
+        <div class="__item">Удалить</div>
+      </div>
     </div>
   </router-link>
 </template>
@@ -16,7 +20,7 @@
 <script>
 export default {
   name: 'GoodsItem',
-  props: ['good']
+  props: ['good','page']
 }
 </script>
 
@@ -40,5 +44,17 @@ export default {
 
 .goods__item__name, .goods__item__price {
   text-transform: uppercase;
+}
+.goods__buttons{
+  .__item{
+    text-align: center;
+    font-size: rem(18);
+    margin-top: rem(25);
+  }
+  .__item:first-child{
+    background-color: #3ADD9D;
+    color: white;
+    padding: rem(12) rem(40);
+  }
 }
 </style>
