@@ -6,6 +6,7 @@ const About = () => import("@/pages/About");
 const Product = () => import("@/pages/Product");
 const Basket = () => import("@/pages/Basket");
 const WishList = () => import("@/pages/WishList");
+const Ordering = () => import("@/pages/Ordering");
 const routes = [
   {
     path:'/',
@@ -41,6 +42,11 @@ const routes = [
     path: '/wishlist',
     name:'Wishlist',
     component:WishList
+  },
+  {
+    path: '/ordering',
+    name:'Ordering',
+    component:Ordering
   }
 ]
 

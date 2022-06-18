@@ -80,7 +80,7 @@
           <div class="__action-order__form">
             <p>EMAIL</p>
             <input type="text">
-            <input type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ">
+            <router-link to="/ordering"><input type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ"></router-link>
           </div>
         </div>
       </div>

@@ -101,6 +101,49 @@ h1, h2, h3, h4, h5 {
 .nomb{
   margin-bottom: 0;
 }
+//кастомный чекбокс(крест)
+.custom__grin-box, .custom__cross{
+  input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  input + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  input + label::before {
+    content: '';
+    display: inline-block;
+    width: rem(25);
+    height: rem(25);
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid black;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+  }
+}
+.custom__grin-box{
+  input:checked + label::before {
+    background-color:#3ADD9D;
+    border-color: #3ADD9D;
+  }
+}
+.custom__cross{
+  input + label::before {
+    width: rem(13);
+    height: rem(13);
+  }
+  input:checked + label::before {
+    background-image:url('https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/checkbox_rule/closeRule.svg');
+    background-size: cover;
+  }
+}
 @media (max-width: em(1440, 16)) and (min-width: em(1024, 16)) {
   .container {
     padding: rem(16) calc(1rem + (35 - 16) * ((100vw - 64rem) / (1440 - 1024))) 0;
