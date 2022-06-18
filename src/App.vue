@@ -144,6 +144,30 @@ h1, h2, h3, h4, h5 {
     background-size: cover;
   }
 }
+//общие стили личного кабинета
+.profile{
+  text-transform: uppercase;
+  input{
+    width: 100%;
+    height: rem(40);
+  }
+  h1,h2{
+    font-family: 'Partner Condensed Bold';
+    font-size:rem(18) ;
+  }
+  p{
+    font-size: rem(18);
+  }
+  .profile__table {
+    margin-top: rem(38);
+  }
+  .__item {
+    margin-bottom: rem(26);
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
 @media (max-width: em(1440, 16)) and (min-width: em(1024, 16)) {
   .container {
     padding: rem(16) calc(1rem + (35 - 16) * ((100vw - 64rem) / (1440 - 1024))) 0;

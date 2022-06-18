@@ -7,6 +7,7 @@ const Product = () => import("@/pages/Product");
 const Basket = () => import("@/pages/Basket");
 const WishList = () => import("@/pages/WishList");
 const Ordering = () => import("@/pages/Ordering");
+const Profile = () => import("@/pages/Profile")
 const routes = [
   {
     path:'/',
@@ -47,6 +48,11 @@ const routes = [
     path: '/ordering',
     name:'Ordering',
     component:Ordering
+  },
+  {
+    path: '/profile/:name',
+    name:'Profile',
+    component:Profile
   }
 ]
 

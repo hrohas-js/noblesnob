@@ -29,7 +29,7 @@ export default createStore({
         headerNavRight: [
             {
                 name: 'RU',
-                path: ''
+                path: '/profile/main'
 
             },
             {
