@@ -301,4 +301,10 @@ input {
     justify-self: center;
   }
 }
+
+@media (max-width: em(724, 16)) {
+  .product__container {
+    margin-top: rem(40);
+  }
+}
 </style>

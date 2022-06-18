@@ -1,5 +1,6 @@
 <template>
   <div class="site-bar-menu">
+    <div class="close-side-mobile" @click="$store.commit('SET_CATEGORYS_MOBILE_SHOW', false)">назад</div>
     <menu>
       <li class="site-bar-menu__item">
         <router-link to="">Все категории</router-link>
@@ -77,8 +78,22 @@ export default {
 }
 
 @media (max-width: em(768, 16)) {
+  menu {
+    border-top: 1px solid black;
+    padding-top: rem(20);
+    margin-top: rem(20);
+  }
+  menu > li {
+    padding-bottom: rem(40) !important;
+  }
+  .close-side-mobile {
+    text-transform: uppercase;
+    font-size: rem(24);
+    cursor: pointer;
+  }
   .site-bar-menu__item {
-
+    font-size: rem(46);
+    text-transform: uppercase;
     a {
       display: flex;
       justify-content: space-between;

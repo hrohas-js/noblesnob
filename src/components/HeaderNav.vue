@@ -4,7 +4,7 @@
   </nav>
   <nav v-else>
     <div class="header-nav__container" v-if="menuItemsMobile == 'left'">
-      <div class="header-nav__item header-nav__burger-menu"><img src="@/assets/svg/burger-menu.svg" alt="menu"></div>
+      <div class="header-nav__item header-nav__burger-menu" @click="$store.commit('SET_BURGER_SHOW')"><img src="@/assets/svg/burger-menu.svg" alt="menu"></div>
       <div class="header-nav__item header-nav__search"><img src="@/assets/svg/search.svg" alt="search"></div>
     </div>
     <div class="header-nav__container" v-if="menuItemsMobile == 'right'">

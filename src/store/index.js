@@ -84,7 +84,7 @@ export default createStore({
         FooterNavLeft:[
             {
                 name: '2021 noblesnob.com',
-                path: ''
+                path: '/'
 
             },
             {
@@ -125,9 +125,74 @@ export default createStore({
                 path: '/about/contact'
             }
         ],
+        burger: [
+            {
+                name: 'для него',
+                path: '/catalog'
+            },
+            {
+                name: 'для нее',
+                path: ''
+            },
+            {
+                name: 'lifestyle',
+                path: ''
+            },
+            {
+                name: 'noble merch',
+                path: ''
+            },
+            {
+                name: 'resale',
+                path: ''
+            },
+            {
+                name: 'избранное',
+                path: '/wishlist'
+            },
+            {
+                name: 'доставка и оплата',
+                path: '/about/delivery'
+            },
+            {
+                name: 'возврат товара',
+                path: '/about/payback'
+            },
+            {
+                name: 'о нас',
+                path: '/about/aboutUs'
+            },
+            {
+                name: 'контакты',
+                path: '/about/contact'
+            },
+            {
+                name: 'конфиденциальность',
+                path: ''
+            },
+            {
+                name: 'партнерство',
+                path: '/about/partnership'
+            },
+            {
+                name: 'оферта',
+                path: '/about/oferta'
+            },
+            {
+                name: 'карьера',
+                path: '/about/vacancy'
+            },
+            {
+                name: 'выбрать язык',
+                path: ''
+            }
+        ],
         CabinetIn:'registration',
         ForgetPassword:false,
-        sizeTable:false
+        sizeTable:false,
+        categorysMobileShow: false,
+        sortMobileShow: false,
+        burgerShow: false
     },
     getters: {},
     mutations: {
@@ -142,6 +207,15 @@ export default createStore({
         },
         SER_SIZE_TABLE(state,boolean){
             state.sizeTable = boolean
+        },
+        SET_CATEGORYS_MOBILE_SHOW(state, show) {
+            state.categorysMobileShow = show;
+        },
+        SET_SORT_MOBILE_SHOW(state, show) {
+            state.sortMobileShow = show;
+        },
+        SET_BURGER_SHOW(state) {
+            state.burgerShow = !state.burgerShow;
         }
     },
     actions: {},
