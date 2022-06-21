@@ -165,4 +165,10 @@ input {
   background-color: #3ADD9D;
   color: white;
 }
+
+@media (max-width: em(768, 16)) {
+  .registration__form,.forget-password__container {
+    width: 100%;
+  }
+}
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="product container">
     <Header></Header>
+    <Transition name="fade">
+      <div class="__container__size-table" v-if="this.$store.state.sizeTable">
+        <SizeTable></SizeTable>
+      </div>
+    </Transition>
     <main>
       <div class="product__container">
-        <Transition name="fade">
-          <div class="__container__size-table" v-if="this.$store.state.sizeTable">
-            <SizeTable></SizeTable>
-          </div>
-        </Transition>
         <ul class="product__description">
           <li>
             <h2>GCDS</h2>
@@ -25,7 +25,14 @@
           <img :src="prerender.picture" alt="some photo">
         </div>
         <div class="product__choose-size">
-          <p>{{ prerender.price }}₽</p>
+          <div class="mobile-description" v-if="$store.state.display_width <= 768">
+            <div>
+              <h2>GCDS</h2>
+              <p>Свитер вязки интарсия. Свитер свободного кроя.</p>
+            </div>
+            <p>{{ prerender.price }}₽</p>
+          </div>
+          <p v-else>{{ prerender.price }}₽</p>
           <div class="__choose-size__item" @click="this.showSubMenu = !this.showSubMenu">
             <p>выбрать размер</p>
             <img src="@/assets/svg/arrow_down.svg" alt="arrow down" :class="{show:this.showSubMenu}">
@@ -57,7 +64,10 @@
           <div class="__choose-size__buttons">
             <input type="text">
             <input type="submit" class="__buttons__button" value="в корзину">
-            <input type="submit" class="__buttons__button" value="в избранное">
+            <input v-if="$store.state.display_width > 768" type="submit" class="__buttons__button" value="в избранное">
+            <button v-else type="submit" class="__buttons__button">
+              <img src="@/assets/svg/heart.svg" alt="">
+            </button>
           </div>
           <div class="__choose-size__description">
             <p>размер модели:{{ chooseSize }}</p>
@@ -72,8 +82,8 @@
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
           </div>
         </div>
         <div class="ones__goods">
@@ -82,8 +92,8 @@
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
           </div>
         </div>
         <div class="ones__goods">
@@ -92,8 +102,8 @@
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
             <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
+            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
           </div>
         </div>
       </div>
@@ -162,6 +172,7 @@ input {
   justify-content: space-between;
 }
 .__container__size-table{
+  position: relative;
   background-color: rgba(255, 255, 255, 0.98);
   z-index: 100;
 }
@@ -184,6 +195,12 @@ input {
   p {
     font-size: rem(18);
   }
+}
+
+.mobile-description {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: rem(30);
 }
 
 .product__good {
@@ -302,9 +319,36 @@ input {
   }
 }
 
-@media (max-width: em(724, 16)) {
+@media (max-width: em(768, 16)) {
   .product__container {
     margin-top: rem(40);
+    flex-direction: column-reverse;
+  }
+  .product__good, .__choose-size__item {
+    order: 1;
+  }
+  .__choose-size__description {
+    justify-content: space-between;
+  }
+  input[type="submit"]:nth-child(2) {
+    width: 80%;
+  }
+  input[type="submit"]:last-child {
+    width: 20%;
+  }
+  .__choose-size__buttons button {
+    position: absolute;
+    width: 20%;
+    right: 0;
+    height: 100%;
+    background: none;
+    border: none;
+    img {
+      height: rem(30);
+    }
+  }
+  .__goods__items {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>

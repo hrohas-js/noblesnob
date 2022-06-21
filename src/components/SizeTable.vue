@@ -203,7 +203,6 @@ export default {
 
 <style scoped lang="scss">
 .size-table {
-  width: 100%;
   height: 100%;
   position: absolute;
   z-index: 10;
@@ -226,6 +225,7 @@ export default {
 }
 .size-table__container{
   margin: rem(115) 0 rem(73);
+  background-color: white;
   .__row:first-child{
     background-color: #3ADD9D;
     color: white;
@@ -242,6 +242,12 @@ export default {
 
 .__coll {
   padding: rem(20) rem(12);
+}
 
+@media (max-width: em(1024, 16)) {
+  .__row {
+    grid-template-columns: rem(200) repeat(7, rem(40));
+    justify-content: space-between;
+  }
 }
 </style>

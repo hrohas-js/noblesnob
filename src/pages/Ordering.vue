@@ -7,12 +7,39 @@
         <div class="ordering__address-delivery">
           <p>Адресс доставки</p>
           <div class="__address-delivery__item address">
-            <div class="__item">
+            <div v-if="$store.state.display_width > 768">
+              <div class="__item">
+                <input type="text" placeholder="ИМЯ*" v-model="name">
+                <input type="text" placeholder="CТРАНА/РЕСПУБЛИКА" v-model="country">
+                <input type="text" placeholder="ГОРОД*" v-model="city">
+                <input type="text" placeholder="ИНДЕКС/ZIP" v-model="index">
+                <input type="text" placeholder="EMAIL">
+                <div class="__sub-item">
+                  <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
+                  <input type="text" value="">
+                  <div class="address__checkbox custom__cross">
+                    <input type="checkbox" id="address">
+                    <label for="address">Использовать в качестве платежного адреса</label>
+                  </div>
+                </div>
+              </div>
+              <div class="__item">
+                <input type="text" placeholder="ФАМИЛИЯ*" v-model="surname">
+                <input type="text" placeholder="РЕГИОН/ОБЛАСТЬ*">
+                <input type="text" placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА" v-model="address">
+                <input type="text" placeholder="ТЕЛЕФОН">
+              </div>
+            </div>
+            <div v-else>
               <input type="text" placeholder="ИМЯ*" v-model="name">
-              <input type="text" placeholder="CТРАНА/РЕСПУБЛИКА" v-model="country">
-              <input type="text" placeholder="ГОРОД*" v-model="city">
-              <input type="text" placeholder="ИНДЕКС/ZIP" v-model="index">
+              <input type="text" placeholder="ФАМИЛИЯ*" v-model="surname">
               <input type="text" placeholder="EMAIL">
+              <input type="text" placeholder="ТЕЛЕФОН">
+              <input type="text" placeholder="CТРАНА/РЕСПУБЛИКА" v-model="country">
+              <input type="text" placeholder="РЕГИОН/ОБЛАСТЬ*">
+              <input type="text" placeholder="ГОРОД*" v-model="city">
+              <input type="text" placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА" v-model="address">
+              <input type="text" placeholder="ИНДЕКС/ZIP" v-model="index">
               <div class="__sub-item">
                 <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
                 <input type="text" value="">
@@ -22,17 +49,11 @@
                 </div>
               </div>
             </div>
-            <div class="__item">
-              <input type="text" placeholder="ФАМИЛИЯ*" v-model="surname">
-              <input type="text" placeholder="РЕГИОН/ОБЛАСТЬ*">
-              <input type="text" placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА" v-model="address">
-              <input type="text" placeholder="ТЕЛЕФОН">
-            </div>
           </div>
           <div class="ordering__delivery-option">
             <div class="__row">
               <div class="__coll">СПОСОБ ДОСТАВКИ</div>
-              <div class="__coll">ЦЕНА</div>
+              <div class="__coll" v-if="$store.state.display_width > 1024">ЦЕНА</div>
             </div>
             <div class="__address-delivery__item">
               <div class="__row">
@@ -238,21 +259,25 @@ input[value] {
 .ordering__sub-address-delivery {
   margin-top: rem(40);
 
-  &>p{
+  & > p {
     margin-bottom: rem(23);
   }
 }
-.__you-contact{
+
+.__you-contact {
   border-top: 1px solid;
-  padding-top:rem(23);
-  p{
+  padding-top: rem(23);
+
+  p {
     font-style: rem(13);
     margin-bottom: rem(9);
   }
-  &:last-child{
+
+  &:last-child {
     margin-bottom: 0;
   }
 }
+
 .ordering__delivery-option {
   margin-top: rem(55);
 }
@@ -317,6 +342,24 @@ input[value] {
     color: white;
     text-transform: uppercase;
     cursor: pointer;
+  }
+}
+
+@media (max-width: em(1024, 16)) {
+  .ordering__container {
+    display: block;
+  }
+  main {
+    padding: 0;
+  }
+  .ordering__delivery-option {
+    .__address-delivery__item {
+      .__row {
+        .__coll:last-child {
+          text-align: right;
+        }
+      }
+    }
   }
 }
 </style>

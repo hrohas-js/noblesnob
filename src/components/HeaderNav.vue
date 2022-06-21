@@ -8,8 +8,8 @@
       <div class="header-nav__item header-nav__search"><img src="@/assets/svg/search.svg" alt="search"></div>
     </div>
     <div class="header-nav__container" v-if="menuItemsMobile == 'right'">
-      <div class="header-nav__item header-nav__burger-menu"><img src="@/assets/svg/cabinet.svg" alt="cabinet"></div>
-      <div class="header-nav__item header-nav__search"><img src="@/assets/svg/basket.svg" alt="basket"></div>
+      <div class="header-nav__item header-nav__burger-menu"><img src="@/assets/svg/cabinet.svg" alt="cabinet" @click="this.$router.push('/registration')"></div>
+      <div class="header-nav__item header-nav__search"><img src="@/assets/svg/basket.svg" alt="basket" @click="this.$router.push('/basket')"></div>
     </div>
   </nav>
 </template>

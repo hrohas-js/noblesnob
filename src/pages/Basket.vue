@@ -38,16 +38,17 @@
                   </li>
                 </ul>
               </div>
-              <div class="__coll">
+              <div class="__coll close-mobile">
                 <p>₽ 16.000 RUB</p>
+                <img src="@/assets/svg/close__button.svg" alt="close button" v-if="$store.state.display_width <= 768">
               </div>
-              <div class="__coll dell-item">
+              <div class="__coll dell-item" v-if="$store.state.display_width > 768">
                 <img src="@/assets/svg/close__button.svg" alt="close button">
               </div>
             </div>
             <div class="__row">
               <div class="__coll grid-start">
-                <ul>
+                <ul class="cart-totals">
                   <li>
                     <p>ИТОГО</p>
                     <p>ДОСТАВКА</p>
@@ -100,22 +101,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.basket__container{
+.basket__container {
   display: flex;
-  gap:rem(150)
+  gap: rem(150)
 }
+
 .__item, .__basket-table {
   margin-top: rem(118);
 }
-.__item:first-child{
+
+.__item:first-child {
   flex: 1 1 75%;
 }
-.__item:last-child{
+
+.__item:last-child {
   flex: 1 1 25%;
 }
+
 .__row {
   display: grid;
-  grid-template-columns: rem(133) 1fr repeat(2,0.5fr);
+  grid-template-columns: rem(133) 1fr 0.5fr 0.1fr;
   grid-gap: rem(40);
   border-bottom: 1px solid;
 
@@ -188,32 +193,82 @@ export default {
 .grid-start {
   grid-column-start: 2;
 }
-.__action-order__description{
-  h2{
+
+.cart-totals {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.__action-order__description {
+  h2 {
     font-family: "Partner Condensed Bold";
     font-size: rem(18);
   }
-  p{
+
+  p {
     font-size: rem(14);
     text-transform: uppercase;
     margin-top: rem(30);
   }
 }
-.__action-order__form{
+
+.__action-order__form {
   margin-top: rem(30);
-  p{
+
+  p {
     font-size: rem(14);
   }
-  input{
+
+  input {
     width: 100%;
     height: rem(46);
   }
-  input[type='submit']{
+
+  input[type='submit'] {
     border: none;
     background-color: #3ADD9D;
     color: white;
     margin-top: rem(20);
     cursor: pointer;
+  }
+}
+
+@media (max-width: em(1024, 16)) {
+  .basket__container {
+    flex-direction: column;
+    .__item {
+      margin-top: rem(30);
+    }
+  }
+}
+
+@media (max-width: em(768, 16)) {
+  p {
+    font-size: rem(12);
+  }
+  .__row {
+    grid-template-columns: rem(133) 1fr 0.5fr;
+    grid-gap: rem(20);
+  }
+  .close-mobile {
+    display: flex;
+    justify-content: space-between;
+    img {
+      height: rem(30);
+    }
+  }
+  .__coll__count {
+    flex-direction: column;
+    .__count__item {
+      width: fit-content;
+    }
+  }
+}
+@media (max-width: em(428, 16)) {
+  .close-mobile {
+    flex-direction: column;
   }
 }
 </style>
