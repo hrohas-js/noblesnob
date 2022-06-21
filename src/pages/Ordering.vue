@@ -44,7 +44,7 @@
                 <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
                 <input type="text" value="">
                 <div class="address__checkbox custom__cross">
-                  <input type="checkbox" id="address">
+                  <input type="checkbox" id="address_use">
                   <label for="address">Использовать в качестве платежного адреса</label>
                 </div>
               </div>
