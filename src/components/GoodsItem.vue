@@ -2,12 +2,12 @@
   <router-link :to="'/product/'+good.id">
     <div class="goods__item" :class="{mainItem:$route.path == '/'}">
       <div class="goods__item__image">
-        <img :src="good.picture" alt="some photo">
+
       </div>
       <div class="goods__item__content">
-        <p class="goods__item__name __content__item">{{ good.name }}</p>
-        <p class="goods__item__description __content__item">{{ good.description }}</p>
-        <p class="goods__item__price __content__item">{{ good.price }}</p>
+        <p class="goods__item__name __content__item">{{good.attributes[2].options[0]}}</p>
+        <p class="goods__item__description __content__item">{{ good.name }}</p>
+        <p class="goods__item__price __content__item">{{ good.price }}&nbspRUB</p>
       </div>
       <div class="goods__buttons" v-if="page == 'wishlist'">
         <div class="__item">Добавить в корзину</div>
@@ -27,6 +27,9 @@ export default {
 <style scoped lang="scss">
 .goods__item__image {
   margin-bottom: rem(36);
+  width: rem(175);
+  height: rem(255);
+  background-color: grey;
 }
 
 .__content__item {

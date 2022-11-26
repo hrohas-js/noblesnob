@@ -2,38 +2,43 @@
   <div class="catalog container">
     <Header></Header>
     <main>
-      <div class="side-mobile" v-if="$store.state.display_width <= 768 && $store.state.categorysMobileShow">
+      <div class="side-mobile" v-if="$store.state.display_width <= 768 && $store.state.categoriesMobileShow">
         <SiteBarMenu></SiteBarMenu>
       </div>
-      <div class="catalog__main-container" :class="{mobile:$store.state.categorysMobileShow}">
+      <div class="catalog__main-container" :class="{mobile:$store.state.categoriesMobileShow}">
         <div class="site-bar-menu__container" v-if="$store.state.display_width > 768">
           <SiteBarMenu></SiteBarMenu>
         </div>
         <div class="catalog__container" :class="{mobile:$store.state.sortMobileShow}">
           <div>
-            <h1 v-if="$store.state.display_width > 768">Куртки и Бомберы</h1>
+            <h1 v-if="$store.state.display_width > 768">{{ upper }}</h1>
             <div class="filters-mobile" v-if="$store.state.display_width <= 768">
               <div class="filters-mobile__item" @click="$store.commit('SET_SORT_MOBILE_SHOW', true)">фильтры</div>
-              <div class="filters-mobile__item" @click="$store.commit('SET_CATEGORYS_MOBILE_SHOW', true)">категории</div>
+              <div class="filters-mobile__item" @click="$store.commit('SET_categories_MOBILE_SHOW', true)">категории
+              </div>
             </div>
-            <div class="catalog__goods">
-              <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good"></GoodsItem>
-              <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good"></GoodsItem>
-              <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good"></GoodsItem>
+            <div class="catalog__goods" v-if="$store.state.catalog.length > 0">
+              <GoodsItem v-for="good in $store.state.catalog" :key="good.id" :good="good"></GoodsItem>
+            </div>
+            <div class="catalog__goods" v-else>
+              ТОВАРЫ ОТСУТСТВУЮТ!
             </div>
           </div>
           <div class="pagination__container" v-if="$store.state.display_width > 768">
-            <PaginationPage></PaginationPage>
+            <PaginationPage v-if="$store.state.pagination.length >1"></PaginationPage>
           </div>
         </div>
-        <ul class="catalog__sort" :class="{sortMobile:$store.state.display_width <= 768, show: $store.state.sortMobileShow}">
-          <div class="sort-close" v-if="$store.state.display_width <= 768" @click="$store.commit('SET_SORT_MOBILE_SHOW', false)">закрыть</div>
+        <ul class="catalog__sort"
+            :class="{sortMobile:$store.state.display_width <= 768, show: $store.state.sortMobileShow}">
+          <div class="sort-close" v-if="$store.state.display_width <= 768"
+               @click="$store.commit('SET_SORT_MOBILE_SHOW', false)">закрыть
+          </div>
           <h2 v-if="$store.state.display_width > 768">СОРТИРОВАТЬ ПО:</h2>
           <h2 v-else>СОРТИРОВАТЬ ПО</h2>
-          <li class="__sort__item">Новинки</li>
-          <li class="__sort__item">Цена по умолчанию</li>
-          <li class="__sort__item">Цена по возрастанию</li>
-          <li class="__sort__item">Цена по убыванию</li>
+          <li class="__sort__item" @click="sort('desc','date',1)" :class="{sort:sortFlag == 1}">Новинки</li>
+          <li class="__sort__item" @click="sort('desc','date',2)" :class="{sort:sortFlag == 2}">Цена по умолчанию</li>
+          <li class="__sort__item" @click="sort('asc','price',3)" :class="{sort:sortFlag == 3}">Цена по возрастанию</li>
+          <li class="__sort__item" @click="sort('desc','price',4)" :class="{sort:sortFlag == 4}">Цена по убыванию</li>
         </ul>
       </div>
     </main>
@@ -42,7 +47,7 @@
 </template>
 
 <script>
-import SiteBarMenu from "@/components/SiteBarMenu";
+import SiteBarMenu from "@/components/Category/CategoryMenu";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import GoodsItem from "@/components/GoodsItem";
@@ -50,11 +55,58 @@ import PaginationPage from "@/components/PaginationPage";
 
 export default {
   name: 'Catalog',
-  components: {PaginationPage, Header, Footer, SiteBarMenu, GoodsItem}
+  components: {PaginationPage, Header, Footer, SiteBarMenu, GoodsItem},
+  data: () => ({
+    sortFlag: ''
+  }),
+  created() {
+    this.$store.dispatch('FetchCatalog', {
+      sex: this.$route.params.sex,
+      page_number: 1,
+      id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory
+    });
+    this.$store.commit('SET_CATEGORY', this.$route.params.sex);
+    if (this.$route.params.subCategory != 'null') {
+      this.$store.commit('SET_SUB_CATEGORY', this.$route.params.category);
+    }
+  },
+  computed: {
+    upper() {
+      return this.$store.state.currentCategory.toUpperCase()
+    }
+  },
+  methods: {
+    sort(order, orderby, count) {
+      if (this.$route.params.brand == 'all-brands') {
+        this.$store.dispatch('FetchCatalog', {
+          sex: this.$route.params.sex,
+          page_number: 1,
+          id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory,
+          order: order,
+          orderby: orderby
+        });
+      }
+      else {
+        this.$store.dispatch('FetchCatalog', {
+          sex: this.$route.params.sex,
+          page_number: 1,
+          id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory,
+          order: order,
+          orderby: orderby,
+          attribute: 'pa_brand',
+          attribute_term: this.$route.params.brand
+        });
+      }
+      this.sortFlag = count;
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
+.sort {
+  font-family: "Partner Condensed Bold" !important;
+}
 
 main {
   position: relative;
@@ -141,6 +193,7 @@ h1 {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
+
 .filters-mobile__item {
   flex: 1 1 50%;
   text-align: center;
@@ -148,6 +201,7 @@ h1 {
   padding: rem(20) 0;
   text-transform: uppercase;
   cursor: pointer;
+
   &:first-child {
     border-right: 1px solid black;
   }

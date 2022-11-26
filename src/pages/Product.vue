@@ -9,54 +9,37 @@
     <main>
       <div class="product__container">
         <ul class="product__description">
-          <li>
-            <h2>GCDS</h2>
-            <p> Свитер вязки интарсия Свитер свободного кроя. <br>Высокая горловина и длинные рукава. Логотип в технике
-              интарсия Tom and Jerry.</p>
+          <li v-if="$store.state.display_width >= 768">
+            <h2>{{ brand }}</h2>
+            <div>{{ name }}</div>
           </li>
+          <li><div v-html="description"></div></li>
           <li>
-            <p>Срана производства: Италия </p>
-            <p>Состав: 50% шерсть, 50% акрил</p>
+            <p>Страна производства: {{ prodCountry }} </p>
+            <p> Состав: {{ props }} </p>
           </li>
-          <li><p>Цвет: Бежевый</p></li>
-          <li><p>TJ21M020001-13</p></li>
+          <li><p>Цвет: {{ color }}</p></li>
+          <li><p>{{ article }}</p></li>
         </ul>
         <div class="product__good">
-          <img :src="prerender.picture" alt="some photo">
+          <!--          <img :src=".picture" alt="some photo">-->
         </div>
         <div class="product__choose-size">
           <div class="mobile-description" v-if="$store.state.display_width <= 768">
             <div>
-              <h2>GCDS</h2>
-              <p>Свитер вязки интарсия. Свитер свободного кроя.</p>
+              <h2>{{ brand }}</h2>
+              <p>{{ name }}</p>
             </div>
-            <p>{{ prerender.price }}₽</p>
+            <p>{{ price }}&nbsp;₽</p>
           </div>
-          <p v-else>{{ prerender.price }}₽</p>
+          <p v-else>{{ price }}&nbsp;₽</p>
           <div class="__choose-size__item" @click="this.showSubMenu = !this.showSubMenu">
-            <p>выбрать размер</p>
+            <p>{{chooseSize}}</p>
             <img src="@/assets/svg/arrow_down.svg" alt="arrow down" :class="{show:this.showSubMenu}">
             <Transition name="slide-fade">
               <div class="__choose-size__sub" v-if="showSubMenu">
-                <div class="__sub__item" @click="this.chooseSize='XS'">
-                  <p>XS</p>
-                  <p></p>
-                </div>
-                <div class="__sub__item" @click="this.chooseSize='S'">
-                  <p>S</p>
-                  <p></p>
-                </div>
-                <div class="__sub__item" @click="this.chooseSize='M'">
-                  <p>M</p>
-                  <p></p>
-                </div>
-                <div class="__sub__item" @click="this.chooseSize='L'">
-                  <p>L</p>
-                  <p>1 экземпляр</p>
-                </div>
-                <div class="__sub__item" @click="this.chooseSize='XL'">
-                  <p>XL</p>
-                  <p></p>
+                <div class="__sub__item" v-for="item in size"  :key="item" @click="this.chooseSize = item">
+                  <p>{{ item }}</p>
                 </div>
               </div>
             </Transition>
@@ -69,7 +52,7 @@
               <img src="@/assets/svg/heart.svg" alt="">
             </button>
           </div>
-          <div class="__choose-size__description">
+          <div class="__choose-size__description" v-if="$store.state.display_width >= 1280">
             <p>размер модели:{{ chooseSize }}</p>
             <p @click="this.$store.commit('SER_SIZE_TABLE',true)">размерная таблица</p>
           </div>
@@ -79,32 +62,20 @@
         <div class="ones__goods">
           <h2>Так же модели</h2>
           <div class="__goods__items">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
+            <!--            <img :src=".picture" alt="some photo">
+                        <img :src=".picture" alt="some photo" v-if="$store.state.display_width > 768">-->
           </div>
         </div>
         <div class="ones__goods">
           <h2>Вам может понравится</h2>
           <div class="__goods__items">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
+            <!--            <img :src=".picture" alt="some photo">
+                        <img :src=".picture" alt="some photo" v-if="$store.state.display_width > 768">-->
           </div>
         </div>
         <div class="ones__goods">
-          <h2>Больше от GCDS</h2>
-          <div class="__goods__items">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
-            <img :src="prerender.picture" alt="some photo" v-if="$store.state.display_width > 768">
-          </div>
+          <h2>Больше от {{ brand }}</h2>
+          <goods-item v-for="item in $store.state.productsFromSameBrand" :key="item.id" :good="item"/>
         </div>
       </div>
     </main>
@@ -123,17 +94,83 @@ export default {
   components: {SizeTable, GoodsItem, Footer, Header},
   data: () => ({
     showSubMenu: false,
-    chooseSize: '',
+    chooseSize: 'выбрать размер',
   }),
+  created() {
+    this.$store.dispatch('FetchProduct', this.$route.params.id);
+  },
   methods: {
     clickWord(size) {
       this.chooseSize = size;
     }
   },
   computed: {
-    prerender() {
-      return [...this.$store.state.goods].filter(elem => elem.id == this.$route.params.id)[0];
+    product() {
+      return this.$store.state.product;
     },
+    brand() {
+      if (this.product.attributes) {
+        return this.product.attributes[3].options[0];
+      } else {
+        return 'гружусь';
+      }
+    },
+    description() {
+      if (this.product.short_description) {
+        return this.product.short_description
+      } else {
+        return 'гружусь';
+      }
+    },
+    prodCountry() {
+      if (this.brand != 'гружусь') {
+        return this.product.attributes[5].options[0];
+      } else {
+        return 'гружусь'
+      }
+    },
+    props() {
+      if (this.brand != 'гружусь') {
+        return this.product.attributes[4].options[0];
+      } else {
+        return 'гружусь'
+      }
+    },
+    color() {
+      if (this.brand != 'гружусь') {
+        return this.product.attributes[0].options[0];
+      } else {
+        return 'гружусь'
+      }
+    },
+    article() {
+      if (this.product.sku) {
+        return this.product.sku;
+      } else {
+        return 'гружусь'
+      }
+    },
+    price() {
+      if (this.product.price) {
+        return this.product.price;
+      } else {
+        return 'гружусь'
+      }
+    },
+    name(){
+      if (this.product.name) {
+        return this.product.name;
+      } else {
+        return 'гружусь'
+      }
+    },
+    size(){
+      if (this.brand != 'гружусь') {
+        return this.product.attributes[1].options;
+      } else {
+        return 'гружусь'
+      }
+    }
   }
 }
 </script>
@@ -142,6 +179,7 @@ export default {
 input {
   width: 100%;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -151,6 +189,7 @@ input {
 .fade-leave-to {
   opacity: 0;
 }
+
 //
 .slide-fade-enter-active {
   transition: all 0.2s ease-out;
@@ -171,11 +210,13 @@ input {
   display: flex;
   justify-content: space-between;
 }
-.__container__size-table{
+
+.__container__size-table {
   position: relative;
   background-color: rgba(255, 255, 255, 0.98);
   z-index: 100;
 }
+
 .product {
   position: relative;
 }
@@ -238,9 +279,6 @@ input {
   border-bottom: 1px solid;
   padding: rem(10) rem(12);
 
-  p:last-child {
-    text-transform: lowercase;
-  }
 }
 
 .__choose-size__item {
@@ -343,6 +381,7 @@ input {
     height: 100%;
     background: none;
     border: none;
+
     img {
       height: rem(30);
     }

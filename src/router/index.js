@@ -7,7 +7,7 @@ const Product = () => import("@/pages/Product");
 const Basket = () => import("@/pages/Basket");
 const WishList = () => import("@/pages/WishList");
 const Ordering = () => import("@/pages/Ordering");
-const Profile = () => import("@/pages/Profile")
+const Profile = () => import("@/pages/Profile");
 const routes = [
   {
     path:'/',
@@ -15,7 +15,7 @@ const routes = [
     component:Home
   },
   {
-    path: '/catalog',
+    path: '/catalog/:sex/:category/:subCategory/:brand/:pageNumber',
     name:'Catalog',
     component:Catalog
   },

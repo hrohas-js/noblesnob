@@ -1,38 +1,40 @@
 <template>
   <div class="pagination">
-    <div class="pagination__item active">1</div>
-    <div class="pagination__item">2</div>
-    <div class="pagination__item">3</div>
-    <div class="pagination__item">4</div>
-    <div class="pagination__item">5</div>
-    <div class="pagination__item">6</div>
-    <div class="pagination__item">7</div>
-    <div class="pagination__item">...</div>
-    <div class="pagination__item">ДАЛЕЕ</div>
+    <PaginationItem v-for="item in $store.state.pagination" :key="item" :count="item"></PaginationItem>
+    <div class="pagination__item" v-if="$store.state.pagination.length >= 7">ДАЛЕЕ</div>
   </div>
 </template>
 
 <script>
+import PaginationItem from "@/components/PaginationItem";
+
 export default {
-  name:'PaginationPage'
+  name: 'PaginationPage',
+  components: {PaginationItem},
+  created() {
+    this.$store.dispatch('FetchPagination', {
+        sex: this.$route.params.sex,
+        id:this.$route.params.category
+    });
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.active{
-  background-color: #39dd9d;
-  color:white;
-}
-.pagination{
+
+.pagination {
   display: flex;
   gap: rem(20);
 }
-.pagination__item{
+
+.pagination__item {
   padding: rem(2) rem(8);
+  cursor: pointer;
   transition: all 0.2s;
-  &:hover{
+
+  &:hover {
     background-color: #39dd9d;
-    color:white;
+    color: white;
   }
 }
 </style>

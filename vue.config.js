@@ -7,5 +7,18 @@ module.exports = defineConfig({
         additionalData: `@import "@/assets/_variables.scss";`
       }
     }
+  },
+  configureWebpack: config => {
+    return {
+      devServer: {
+        proxy: {
+          '/wp-json': {
+            target: 'https://tdsfashiongroup.com',
+            secure: false,
+            changeOrigin: true
+          }
+        }
+      }
+    }
   }
 })

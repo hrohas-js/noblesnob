@@ -2,32 +2,32 @@
   <div class="registration container">
     <Header></Header>
     <div class="registration__container">
-      <div class="registration__form" v-if="$store.state.ForgetPassword == false">
+      <div v-if="!$store.state.ForgetPassword" class="registration__form">
         <div class="registration__choose-action">
           <input type="text">
-          <input type="submit" value="СОЗДАТЬ АККАУНТ" @click="this.$store.commit('SET_CABINETIN','registration')" :class="{active:$store.state.CabinetIn == 'registration'}">
-          <input type="submit" value="Войти" @click="this.$store.commit('SET_CABINETIN','auf')" :class="{active:$store.state.CabinetIn == 'auf'}">
+          <input type="submit" value="СОЗДАТЬ АККАУНТ" @click="this.$store.commit('SET_CABINETIN','registration')" :class="{active:$store.state.CabinetIn === 'registration'}">
+          <input type="submit" value="Войти" @click="this.$store.commit('SET_CABINETIN','auf')" :class="{active:$store.state.CabinetIn === 'auf'}">
         </div>
-        <div class="__form__main-info" v-if="$store.state.CabinetIn == 'registration'">
-          <input type="text" placeholder="ИМЯ">
-          <input type="text" placeholder="ФАМИЛИЯ">
-          <input type="text" placeholder="EMAIL">
-          <input type="text" placeholder="ТЕЛЕФОН">
-          <input type="text" placeholder="ПАРОЛЬ">
-          <input type="text" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ">
+        <div class="__form__main-info" v-if="$store.state.CabinetIn === 'registration'">
+          <input type="text" placeholder="ИМЯ" v-model="registration.name" :class="{empty:emptyRegistrationCheck && registration.name === ''}">
+          <input type="text" placeholder="ФАМИЛИЯ" v-model="registration.surname" :class="{empty:emptyRegistrationCheck && registration.surname === ''}">
+          <input type="email" placeholder="EMAIL" v-model="registration.email" :class="{empty:emptyRegistrationCheck && registration.email === ''}">
+          <input type="tel" placeholder="ТЕЛЕФОН" v-model="registration.phone" :class="{empty:emptyRegistrationCheck && registration.phone === ''}">
+          <input type="password" placeholder="ПАРОЛЬ" v-model="registration.password" :class="{empty:emptyRegistrationCheck && registration.password === ''}">
+          <input type="password" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ" v-model="registration.passwordConfirm" :class="{empty:emptyRegistrationCheck && registration.passwordConfirm === ''}">
           <div class="registration__fallow">
             <h1>ПОДПИШИТЕСЬ НА РАССЫЛКУ И БУДЬТЕ В КУРСЕ НОВИНОК, АКЦИЙ И ТРЕНДОВ</h1>
             <div class="__fallow__items">
-              <CustomFolofingChackbox :page="'registration'"></CustomFolofingChackbox>
+              <CustomFollowingCheckbox :page="'registration'" />
             </div>
             <div>
-              <div class="__registration-button">
+              <div class="__registration-button" @click="sendRegistration">
                 РЕГИСТРАЦИЯ
               </div>
             </div>
           </div>
         </div>
-        <div class="__auf" v-if="$store.state.CabinetIn == 'auf'">
+        <div class="__auf" v-if="$store.state.CabinetIn === 'auf'">
           <input type="text" placeholder="EMAIL">
           <input type="text" placeholder="ПАРОЛЬ">
           <div class="__forget-auf-button">
@@ -40,26 +40,67 @@
           </div>
         </div>
       </div>
-      <div class="forget-password__container" v-if="$store.state.ForgetPassword == true">
-        <ForgetPassword></ForgetPassword>
+      <div v-if="$store.state.ForgetPassword" class="forget-password__container">
+        <ForgetPassword />
       </div>
     </div>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CustomFolofingChackbox from "@/components/CustomFallowCheckbox";
+import CustomFollowingCheckbox from "@/components/CustomFallowCheckbox";
 import ForgetPassword from "@/components/RecoveryPassword";
 
 export default {
   name: 'Registration',
-  components: {ForgetPassword, CustomFolofingChackbox, Footer, Header},
+  components: {ForgetPassword, CustomFollowingCheckbox, Footer, Header},
+  data: () => ({
+    registration: {
+      name: '',
+      surname: '',
+      email: '',
+      phone: '',
+      password: '',
+      passwordConfirm: ''
+    },
+    auth: {},
+    emptyRegistrationCheck: false
+  }),
+  computed: {
+    followFlag() {
+      if (this.$store.state.follow === '') {
+        return false;
+      }
+      else {
+        return true;
+      }
+    },
+    agreeFlag() {
+      return this.$store.state.agree;
+    },
+    passwordConfirmFlag() {
+      return this.registration.password === this.registration.passwordConfirm;
+    }
+  },
   mounted() {
     this.$store.commit('SET_CABINETIN','registration');
     this.$store.commit('SET_FORGETPASSWORD', false);
+  },
+  methods: {
+    sendRegistration() {
+      if (this.registration.name === '' || this.registration.surname === '' || this.registration.email === '' || this.registration.phone === '' || this.registration.password === '' || this.registration.passwordConfirm === '') {
+        this.emptyRegistrationCheck = true;
+      }
+      else {
+        this.emptyRegistrationCheck = false;
+      }
+      if (!this.emptyRegistrationCheck && this.followFlag && this.agreeFlag && this.passwordConfirmFlag) {
+        this.$store.dispatch('Registration', this.registration);
+      }
+    }
   }
 }
 </script>
@@ -164,6 +205,10 @@ input {
   padding: rem(11) rem(42);
   background-color: #3ADD9D;
   color: white;
+}
+
+.empty {
+  border: 2px solid red;
 }
 
 @media (max-width: em(768, 16)) {

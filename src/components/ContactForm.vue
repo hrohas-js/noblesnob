@@ -7,22 +7,22 @@
         <p>MAIL TO : <a href="mailto='hi@noblesnob.com'">hi@noblesnob.com</a></p>
       </div>
       <div class="contact-form__following">
-        <H2>БУДЬ В КУРСЕ</H2>
+        <h2>БУДЬ В КУРСЕ</h2>
         <div class="__following__submit">
           <input type="email">
           <input type="submit" value="подписка">
         </div>
-        <CustomFolofingChackbox :page="'contactForm'"></CustomFolofingChackbox>
+        <CustomFollowingCheckbox :page="'contactForm'"></CustomFollowingCheckbox>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import CustomFolofingChackbox from "@/components/CustomFallowCheckbox";
+import CustomFollowingCheckbox from "@/components/CustomFallowCheckbox";
 export default {
   name: 'ContactForm',
-  components: {CustomFolofingChackbox}
+  components: {CustomFollowingCheckbox}
 }
 </script>
 

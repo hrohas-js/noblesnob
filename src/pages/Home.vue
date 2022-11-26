@@ -13,7 +13,7 @@
         </div>
         <div class="new-title">новинки</div>
         <div class="goods">
-          <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good"></GoodsItem>
+          <GoodsItem v-for="good in $store.state.new_products" :key="good.picture" :good="good"></GoodsItem>
         </div>
         <div class="contact-form">
           <contact-form></contact-form>
@@ -31,13 +31,12 @@ import Footer from "@/components/Footer";
 
 export default {
   name: 'Home',
-  components:
-      {
-        Footer,
-        ContactForm,
-        GoodsItem,
-        Header
-      }
+  components: {
+    Footer,
+    ContactForm,
+    GoodsItem,
+    Header
+  },
 }
 </script>
 
@@ -62,9 +61,11 @@ export default {
   border-bottom: 1.5px solid #252525;
   padding-bottom: rem(172);
 }
-.contact-form{
-  padding-top:rem(40);
+
+.contact-form {
+  padding-top: rem(40);
 }
+
 .new-title {
   margin-bottom: rem(33);
   font-size: rem(24);
@@ -82,7 +83,8 @@ export default {
     padding: 0;
   }
 }
-@media (max-width: em(724, 16)) and (min-width: em(220, 16)){
+
+@media (max-width: em(724, 16)) and (min-width: em(220, 16)) {
   .main__container {
     margin-left: calc(-0.3125rem + (-16 + 5) * ((100vw - 13.75rem) / (724 - 220)));
     margin-right: calc(-0.3125rem + (-16 + 5) * ((100vw - 13.75rem) / (724 - 220)));

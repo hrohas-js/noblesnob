@@ -4,6 +4,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  created() {
+    this.$store.commit('SET_AXIOS_INSTANCE');
+    this.$store.dispatch('FetchAuthToken');
+  }
+}
+</script>
+
 <style lang="scss">
 @font-face {
   font-family: 'Partner Condensed Bold';
@@ -70,7 +80,8 @@ h1, h2, h3, h4, h5 {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  main{
+
+  main {
     flex: 1 0 auto;
   }
 }
@@ -98,16 +109,19 @@ h1, h2, h3, h4, h5 {
     }
   }
 }
-.nomb{
+
+.nomb {
   margin-bottom: 0;
 }
+
 //кастомный чекбокс(крест)
-.custom__grin-box, .custom__cross{
+.custom__grin-box, .custom__cross {
   input {
     position: absolute;
     z-index: -1;
     opacity: 0;
   }
+
   input + label {
     display: inline-flex;
     align-items: center;
@@ -128,46 +142,57 @@ h1, h2, h3, h4, h5 {
     background-size: 50% 50%;
   }
 }
-.custom__grin-box{
+
+.custom__grin-box {
   input:checked + label::before {
-    background-color:#3ADD9D;
+    background-color: #3ADD9D;
     border-color: #3ADD9D;
   }
 }
-.custom__cross{
+
+.custom__cross {
   input + label::before {
     width: rem(13);
     height: rem(13);
   }
+
   input:checked + label::before {
-    background-image:url('https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/checkbox_rule/closeRule.svg');
+    background-image: url('https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/checkbox_rule/closeRule.svg');
     background-size: cover;
   }
 }
+
 //общие стили личного кабинета
-.profile{
+.profile {
   text-transform: uppercase;
-  input{
+
+  input {
     width: 100%;
     height: rem(40);
   }
-  h1,h2{
+
+  h1, h2 {
     font-family: 'Partner Condensed Bold';
-    font-size:rem(18) ;
-  }
-  p{
     font-size: rem(18);
   }
+
+  p {
+    font-size: rem(18);
+  }
+
   .profile__table {
     margin-top: rem(38);
   }
+
   .__item {
     margin-bottom: rem(26);
-    &:last-child{
+
+    &:last-child {
       margin-bottom: 0;
     }
   }
 }
+
 @media (max-width: em(1440, 16)) and (min-width: em(1024, 16)) {
   .container {
     padding: rem(16) calc(1rem + (35 - 16) * ((100vw - 64rem) / (1440 - 1024))) 0;
