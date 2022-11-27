@@ -4,27 +4,33 @@
     <div class="profile__table">
       <div class="__item">
         <p>ИМЯ</p>
-        <input type="text"></div>
+        <input type="text">
+      </div>
       <div class="__item">
         <p>ФАМИЛИЯ</p>
-        <input type="text"></div>
+        <input type="text">
+      </div>
       <div class="__item">
         <p>EMAIL</p>
-        <input type="text"></div>
+        <input type="email">
+      </div>
       <div class="__item">
         <p>ТЕЛЕФОН</p>
-        <input type="text"></div>
+        <input type="text">
+      </div>
     </div>
     <div class="profile__password">
       <h2>пароль от аккаунта</h2>
       <div class="profile__table">
         <div class="__item">
           <p>текущий пароль</p>
-          <input type="text"></div>
+          <input type="text">
+        </div>
         <div class="__item sub">
           <p>Новый</p>
           <p class="show-password">показать</p>
-          <input type="text"></div>
+          <input type="text">
+        </div>
       </div>
     </div>
     <div class="profile__button">
@@ -35,7 +41,25 @@
 
 <script>
 export default {
-  name: 'ProfileMain'
+  name: 'ProfileMain',
+  data: () => ({
+    profileInfo: {
+      name: '',
+      surname: '',
+      mail: '',
+      phone: ''
+    },
+    oldPassword: '',
+    newPassword: ''
+  }),
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  },
+  mounted() {
+    console.log(this.user)
+  }
 }
 </script>
 

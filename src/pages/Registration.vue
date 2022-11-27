@@ -1,20 +1,68 @@
 <template>
   <div class="registration container">
-    <Header></Header>
+    <Header />
     <div class="registration__container">
       <div v-if="!$store.state.ForgetPassword" class="registration__form">
         <div class="registration__choose-action">
-          <input type="text">
-          <input type="submit" value="СОЗДАТЬ АККАУНТ" @click="this.$store.commit('SET_CABINETIN','registration')" :class="{active:$store.state.CabinetIn === 'registration'}">
-          <input type="submit" value="Войти" @click="this.$store.commit('SET_CABINETIN','auf')" :class="{active:$store.state.CabinetIn === 'auf'}">
+          <input type="text" />
+          <input
+              type="submit"
+              value="СОЗДАТЬ АККАУНТ"
+              :class="{active:$store.state.CabinetIn === 'registration'}"
+              @click="changeForm('registration')"
+          />
+          <input
+              type="submit"
+              value="ВОЙТИ"
+              :class="{active:$store.state.CabinetIn === 'auf'}"
+              @click="changeForm('auf')"
+          />
         </div>
-        <div class="__form__main-info" v-if="$store.state.CabinetIn === 'registration'">
-          <input type="text" placeholder="ИМЯ" v-model="registration.name" :class="{empty:emptyRegistrationCheck && registration.name === ''}">
-          <input type="text" placeholder="ФАМИЛИЯ" v-model="registration.surname" :class="{empty:emptyRegistrationCheck && registration.surname === ''}">
-          <input type="email" placeholder="EMAIL" v-model="registration.email" :class="{empty:emptyRegistrationCheck && registration.email === ''}">
-          <input type="tel" placeholder="ТЕЛЕФОН" v-model="registration.phone" :class="{empty:emptyRegistrationCheck && registration.phone === ''}">
-          <input type="password" placeholder="ПАРОЛЬ" v-model="registration.password" :class="{empty:emptyRegistrationCheck && registration.password === ''}">
-          <input type="password" placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ" v-model="registration.passwordConfirm" :class="{empty:emptyRegistrationCheck && registration.passwordConfirm === ''}">
+        <form
+            v-if="$store.state.CabinetIn === 'registration'"
+            class="__form__main-info"
+        >
+          <input
+              type="text"
+              placeholder="ИМЯ"
+              v-model="registration.name"
+              :class="{empty:emptyRegistrationCheck && registration.name === ''}"
+              @input="registration.name = registration.name.replace(/[^ a-zа-яё]/ui,'')"
+          />
+          <input
+              type="text"
+              placeholder="ФАМИЛИЯ"
+              v-model="registration.surname"
+              :class="{empty:emptyRegistrationCheck && registration.surname === ''}"
+              @input="registration.surname = registration.surname.replace(/[^ a-zа-яё]/ui,'')"
+          />
+          <input
+              type="email"
+              placeholder="EMAIL"
+              v-model="registration.email"
+              :class="{empty:(emptyRegistrationCheck && registration.email === '') || !emailValidation}"
+              @blur="emailValidate(registration.email)"
+          />
+          <input
+              type="tel"
+              placeholder="ТЕЛЕФОН"
+              v-model="registration.phone"
+              :class="{empty:emptyRegistrationCheck && registration.phone === ''}"
+          />
+          <input
+              type="password"
+              autocomplete="on"
+              placeholder="ПАРОЛЬ"
+              v-model="registration.password"
+              :class="{empty:emptyRegistrationCheck && registration.password === ''}"
+          />
+          <input
+              type="password"
+              autocomplete="on"
+              placeholder="ПОДДТВЕРДИТЕ ПАРОЛЬ"
+              v-model="registration.passwordConfirm"
+              :class="{empty:emptyRegistrationCheck && registration.passwordConfirm === ''}"
+          />
           <div class="registration__fallow">
             <h1>ПОДПИШИТЕСЬ НА РАССЫЛКУ И БУДЬТЕ В КУРСЕ НОВИНОК, АКЦИЙ И ТРЕНДОВ</h1>
             <div class="__fallow__items">
@@ -26,19 +74,31 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="__auf" v-if="$store.state.CabinetIn === 'auf'">
-          <input type="text" placeholder="EMAIL">
-          <input type="text" placeholder="ПАРОЛЬ">
+        </form>
+        <form v-if="$store.state.CabinetIn === 'auf'" class="__auf">
+          <input
+              type="email"
+              placeholder="EMAIL"
+              v-model="auth.username"
+              :class="{empty:emptyAufCheck && auth.username === ''}"
+              @blur="emailValidate(auth.username)"
+          />
+          <input
+              type="password"
+              autocomplete="on"
+              placeholder="ПАРОЛЬ"
+              v-model="auth.password"
+              :class="{empty:emptyAufCheck && auth.password === ''}"
+          />
           <div class="__forget-auf-button">
             <p class="__forget" @click="this.$store.commit('SET_FORGETPASSWORD',true)">
               Забыли свой пароль ?
             </p>
-            <div class="__auf-button">
+            <div class="__auf-button" @click="sendAuf">
               ВХОД
             </div>
           </div>
-        </div>
+        </form>
       </div>
       <div v-if="$store.state.ForgetPassword" class="forget-password__container">
         <ForgetPassword />
@@ -66,17 +126,17 @@ export default {
       password: '',
       passwordConfirm: ''
     },
-    auth: {},
-    emptyRegistrationCheck: false
+    auth: {
+      username: '',
+      password: ''
+    },
+    emptyRegistrationCheck: false,
+    emailValidation: true,
+    emptyAufCheck: false
   }),
   computed: {
     followFlag() {
-      if (this.$store.state.follow === '') {
-        return false;
-      }
-      else {
-        return true;
-      }
+      return this.$store.state.follow !== '';
     },
     agreeFlag() {
       return this.$store.state.agree;
@@ -90,15 +150,28 @@ export default {
     this.$store.commit('SET_FORGETPASSWORD', false);
   },
   methods: {
+    changeForm(value) {
+      this.$store.commit('SET_CABINETIN',value);
+      this.emailValidation = true;
+    },
+    emailValidate(value) {
+      if (value !== '') {
+        this.emailValidation = !!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g);
+      }
+    },
     sendRegistration() {
-      if (this.registration.name === '' || this.registration.surname === '' || this.registration.email === '' || this.registration.phone === '' || this.registration.password === '' || this.registration.passwordConfirm === '') {
-        this.emptyRegistrationCheck = true;
-      }
-      else {
-        this.emptyRegistrationCheck = false;
-      }
-      if (!this.emptyRegistrationCheck && this.followFlag && this.agreeFlag && this.passwordConfirmFlag) {
+      this.emptyRegistrationCheck = this.registration.name === '' || this.registration.surname === '' || this.registration.email === '' || this.registration.phone === '' || this.registration.password === '' || this.registration.passwordConfirm === '';
+      if (!this.emptyRegistrationCheck && this.followFlag && this.agreeFlag && this.passwordConfirmFlag && this.emailValidation) {
         this.$store.dispatch('Registration', this.registration);
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    },
+    sendAuf() {
+      this.emptyAufCheck = this.auth.username === '' || this.auth.password === ''
+      if (!this.emptyAufCheck && this.emailValidation) {
+        this.$store.dispatch('Login', this.auth);
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        this.$router.push('/');
       }
     }
   }
@@ -114,10 +187,8 @@ export default {
 input {
   width: 100%;
   height: rem(60);
-  text-transform: uppercase;
   background-color: #fff;
   font-size: rem(19);
-
 }
 
 .registration__container {

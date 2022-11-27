@@ -186,7 +186,10 @@ export default createStore({
         axiosInstance: null,
         jwt: '',
         follow: '',
-        agree: false
+        agree: false,
+        statusText: '',
+        statusShow: false,
+        user: {}
     },
     mutations: {
         SET_CURRENT_CATEGORY(state, value) {
@@ -275,6 +278,23 @@ export default createStore({
         },
         SET_AGREE(state, item) {
             state.agree = item
+        },
+        SET_STATUS_TEXT(state, item) {
+            state.statusText = item
+        },
+        SET_STATUS_SHOW(state) {
+            state.statusShow = true;
+            setTimeout(() => {
+                state.statusShow = false;
+                state.statusText = ''
+            }, 3000);
+        },
+        SET_PROFILE_MENU(state, obj) {
+            state.headerNavRight[0].name = obj.name;
+            state.headerNavRight[0].path = obj.path;
+        },
+        SET_USER(state, item) {
+            state.user = item
         }
     },
     actions: {
@@ -301,7 +321,7 @@ export default createStore({
             commit('SET_ALL_CATEGORY', response.data);
         },
         async FetchNewGoods({state, commit}) {
-            if (state.jwt != '') {
+            if (state.jwt !== '') {
                 const response = await state.axiosInstance.get('wc/v3/products', {
                     headers: {
                         Authorization: `Bearer ${state.jwt}`,
@@ -314,17 +334,14 @@ export default createStore({
                 commit('SET_NEW_PRODUCTS', response.data);
             }
         },
-        async FetchAuthToken({state, commit, dispatch}) {
+        async FetchAuthToken({state, commit, dispatch}, profile) {
             if (sessionStorage.getItem('jwt') != null) {
                 commit('SET_JWT', sessionStorage.getItem('jwt'));
                 dispatch('FetchNewGoods');
                 dispatch('FetchAllCategory');
                 dispatch('FetchAllBrands');
             } else {
-                await state.axiosInstance.post('jwt-auth/v1/token', {
-                    username: 'noblesnobwp',
-                    password: 'Festachubko1717'
-                }).then((response) => {
+                await state.axiosInstance.post('jwt-auth/v1/token', profile).then((response) => {
                     sessionStorage.setItem('jwt', response.data.token);
                     commit('SET_JWT', response.data.token);
                     dispatch('FetchNewGoods');
@@ -335,12 +352,12 @@ export default createStore({
         },
         async FetchCatalog({state, commit}, post_info) {
             let category_id = 0;
-            if (post_info.sex == 'men') {
+            if (post_info.sex === 'men') {
                 category_id = 786;
             } else {
                 category_id = 794;
             }
-            if (post_info.id != 'all') {
+            if (post_info.id !== 'all') {
                 category_id = post_info.id;
             }
             const response = await state.axiosInstance.get('wc/v3/products', {
@@ -361,12 +378,12 @@ export default createStore({
         },
         async FetchPagination({state, commit}, post_info) {
             let category_id = 0;
-            if (post_info.sex == 'men') {
+            if (post_info.sex === 'men') {
                 category_id = 786;
             } else {
                 category_id = 794;
             }
-            if (post_info.id != 'all') {
+            if (post_info.id !== 'all') {
                 category_id = post_info.id;
             }
             const response = await state.axiosInstance.get(`wc/v3/products/categories/${category_id}`, {
@@ -407,14 +424,35 @@ export default createStore({
             })
             commit('SET_PRODUCTS_FROM_SAME_BRAND', response.data);
         },
-        async Login({state, commit}) {
-            const response = await state.axiosInstance.post('wp/v2/login', {
-                username: '',
-                password: ''
+        async getCurrentUser({state, commit, dispatch}, id) {
+            const response = await state.axiosInstance.get('wp/v2/users/' + id, {
+                headers: {
+                    Authorization: `Bearer ${state.jwt}`,
+                }
             })
-            console.log(response)
+            commit('SET_USER', response.data);
+            sessionStorage.setItem('user',JSON.stringify(response.data));
         },
-        async Registration({state}, registration) {
+        async Login({state, commit, dispatch}, auf) {
+            const response = await state.axiosInstance.post('wp/v2/login', {
+                username: auf.username,
+                password: auf.password
+            })
+            if (response.status === 200 && response.data !== 'error') {
+                dispatch('getCurrentUser', response.data.data.ID);
+                dispatch('FetchAuthToken', {
+                    username: auf.username,
+                    password: auf.password
+                });
+                commit('SET_STATUS_TEXT', 'Авторизация прошла успешно')
+                commit('SET_STATUS_SHOW')
+                commit('SET_PROFILE_MENU', {
+                    name: 'аккаунт',
+                    path: '/profile/main'
+                })
+            }
+        },
+        async Registration({state, commit}, registration) {
             const username = registration.email.split('@')[0];
             const response = await state.axiosInstance.post('wp/v2/users', {
                 username: username,
@@ -427,14 +465,19 @@ export default createStore({
                 meta: {
                     phone: registration.phone,
                     name: registration.name,
-                    surname: registration.surname
+                    surname: registration.surname,
+                    email: registration.email
                 }
             },{
                 headers: {
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
-            console.log(response)
+            if (response.status === 201 && response.statusText === 'Created') {
+                commit('SET_CABINETIN', 'auf');
+                commit('SET_STATUS_TEXT', 'Регистрация прошла успешно')
+                commit('SET_STATUS_SHOW')
+            }
         }
     },
     modules: {}

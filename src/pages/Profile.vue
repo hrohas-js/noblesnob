@@ -1,17 +1,20 @@
 <template>
   <div class="profile container">
-    <Header></Header>
+    <Header />
     <main>
-      <div :class="{__container__history:$route.params.name == 'historyOrders' ,profile__container:$route.params.name != 'historyOrders'}" class="mt">
-        <ProfileMenu></ProfileMenu>
-        <div class="components__container" :class="{history:$route.params.name == 'historyOrders'}">
-          <ProfileMain v-if="$route.params.name == 'main'"></ProfileMain>
-          <ProfileAddAddress v-if="$route.params.name == 'addAddress'"></ProfileAddAddress>
-          <ProfileHistory v-if="$route.params.name == 'historyOrders'"></ProfileHistory>
+      <div
+          class="mt"
+          :class="{__container__history:$route.params.name === 'historyOrders' ,profile__container:$route.params.name !== 'historyOrders'}"
+      >
+        <ProfileMenu />
+        <div class="components__container" :class="{history:$route.params.name === 'historyOrders'}">
+          <ProfileMain v-if="$route.params.name === 'main'" />
+          <ProfileAddAddress v-if="$route.params.name === 'addAddress'" />
+          <ProfileHistory v-if="$route.params.name === 'historyOrders'" />
         </div>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 

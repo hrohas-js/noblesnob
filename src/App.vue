@@ -2,14 +2,25 @@
   <div class="wrapper">
     <router-view/>
   </div>
+  <StatusBox v-if="statusShow"/>
 </template>
 
 <script>
+import StatusBox from "@/components/StatusBox";
 export default {
   name: 'App',
+  components: {StatusBox},
+  computed: {
+    statusShow() {
+      return this.$store.state.statusShow;
+    }
+  },
   created() {
     this.$store.commit('SET_AXIOS_INSTANCE');
-    this.$store.dispatch('FetchAuthToken');
+    this.$store.dispatch('FetchAuthToken', {
+      username: 'noblesnobwp',
+      password: 'Festachubko1717'
+    });
   }
 }
 </script>
