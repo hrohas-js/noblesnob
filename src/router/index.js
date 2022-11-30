@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/index'
+
 const Home = () => import("@/pages/Home");
 const Catalog = () => import("@/pages/Catalog");
 const Registration = () =>  import("@/pages/Registration");
@@ -8,6 +10,7 @@ const Basket = () => import("@/pages/Basket");
 const WishList = () => import("@/pages/WishList");
 const Ordering = () => import("@/pages/Ordering");
 const Profile = () => import("@/pages/Profile");
+
 const routes = [
   {
     path:'/',
@@ -58,7 +61,22 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior: () => {
+    window.scrollTo({top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Profile' && !store.getters['isUserExist']) {
+    next('/')
+  }
+  else {
+    next()
+  }
 })
 
 export default router

@@ -2,17 +2,17 @@
   <div class="wrapper">
     <router-view/>
   </div>
-  <StatusBox v-if="statusShow"/>
+  <StatusBox :statuses="statuses" />
 </template>
 
 <script>
 import StatusBox from "@/components/StatusBox";
 export default {
   name: 'App',
-  components: {StatusBox},
+  components: { StatusBox },
   computed: {
-    statusShow() {
-      return this.$store.state.statusShow;
+    statuses() {
+      return this.$store.state.statuses
     }
   },
   created() {

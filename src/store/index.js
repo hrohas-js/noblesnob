@@ -54,7 +54,7 @@ export default createStore({
             {
                 name: 'поиск',
                 path: '',
-                destination: ''
+                destination: 'search'
             }
         ],
         FooterNavLeft: [
@@ -187,9 +187,16 @@ export default createStore({
         jwt: '',
         follow: '',
         agree: false,
-        statusText: '',
-        statusShow: false,
-        user: {}
+        statuses: [],
+        user: sessionStorage.getItem('user_noblesnob') !== null ? JSON.parse(sessionStorage.getItem('user_noblesnob')) : {},
+        showSearch: false,
+        searchResult: [],
+        searchPreload: false
+    },
+    getters: {
+        isUserExist(state) {
+            return Object.keys(state.user).length > 0;
+        },
     },
     mutations: {
         SET_CURRENT_CATEGORY(state, value) {
@@ -236,18 +243,18 @@ export default createStore({
         },
         SET_CATEGORY(state, item) {
             let category_id = 0;
-            if (item == 'men') {
+            if (item === 'men') {
                 category_id = 786;
             } else {
                 category_id = 794;
             }
             state.parent_category = state.all_category.filter(elem => {
-                return elem.parent == category_id;
+                return elem.parent === category_id;
             }).reverse();
         },
         SET_SUB_CATEGORY(state, item) {
             state.sub_category = state.all_category.filter(elem => {
-                return elem.parent == item;
+                return elem.parent === item;
             })
         },
         CLEAR_SUB_CATEGORY(state) {
@@ -279,22 +286,29 @@ export default createStore({
         SET_AGREE(state, item) {
             state.agree = item
         },
-        SET_STATUS_TEXT(state, item) {
-            state.statusText = item
-        },
-        SET_STATUS_SHOW(state) {
-            state.statusShow = true;
-            setTimeout(() => {
-                state.statusShow = false;
-                state.statusText = ''
-            }, 3000);
-        },
         SET_PROFILE_MENU(state, obj) {
             state.headerNavRight[0].name = obj.name;
             state.headerNavRight[0].path = obj.path;
         },
         SET_USER(state, item) {
             state.user = item
+            console.log(state.user)
+        },
+        ADD_STATUS(state, item) {
+            state.statuses.push(item);
+            setTimeout(() => {
+                const index = state.statuses.indexOf(item);
+                state.statuses.splice(index, 1);
+            }, 3000);
+        },
+        SET_SHOW_SEARCH(state) {
+            state.showSearch = !state.showSearch
+        },
+        SET_SEARCH_RESULT(state, item) {
+            state.searchResult = item
+        },
+        SET_SEARCH_PRELOAD(state, item) {
+            state.searchPreload = item
         }
     },
     actions: {
@@ -376,6 +390,22 @@ export default createStore({
             })
             commit('SET_CATALOG', response.data);
         },
+        async FetchSearch({state, commit}, search) {
+            commit('SET_SEARCH_PRELOAD', true);
+            const response = await state.axiosInstance.get('wc/v3/products', {
+                headers: {
+                    Authorization: `Bearer ${state.jwt}`,
+                },
+                params: {
+                    search: search
+                }
+            })
+            console.log(response)
+            if (response.status === 200 && response.statusText === 'OK') {
+                commit('SET_SEARCH_PRELOAD', false);
+                commit('SET_SEARCH_RESULT', response.data);
+            }
+        },
         async FetchPagination({state, commit}, post_info) {
             let category_id = 0;
             if (post_info.sex === 'men') {
@@ -431,7 +461,30 @@ export default createStore({
                 }
             })
             commit('SET_USER', response.data);
-            sessionStorage.setItem('user',JSON.stringify(response.data));
+            sessionStorage.setItem('user_noblesnob',JSON.stringify(response.data));
+        },
+        async updateUser({state, commit}, fields) {
+            const response = await state.axiosInstance.post('wp/v2/users/' + state.user.id, fields,{
+                headers: {
+                    Authorization: `Bearer ${state.jwt}`,
+                }
+            })
+            if (response.status === 200 && response.statusText === 'OK') {
+                commit('SET_USER', response.data);
+                sessionStorage.setItem('user_noblesnob',JSON.stringify(response.data));
+                commit('ADD_STATUS', 'Изменения сохранены')
+            }
+        },
+        async updateUserPassword({state, commit}, fields) {
+            const response = await state.axiosInstance.post('wp/v2/change-password', fields, {
+                headers: {
+                    Authorization: `Bearer ${state.jwt}`,
+                }
+            })
+            console.log(response)
+            if (JSON.parse(response.data).code === 200) {
+                commit('ADD_STATUS', 'Пароль успешно изменен')
+            }
         },
         async Login({state, commit, dispatch}, auf) {
             const response = await state.axiosInstance.post('wp/v2/login', {
@@ -444,8 +497,7 @@ export default createStore({
                     username: auf.username,
                     password: auf.password
                 });
-                commit('SET_STATUS_TEXT', 'Авторизация прошла успешно')
-                commit('SET_STATUS_SHOW')
+                commit('ADD_STATUS', 'Авторизация прошла успешно')
                 commit('SET_PROFILE_MENU', {
                     name: 'аккаунт',
                     path: '/profile/main'
@@ -475,8 +527,7 @@ export default createStore({
             })
             if (response.status === 201 && response.statusText === 'Created') {
                 commit('SET_CABINETIN', 'auf');
-                commit('SET_STATUS_TEXT', 'Регистрация прошла успешно')
-                commit('SET_STATUS_SHOW')
+                commit('ADD_STATUS', 'Регистрация прошла успешно')
             }
         }
     },

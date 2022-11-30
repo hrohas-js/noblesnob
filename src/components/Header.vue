@@ -8,7 +8,7 @@
       <HeaderNav :menuItems="$store.state.headerNavRight" :menuItemsMobile="'right'"></HeaderNav>
     </div>
     <div class="burger-mobile-container" v-if="$store.state.burgerShow">
-      <router-link v-for="item in $store.state.burger" :to="item.path" :key="item.name" :class="{bottom:item.name == 'избранное' || item.name == 'карьера'}" @click="$store.commit('SET_BURGER_SHOW')">{{ item.name }}</router-link>
+      <router-link v-for="item in $store.state.burger" :to="item.path" :key="item.name" :class="{bottom:item.name === 'избранное' || item.name === 'карьера'}" @click="$store.commit('SET_BURGER_SHOW')">{{ item.name }}</router-link>
     </div>
   </header>
 </template>

@@ -1,35 +1,54 @@
 <template>
-  <nav v-if="$store.state.display_width >= 1024 || page =='footer'">
-    <router-link v-for="item in menuItems" :to="item.path" :key="item.name" @click="menuAction(item.destination)" :class="{'active':$route.path == item.path}">
+  <nav v-if="$store.state.display_width >= 1024 || page === 'footer'">
+    <router-link
+        v-for="item in menuItems" :to="item.path"
+        :key="item.name"
+        :class="{'active':$route.path === item.path || (item.name === 'поиск' && isVisibleSearch)}"
+        @click="menuAction(item.destination)"
+    >
       {{ item.name }}
     </router-link>
+    <Search v-if="isVisibleSearch && menuItemsMobile === 'right'" />
   </nav>
   <nav v-else>
-    <div class="header-nav__container" v-if="menuItemsMobile == 'left'">
-      <div class="header-nav__item header-nav__burger-menu" @click="$store.commit('SET_BURGER_SHOW')"><img
-          src="@/assets/svg/burger-menu.svg" alt="menu"></div>
-      <div class="header-nav__item header-nav__search"><img src="@/assets/svg/search.svg" alt="search"></div>
+    <div v-if="menuItemsMobile === 'left'" class="header-nav__container">
+      <div class="header-nav__item header-nav__burger-menu" @click="$store.commit('SET_BURGER_SHOW')">
+        <img src="@/assets/svg/burger-menu.svg" alt="menu">
+      </div>
+      <div class="header-nav__item header-nav__search" @click="toggleSearch">
+        <img src="@/assets/svg/search.svg" alt="search">
+      </div>
     </div>
-    <div class="header-nav__container" v-if="menuItemsMobile == 'right'">
-      <div class="header-nav__item header-nav__burger-menu"><img src="@/assets/svg/cabinet.svg" alt="cabinet"
-                                                                 @click="this.$router.push('/registration')"></div>
-      <div class="header-nav__item header-nav__search"><img src="@/assets/svg/basket.svg" alt="basket"
-                                                            @click="this.$router.push('/basket')"></div>
+    <div v-if="menuItemsMobile === 'right'" class="header-nav__container">
+      <div class="header-nav__item header-nav__burger-menu">
+        <img src="@/assets/svg/cabinet.svg" alt="cabinet" @click="this.$router.push('/registration')">
+      </div>
+      <div class="header-nav__item header-nav__search">
+        <img src="@/assets/svg/basket.svg" alt="basket" @click="this.$router.push('/basket')">
+      </div>
     </div>
+    <Search v-if="isVisibleSearch && menuItemsMobile === 'right'" />
   </nav>
 </template>
 
 <script>
+import Search from "@/components/Search";
 export default {
   name: 'HeaderNav',
+  components: {Search},
   props: ['menuItems', 'menuItemsMobile', 'page'],
+  computed: {
+    isVisibleSearch() {
+      return this.$store.state.showSearch
+    }
+  },
   methods: {
     menuAction(destination) {
-      if (destination == 'enter') {
+      if (destination === 'enter') {
         this.$store.commit('SET_CABINETIN', 'registration');
         this.$store.commit('SET_FORGETPASSWORD', false);
       }
-      if (destination == 'catalog') {
+      if (destination === 'catalog') {
         this.$store.dispatch('FetchCatalog', {
             sex: this.$route.params.sex,
             id: 'all',
@@ -40,6 +59,12 @@ export default {
             id:'all'
         })
       }
+      if (destination === 'search') {
+        this.$store.commit('SET_SHOW_SEARCH')
+      }
+    },
+    toggleSearch() {
+      this.$store.commit('SET_SHOW_SEARCH')
     }
   }
 }
@@ -73,6 +98,7 @@ nav, .header-nav__container {
 }
 
 nav {
+  position: relative;
   &:first-child {
     .header-nav__item {
       margin-left: rem(27.5);

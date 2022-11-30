@@ -4,36 +4,46 @@
     <div class="profile__table">
       <div class="__item">
         <p>ИМЯ</p>
-        <input type="text">
+        <input
+            type="text"
+            v-model="profileInfo.name"
+            @input="profileInfo.name = profileInfo.name.replace(/[^ a-zа-яё]/ui,'')"
+        />
       </div>
       <div class="__item">
         <p>ФАМИЛИЯ</p>
-        <input type="text">
+        <input
+            type="text"
+            v-model="profileInfo.surname"
+            @input="profileInfo.surname = profileInfo.surname.replace(/[^ a-zа-яё]/ui,'')"
+        />
       </div>
       <div class="__item">
         <p>EMAIL</p>
-        <input type="email">
+        <input type="email" v-model="profileInfo.email">
       </div>
       <div class="__item">
         <p>ТЕЛЕФОН</p>
-        <input type="text">
+        <input type="tel" v-model="profileInfo.phone">
       </div>
     </div>
-    <div class="profile__password">
+    <form class="profile__password">
       <h2>пароль от аккаунта</h2>
       <div class="profile__table">
         <div class="__item">
           <p>текущий пароль</p>
-          <input type="text">
+          <input type="password" v-model="oldPassword">
         </div>
         <div class="__item sub">
           <p>Новый</p>
-          <p class="show-password">показать</p>
-          <input type="text">
+          <p class="show-password" @click="isShowedPassword">
+            {{ showPasswordText }}
+          </p>
+          <input :type="showPasswordType" v-model="newPassword">
         </div>
       </div>
-    </div>
-    <div class="profile__button">
+    </form>
+    <div class="profile__button" @click="update">
       сохранить изменения
     </div>
   </div>
@@ -46,11 +56,14 @@ export default {
     profileInfo: {
       name: '',
       surname: '',
-      mail: '',
+      email: '',
       phone: ''
     },
     oldPassword: '',
-    newPassword: ''
+    newPassword: '',
+    showPassword: false,
+    showPasswordText: 'показать',
+    showPasswordType: 'password'
   }),
   computed: {
     user() {
@@ -58,12 +71,47 @@ export default {
     }
   },
   mounted() {
-    console.log(this.user)
+    this.profileInfo.name = this.user.meta.name[0];
+    this.profileInfo.surname = this.user.meta.surname[0];
+    this.profileInfo.email = this.user.meta.email[0];
+    this.profileInfo.phone = this.user.meta.phone[0];
+  },
+  methods: {
+    update() {
+      this.$store.dispatch('updateUser', this.profileInfo)
+      if (this.oldPassword !== '' && this.newPassword !== '') {
+        this.$store.dispatch('updateUserPassword', {
+          id: this.user.id,
+          password: this.oldPassword,
+          new_password: this.newPassword
+        })
+        this.oldPassword = ''
+        this.newPassword = ''
+      }
+      window.scrollTo({top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    },
+    isShowedPassword() {
+      this.showPassword = !this.showPassword;
+      if (this.showPassword) {
+        this.showPasswordText = 'скрыть';
+        this.showPasswordType = 'text';
+      } else {
+        this.showPasswordText = 'показать';
+        this.showPasswordType = 'password';
+      }
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+input {
+  padding: 0 rem(20);
+}
+
 .profile__main {
   margin-bottom: rem(200);
 }
@@ -93,5 +141,10 @@ export default {
     font-size: rem(14);
     cursor: pointer;
   }
+}
+
+.show-password {
+  cursor: pointer;
+  user-select: none;
 }
 </style>
