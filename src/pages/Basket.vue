@@ -5,45 +5,54 @@
       <div class="basket__container">
         <div class="__item">
           <h1>Корзина</h1>
-          <div class="__basket-table">
-            <div class="__row"></div>
-            <div class="__row">
+          <div v-if="cart.length > 0" class="__basket-table">
+            <div v-for="item in cart" :key="item.product_id" class="__row">
               <div class="__coll __coll__picture">
                 <img src="@/assets/temp/tempJpg.jpg" alt="some photo">
               </div>
               <div class="__coll">
                 <ul>
                   <li>
-                    <p>GSDC</p>
-                    <p>ТОЛСТОВКА</p>
+                    <p>
+                      {{ item.brand }}
+                    </p>
+                    <p>
+                      {{ item.name }}
+                    </p>
                   </li>
                   <li class="__coll__size">
-                    <p>размер:M</p>
-                    <p style="cursor: pointer">изменить</p>
+                    <p>
+                      размер:{{ item.current_size }}
+                    </p>
+                    <p style="cursor: pointer" @click="goToProduct(item.product_id)">
+                      изменить
+                    </p>
                   </li>
                   <li>
-                    <p>TJ21M020001-13</p>
+                    <p>
+                      {{ item.sku }}
+                    </p>
                   </li>
                   <li class="__coll__count">
                     <p>КОЛЛИЧЕСТВО:</p>
                     <div class="__count__item">
-                      1
-                      <input type="submit" value="+">
-                      <input type="submit" value="-">
+                      {{ item.quantity }}
+                      <input type="submit" value="+" @click="plusQuantity(item.product_id)">
+                      <input type="submit" value="-" @click="minusQuantity(item.quantity, item.product_id)">
                     </div>
-                    <p class="little-count">1 экземпляр!</p>
+                    <!--<p class="little-count">1 экземпляр!</p>-->
                   </li>
-                  <li class="__coll__go-wishlist">
+                  <li class="__coll__go-wishlist" @click="addToWishlist(item)">
                     <p>переместить в избранное</p>
                   </li>
                 </ul>
               </div>
               <div class="__coll close-mobile">
-                <p>₽ 16.000 RUB</p>
-                <img src="@/assets/svg/close__button.svg" alt="close button" v-if="$store.state.display_width <= 768">
+                <p>₽ {{ item.price * item.quantity }} RUB</p>
+                <img v-if="$store.state.display_width <= 768" src="@/assets/svg/close__button.svg" alt="close button" @click="deleteFromCart(item.product_id)">
               </div>
-              <div class="__coll dell-item" v-if="$store.state.display_width > 768">
-                <img src="@/assets/svg/close__button.svg" alt="close button">
+              <div v-if="$store.state.display_width > 768" class="__coll dell-item">
+                <img src="@/assets/svg/close__button.svg" alt="close button" @click="deleteFromCart(item.product_id)">
               </div>
             </div>
             <div class="__row">
@@ -61,18 +70,21 @@
               <div class="__coll">
                 <ul>
                   <li>
-                    <p>₽ 16.000 RUB</p>
+                    <p>₽ {{ total }} RUB</p>
                     <p>Рассчитывается при оформлении заказа</p>
                   </li>
                   <li>
-                    <p>₽ 16.000 RUB</p>
+                    <p>₽ {{ total }} RUB</p>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
+          <div v-if="cart.length === 0" class="cart-empty">
+            корзина пуста
+          </div>
         </div>
-        <div class="__item">
+        <div v-if="cart.length > 0" class="__item">
           <div class="__action-order__description">
             <h2>ОФОРМЛЕНИЕ ЗАКАЗА</h2>
             <p>введите адрес электронной почты, чтобы войти в систему либо продолжайте покупки без авторизации</p>
@@ -96,7 +108,48 @@ import Footer from "@/components/Footer";
 
 export default {
   name: 'Basket',
-  components: {Footer, Header}
+  components: {Footer, Header},
+  computed: {
+    cart() {
+      console.log(this.$store.state.cart)
+      return this.$store.state.cart
+    },
+    total() {
+      return this.$store.getters['cartTotal']
+    },
+    length() {
+      return this.$store.getters['cartLength']
+    }
+  },
+  methods: {
+    deleteFromCart(id) {
+      this.$store.dispatch('deleteFromCart', id)
+    },
+    plusQuantity(id) {
+      this.$store.dispatch('setPlusQuantity', id)
+    },
+    minusQuantity(quantity, id) {
+      if (quantity > 1) {
+        this.$store.dispatch('setMinusQuantity', id)
+      }
+    },
+    addToWishlist(item) {
+      this.$store.dispatch('addToWishList', {
+        id: item.product_id,
+        name: item.name,
+        price: parseInt(item.price),
+        brand: item.brand
+      })
+    },
+    goToProduct(id) {
+      this.$router.push({
+        name: 'Product',
+        params: {
+          id: id
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -180,6 +233,12 @@ export default {
   }
 }
 
+.cart-empty {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(24);
+}
+
 .dell-item {
   justify-self: end;
   cursor: pointer;
@@ -203,7 +262,7 @@ export default {
 
 .__action-order__description {
   h2 {
-    font-family: "Partner Condensed Bold";
+    font-family: "Partner Condensed Bold", sans-serif;
     font-size: rem(18);
   }
 

@@ -104,12 +104,12 @@ export default createStore({
         burger: [
             {
                 name: 'для него',
-                path: '/catalog',
+                path: '/catalog/men/all/null/all-brand/1',
                 route: 'men'
             },
             {
                 name: 'для нее',
-                path: '',
+                path: '/catalog/woman/all/null/all-brand/1',
                 route: 'woman'
             },
             {
@@ -159,10 +159,6 @@ export default createStore({
             {
                 name: 'карьера',
                 path: '/about/vacancy'
-            },
-            {
-                name: 'выбрать язык',
-                path: ''
             }
         ],
         display_width: 0,
@@ -191,12 +187,29 @@ export default createStore({
         user: sessionStorage.getItem('user_noblesnob') !== null ? JSON.parse(sessionStorage.getItem('user_noblesnob')) : {},
         showSearch: false,
         searchResult: [],
-        searchPreload: false
+        searchPreload: false,
+
+        cart: [],
+        minCost: 1000,
+        freeDeliveryCostCart: 3000,
+
+        variations: [],
+
+        wishlist: []
     },
     getters: {
         isUserExist(state) {
             return Object.keys(state.user).length > 0;
         },
+
+        cartLength: state => {
+            return state.cart.length
+        },
+        cartTotal: state => {
+            return state.cart.reduce((sum, cur) => {
+                return sum + cur.price * cur.quantity
+            }, 0)
+        }
     },
     mutations: {
         SET_CURRENT_CATEGORY(state, value) {
@@ -309,6 +322,58 @@ export default createStore({
         },
         SET_SEARCH_PRELOAD(state, item) {
             state.searchPreload = item
+        },
+
+        SET_CART(state, cart) {
+            state.cart = cart
+        },
+        ADD_TO_CART(state, item) {
+            state.cart.push(item)
+        },
+        DELETE_FROM_CART(state, id) {
+            state.cart = state.cart.filter(elem => {
+                return elem.product_id !== id
+            })
+        },
+        SET_PLUS_QUANTITY(state, id) {
+            state.cart.forEach(elem => {
+                if (elem.product_id === id) {
+                    elem.quantity++
+                }
+            })
+        },
+        SET_MINUS_QUANTITY(state, id) {
+            state.cart.forEach(elem => {
+                if (elem.product_id === id) {
+                    elem.quantity--
+                }
+            })
+        },
+
+        SET_VARIATIONS(state, variations) {
+            state.variations = []
+            variations.forEach(elem => {
+                const id = elem.id
+                const name = elem.attributes[elem.attributes.length - 1].option
+                const price = parseInt(elem.price)
+                state.variations.push({
+                    id: id,
+                    name: name,
+                    price: price
+                })
+            })
+        },
+
+        SET_WISHLIST(state, cart) {
+            state.wishlist = cart
+        },
+        ADD_TO_WISHLIST(state, item) {
+            state.wishlist.push(item)
+        },
+        DELETE_FROM_WISHLIST(state, id) {
+            state.wishlist = state.wishlist.filter(elem => {
+                return elem.id !== id
+            })
         }
     },
     actions: {
@@ -423,6 +488,15 @@ export default createStore({
             });
             commit('SET_PAGINATION', Math.ceil(response.data.count / 12));
         },
+        async FetchVariations({state, commit}, id){
+            const response = await state.axiosInstance.get(`wc/v3/products/${id}/variations`, {
+                headers: {
+                    Authorization: `Bearer ${state.jwt}`,
+                }
+            })
+            console.log(response.data)
+            commit('SET_VARIATIONS', response.data);
+        },
         async FetchProduct({state, commit, dispatch}, url) {
             await state.axiosInstance.get(`wc/v3/products/${url}`, {
                 headers: {
@@ -434,10 +508,11 @@ export default createStore({
                 const brand_name = response.data.attributes[3].options[0];
                 let category_id = 0
                 response.data.categories.forEach(item =>{
-                    if(item == brand_name){
+                    if(item === brand_name){
                         category_id = item;
                     }
                 })
+                dispatch('FetchVariations', response.data.id)
                 dispatch('FetchProductsFromSameBrand',category_id);
             });
 
@@ -469,6 +544,7 @@ export default createStore({
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
+            console.log(response)
             if (response.status === 200 && response.statusText === 'OK') {
                 commit('SET_USER', response.data);
                 sessionStorage.setItem('user_noblesnob',JSON.stringify(response.data));
@@ -529,7 +605,85 @@ export default createStore({
                 commit('SET_CABINETIN', 'auf');
                 commit('ADD_STATUS', 'Регистрация прошла успешно')
             }
+        },
+
+        setCart({state, commit}) {
+            if (Object.keys(state.user).length > 0 && state.user.meta.cart.length > 0) {
+                commit('SET_CART', state.user.meta.cart)
+            }
+            else if (sessionStorage.getItem('cart') !== null) {
+                commit('SET_CART', JSON.parse(sessionStorage.getItem('cart')))
+            }
+        },
+        updateCart({state, dispatch}) {
+            if (Object.keys(state.user).length > 0) {
+                dispatch('updateUser', {
+                    meta: {
+                        cart: state.cart
+                    }
+                })
+            }
+            else {
+                sessionStorage.setItem('cart', JSON.stringify(state.cart))
+            }
+        },
+        addToCart({commit, dispatch}, item) {
+            commit('ADD_TO_CART', item)
+            dispatch('updateCart')
+            commit('ADD_STATUS', 'Товар добавлен в корзину')
+        },
+        deleteFromCart({commit, dispatch}, id) {
+            commit('DELETE_FROM_CART', id)
+            dispatch('updateCart')
+            commit('ADD_STATUS', 'Товар удален из корзины')
+        },
+        setPlusQuantity({commit, dispatch}, id) {
+            commit('SET_PLUS_QUANTITY', id)
+            dispatch('updateCart')
+        },
+        setMinusQuantity({commit, dispatch}, id) {
+            commit('SET_MINUS_QUANTITY', id)
+            dispatch('updateCart')
+        },
+
+        setWishList({state, commit}) {
+            if (Object.keys(state.user).length > 0 && state.user.meta.wishlist.length > 0) {
+                commit('SET_WISHLIST', state.user.meta.wishlist)
+            }
+            else if (sessionStorage.getItem('wishlist') !== null) {
+                commit('SET_WISHLIST', JSON.parse(sessionStorage.getItem('wishlist')))
+            }
+        },
+        updateWishList({state, dispatch}) {
+            if (Object.keys(state.user).length > 0) {
+                dispatch('updateUser', {
+                    meta: {
+                        wishlist: state.wishlist
+                    }
+                })
+            }
+            else {
+                sessionStorage.setItem('wishlist', JSON.stringify(state.cart))
+            }
+        },
+        addToWishList({commit, dispatch}, item) {
+            commit('ADD_TO_WISHLIST', item)
+            dispatch('updateWishList')
+            commit('ADD_STATUS', 'Товар добавлен в избранное')
+        },
+        deleteFromWishList({commit, dispatch}, id) {
+            commit('DELETE_FROM_WISHLIST', id)
+            dispatch('updateWishList')
+            commit('ADD_STATUS', 'Товар удален из избранного')
+        },
+        sendOrder({commit}, order) {
+            commit('ADD_STATUS', 'Заказ в обработке')
+        },
+        async ResetPassword({state, commit}, email) {
+            const response = await state.axiosInstance.post('bdpwr/v1/reset-password', {
+                email: email
+            })
+            console.log(response)
         }
-    },
-    modules: {}
+    }
 })

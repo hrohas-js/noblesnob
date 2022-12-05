@@ -1,15 +1,15 @@
 <template>
   <div class="wishList container">
-    <Header></Header>
+    <Header />
     <main>
       <div class="wishList__container">
         <h1>ИЗБРАННОЕ</h1>
         <div class="wishList__goods">
-          <GoodsItem v-for="good in $store.state.goods" :key="good.picture" :good="good" :page="'wishlist'"></GoodsItem>
+          <GoodsItem v-for="good in wishlist" :key="good.id" :good="good" :page="'wishlist'"></GoodsItem>
         </div>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 
@@ -20,7 +20,12 @@ import GoodsItem from "@/components/GoodsItem";
 
 export default {
   name: 'WishList',
-  components: {Footer, Header, GoodsItem}
+  components: {Footer, Header, GoodsItem},
+  computed: {
+    wishlist() {
+      return this.$store.state.wishlist
+    }
+  }
 }
 </script>
 

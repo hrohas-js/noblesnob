@@ -1,19 +1,14 @@
 <template>
   <div class="forget-password">
     <h1>забыли пароль?</h1>
-    <p>введите адрес электронной почты или номер телефона, и мы отправим вам ссылку для сброса пароля или смс.</p>
-    <div v-if="!phone" class="__coose-recovery">
-    <input type="text" placeholder="EMAIL">
-    <p @click="phone = !phone">восстановить по телефону</p>
-    </div>
-    <div v-if="phone" class="__coose-recovery">
-      <input type="text" placeholder="ТЕЛЕФОН">
-      <p @click="phone = !phone">восстановить по EMAIL</p>
+    <p>введите адрес электронной почты и мы отправим вам ссылку для сброса пароля</p>
+    <div class="__choose-recovery">
+      <input type="text" placeholder="EMAIL" v-model="email">
     </div>
     <div class="forget-password__go-beck-form">
       <input type="text">
-      <input type="submit" value="ВОССТАНОСИТЬ">
-      <input type="submit" value="АВТОРИЗАЦИЯ" @click="this.goBack">
+      <input type="submit" value="ВОССТАНОСИТЬ" @click="reset">
+      <input type="submit" value="АВТОРИЗАЦИЯ" @click="goBack">
     </div>
   </div>
 </template>
@@ -22,9 +17,16 @@
 export default {
   name: 'ForgetPassword',
   data:()=>({
-    phone:false
+    email: ''
   }),
   methods:{
+    reset() {
+      if (this.email !== '') {
+        this.$store.dispatch('ResetPassword', this.email)
+      } else {
+        this.$store.commit('ADD_STATUS', 'Введите адрес электронной почты')
+      }
+    },
     goBack(){
       this.$store.commit('SET_CABINETIN','auf');
       this.$store.commit('SET_FORGETPASSWORD', false)
@@ -41,7 +43,7 @@ input {
 }
 
 h1 {
-  font-family: "Partner Condensed Bold";
+  font-family: "Partner Condensed Bold", sans-serif;
   font-size: rem(24);
   text-transform: uppercase;
   text-align: center;
@@ -67,7 +69,7 @@ input[placeholder='EMAIL'], input[placeholder='ТЕЛЕФОН']{
     margin: rem(22) 0 rem(50);
   }
 }
-.__coose-recovery{
+.__choose-recovery{
   p:nth-child(2){
     margin: rem(30) 0 rem(67);
     text-decoration: underline;

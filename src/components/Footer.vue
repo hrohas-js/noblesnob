@@ -1,15 +1,34 @@
 <template>
   <footer>
     <div class="footer__container">
-      <header-nav :page="'footer'" :menuItems="$store.state.FooterNavLeft" v-if="$store.state.display_width > 768"></header-nav>
+      <header-nav
+          v-if="$store.state.display_width > 768"
+          :page="'footer'"
+          :menuItems="$store.state.FooterNavLeft"
+      />
       <div v-else class="region">страна/регион: россия</div>
       <div class="footer-ico">
-        <a href=""><img src="@/assets/png/social/telegrammIco.png" alt="telegramm social"></a>
-        <a href=""><img src="@/assets/png/social/facebookIco.png" alt="facebook social"></a>
-        <a href=""><img src="@/assets/png/social/insagramIco.png" alt="instagram social"></a>
+        <a href="">
+          <img src="@/assets/png/social/telegrammIco.png" alt="telegramm social">
+        </a>
+        <a href="">
+          <img src="@/assets/png/social/facebookIco.png" alt="facebook social">
+        </a>
+        <a href="">
+          <img src="@/assets/png/social/insagramIco.png" alt="instagram social">
+        </a>
       </div>
-      <header-nav :page="'footer'" :menuItems="$store.state.FooterNavRight"></header-nav>
-      <router-link v-if="$store.state.display_width <= 768" to="/" class="region">2021 noblesnob.com</router-link>
+      <header-nav
+          :page="'footer'"
+          :menuItems="$store.state.FooterNavRight"
+      />
+      <router-link
+          v-if="$store.state.display_width <= 768"
+          to="/"
+          class="region"
+      >
+        2021 noblesnob.com
+      </router-link>
     </div>
   </footer>
 </template>

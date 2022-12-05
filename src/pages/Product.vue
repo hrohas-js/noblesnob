@@ -35,20 +35,21 @@
           <p v-else>{{ price }}&nbsp;₽</p>
           <div class="__choose-size__item" @click="this.showSubMenu = !this.showSubMenu">
             <p>{{chooseSize}}</p>
-            <img src="@/assets/svg/arrow_down.svg" alt="arrow down" :class="{show:this.showSubMenu}">
+            <img v-if="size.length > 0" src="@/assets/svg/arrow_down.svg" alt="arrow down" :class="{show:this.showSubMenu && size.length > 0}">
             <Transition name="slide-fade">
-              <div class="__choose-size__sub" v-if="showSubMenu">
-                <div class="__sub__item" v-for="item in size"  :key="item" @click="this.chooseSize = item">
-                  <p>{{ item }}</p>
+              <div class="__choose-size__sub" v-if="showSubMenu && size.length > 0">
+                <div class="__sub__item" v-for="item in size"  :key="item.id" @click="chooseValue(item)">
+                  <p>{{ item.name }}</p>
                 </div>
               </div>
             </Transition>
           </div>
+          <p v-if="size.length === 0">Остался один размер</p>
           <div class="__choose-size__buttons">
             <input type="text">
-            <input type="submit" class="__buttons__button" value="в корзину">
-            <input v-if="$store.state.display_width > 768" type="submit" class="__buttons__button" value="в избранное">
-            <button v-else type="submit" class="__buttons__button">
+            <input type="submit" class="__buttons__button" value="в корзину" @click="addToCart">
+            <input v-if="$store.state.display_width > 768" type="submit" class="__buttons__button" value="в избранное" @click="toggleWish">
+            <button v-else type="submit" class="__buttons__button" @click="toggleWish">
               <img src="@/assets/svg/heart.svg" alt="">
             </button>
           </div>
@@ -95,14 +96,15 @@ export default {
   data: () => ({
     showSubMenu: false,
     chooseSize: 'выбрать размер',
+    currentPrice: 0,
+    currentVariationID: 0,
+    inCart: false
   }),
   created() {
     this.$store.dispatch('FetchProduct', this.$route.params.id);
   },
-  methods: {
-    clickWord(size) {
-      this.chooseSize = size;
-    }
+  mounted() {
+    this.currentPrice = this.product.price
   },
   computed: {
     product() {
@@ -123,21 +125,21 @@ export default {
       }
     },
     prodCountry() {
-      if (this.brand != 'гружусь') {
+      if (this.brand !== 'гружусь') {
         return this.product.attributes[5].options[0];
       } else {
         return 'гружусь'
       }
     },
     props() {
-      if (this.brand != 'гружусь') {
+      if (this.brand !== 'гружусь') {
         return this.product.attributes[4].options[0];
       } else {
         return 'гружусь'
       }
     },
     color() {
-      if (this.brand != 'гружусь') {
+      if (this.brand !== 'гружусь') {
         return this.product.attributes[0].options[0];
       } else {
         return 'гружусь'
@@ -165,10 +167,75 @@ export default {
       }
     },
     size(){
-      if (this.brand != 'гружусь') {
-        return this.product.attributes[1].options;
+      if (this.brand !== 'гружусь') {
+        return this.$store.state.variations;
       } else {
         return 'гружусь'
+      }
+    },
+    inWish() {
+      let flag = false
+      this.$store.state.wishlist.forEach(elem => {
+        if (elem.id === this.product.id) {
+          flag = true
+        }
+      })
+      return flag
+    }
+  },
+  watch: {
+    size: function(newValue) {
+      if (typeof newValue === 'object' && newValue.length === 0) {
+        this.chooseSize = this.product.attributes[1].options[0]
+      } else if (typeof newValue === 'object' && newValue.length > 0) {
+        this.chooseSize = 'выберете размер'
+      }
+    }
+  },
+  methods: {
+    chooseValue(item) {
+      this.currentVariationID = item.id
+      this.chooseSize = item.name
+      this.currentPrice = item.price
+    },
+    addToCart() {
+      if (!this.inCart) {
+        if (this.size.length > 0) {
+          this.$store.dispatch('addToCart', {
+            product_id: this.product.id,
+            variation_id: this.currentVariationID,
+            quantity: 1,
+            name: this.product.name,
+            price: parseInt(this.currentPrice),
+            brand: this.brand,
+            current_size: this.chooseSize,
+            sku: this.article
+          })
+        } else {
+          this.$store.dispatch('addToCart', {
+            product_id: this.product.id,
+            variation_id: this.product.id + 1,
+            quantity: 1,
+            name: this.product.name,
+            price: parseInt(this.currentPrice),
+            brand: this.brand,
+            current_size: this.chooseSize,
+            sku: this.article
+          })
+        }
+        this.inCart = true
+      }
+    },
+    toggleWish() {
+      if (!this.inWish) {
+        this.$store.dispatch('addToWishList', {
+          id: this.product.id,
+          name: this.product.name,
+          price: parseInt(this.product.price),
+          brand: this.brand
+        })
+      } else {
+        this.$store.dispatch('deleteFromWishList', this.product.id)
       }
     }
   }

@@ -1,7 +1,16 @@
 <template>
   <div class="pagination">
-    <PaginationItem v-for="item in $store.state.pagination" :key="item" :count="item"></PaginationItem>
-    <div class="pagination__item" v-if="$store.state.pagination.length >= 7">ДАЛЕЕ</div>
+    <PaginationItem
+        v-for="item in $store.state.pagination"
+        :key="item"
+        :count="item"
+    />
+    <div
+        v-if="$store.state.pagination.length >= 7"
+        class="pagination__item"
+    >
+      ДАЛЕЕ
+    </div>
   </div>
 </template>
 

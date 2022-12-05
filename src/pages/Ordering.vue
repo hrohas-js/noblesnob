@@ -9,11 +9,35 @@
           <div class="__address-delivery__item address">
             <div v-if="$store.state.display_width > 768">
               <div class="__item">
-                <input type="text" placeholder="ИМЯ*" v-model="name">
-                <input type="text" placeholder="CТРАНА/РЕСПУБЛИКА" v-model="country">
-                <input type="text" placeholder="ГОРОД*" v-model="city">
-                <input type="text" placeholder="ИНДЕКС/ZIP" v-model="index">
-                <input type="text" placeholder="EMAIL">
+                <input
+                    type="text"
+                    placeholder="ИМЯ"
+                    v-model="address.first_name"
+                    @input="address.first_name = address.first_name.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="CТРАНА/РЕСПУБЛИКА"
+                    v-model="address.country"
+                    @input="address.country = address.country.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="ГОРОД"
+                    v-model="address.city"
+                    @input="address.city = address.city.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="ИНДЕКС/ZIP"
+                    v-model="address.postcode"
+                />
+                <input
+                    type="email"
+                    placeholder="EMAIL"
+                    v-model="address.email"
+                    @blur="emailValidate(address.email)"
+                />
                 <div class="__sub-item">
                   <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
                   <input type="text" value="">
@@ -24,22 +48,84 @@
                 </div>
               </div>
               <div class="__item">
-                <input type="text" placeholder="ФАМИЛИЯ*" v-model="surname">
-                <input type="text" placeholder="РЕГИОН/ОБЛАСТЬ*">
-                <input type="text" placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА" v-model="address">
-                <input type="text" placeholder="ТЕЛЕФОН">
+                <input
+                    type="text"
+                    placeholder="ФАМИЛИЯ"
+                    v-model="address.last_name"
+                    @input="address.last_name = address.last_name.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="РЕГИОН/ОБЛАСТЬ"
+                    v-model="address.state"
+                    @input="address.state = address.state.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА"
+                    v-model="address.address_1"
+                    @input="address.address_1 = address.address_1.replace(/[^ a-zа-яё]/ui,'')"
+                />
+                <input
+                    type="text"
+                    placeholder="ТЕЛЕФОН"
+                    v-model="address.phone"
+                />
               </div>
             </div>
             <div v-else>
-              <input type="text" placeholder="ИМЯ*" v-model="name">
-              <input type="text" placeholder="ФАМИЛИЯ*" v-model="surname">
-              <input type="text" placeholder="EMAIL">
-              <input type="text" placeholder="ТЕЛЕФОН">
-              <input type="text" placeholder="CТРАНА/РЕСПУБЛИКА" v-model="country">
-              <input type="text" placeholder="РЕГИОН/ОБЛАСТЬ*">
-              <input type="text" placeholder="ГОРОД*" v-model="city">
-              <input type="text" placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА" v-model="address">
-              <input type="text" placeholder="ИНДЕКС/ZIP" v-model="index">
+              <input
+                  type="text"
+                  placeholder="ИМЯ"
+                  v-model="address.first_name"
+                  @input="address.first_name = address.first_name.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="ФАМИЛИЯ"
+                  v-model="address.last_name"
+                  @input="address.last_name = address.last_name.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="EMAIL"
+                  v-model="address.email"
+                  @blur="emailValidate(address.email)"
+              />
+              <input
+                  type="text"
+                  placeholder="ТЕЛЕФОН"
+                  v-model="address.phone"
+              />
+              <input
+                  type="text"
+                  placeholder="CТРАНА/РЕСПУБЛИКА"
+                  v-model="address.country"
+                  @input="address.country = address.country.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="РЕГИОН/ОБЛАСТЬ"
+                  v-model="address.state"
+                  @input="address.state = address.state.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="ГОРОД"
+                  v-model="address.city"
+                  @input="address.city = address.city.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="УЛИЦА,ДОМ,КОРПУС,КВАРТИРА"
+                  v-model="address.address_1"
+                  @input="address.address_1 = address.address_1.replace(/[^ a-zа-яё]/ui,'')"
+              />
+              <input
+                  type="text"
+                  placeholder="ИНДЕКС/ZIP"
+                  v-model="address.postcode"
+              />
               <div class="__sub-item">
                 <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
                 <input type="text" value="">
@@ -58,11 +144,11 @@
             <div class="__address-delivery__item">
               <div class="__row">
                 <div class="__coll custom__grin-box">
-                  <input type="radio" name="delivery" id="inMoscow">
-                  <label for="inMoscow">ДОСТАВКА КУРЬЕРОМ ПО МОСКВЕ</label>
+                  <input type="radio" name="delivery" id="sdek">
+                  <label for="sdek">СДЭК</label>
                 </div>
                 <div class="__coll">
-                  <p>₽ 600</p>
+                  <p>расчитывается</p>
                 </div>
               </div>
               <div class="__row">
@@ -74,87 +160,79 @@
                   <p>₽ 0</p>
                 </div>
               </div>
-              <div class="__row">
-                <div class="__coll custom__grin-box">
-                  <input type="radio" name="delivery" id="DHL">
-                  <label for="DHL">DHL Express</label>
-                </div>
-                <div class="__coll">
-                  <p>₽ 2300</p>
-                </div>
-              </div>
-              <div class="__row">
-                <div class="__coll custom__grin-box">
-                  <input type="radio" name="delivery" id="yandex">
-                  <label for="yandex">YANDEX</label>
-                </div>
-                <div class="__coll">
-                  <p>₽ 2300</p>
-                </div>
-              </div>
             </div>
           </div>
           <div class="ordering__sub-address-delivery">
             <p>АДРЕС ДОСТАВКИ</p>
             <div class="__you-contact">
-              <p>{{ name }} {{ surname }}</p>
-              <p>{{ address }}</p>
-              <p>{{ city }} {{ index }} {{ country }}</p>
+              <p>{{ address.first_name }} {{ address.last_name }}</p>
+              <p>{{ address.address_1 }}</p>
+              <p>{{ address.city }} {{ address.postcode }} {{ address.country }}</p>
             </div>
           </div>
         </div>
         <div class="ordering__you-orders">
           <p>Ваш заказ</p>
           <div class="__you-orders__table">
-            <div class="__row">
+            <div v-for="item in cart" :key="item.product_id" class="__row">
               <div class="__coll">
                 <img src="@/assets/temp/tempJpg.jpg" alt="some photo">
               </div>
               <div class="__coll">
                 <ul>
                   <li>
-                    <p>GSDC</p>
-                    <p>ТОЛСТОВКА</p>
+                    <p>
+                      {{ item.brand }}
+                    </p>
+                    <p>
+                      {{ item.name }}
+                    </p>
                   </li>
                   <li class="change-size">
                     <p>
-                      РАЗМЕР:M
+                      РАЗМЕР: {{ item.current_size }}
                     </p>
-                    <p>
+                    <p style="cursor: pointer" @click="goToProduct(item.product_id)">
                       изменить размер
                     </p>
                   </li>
                   <li>
-                    <p>TJ21M020001-13</p>
+                    <p>
+                      {{ item.sku }}
+                    </p>
                   </li>
                 </ul>
               </div>
               <div class="__coll">
-                <p>₽ 16.000 </p>
+                <p>
+                  ₽ {{ item.price * item.quantity }}
+                </p>
               </div>
             </div>
           </div>
           <div class="__you-orders__description">
             <ul>
               <li>
-                <p>СТРАНА / РЕГИОН : РОССИЯ</p>
+                <p>
+                  СТРАНА / РЕГИОН : РОССИЯ
+                </p>
               </li>
               <li>
                 <p>СУММА ЗАКАЗА</p>
-                <p>₽ 16.000 </p>
+                <p>₽ {{ total }} </p>
               </li>
               <li>
                 <p>ДОСТАВКА</p>
-                <p>₽ 600 </p>
+                <p>₽ {{ deliveryCost }} </p>
               </li>
               <li>
                 <p>ИТОГО</p>
-                <p>₽ 16.600 </p>
+                <p>₽ {{ total + deliveryCost }} </p>
               </li>
             </ul>
           </div>
-          <div class="__you-orders__button">
-            <input type="submit">
+          <div class="__you-orders__button" @click="takeOrder">
+            <input type="submit" value="ОПЛАТИТЬ">
           </div>
         </div>
       </div>
@@ -171,13 +249,86 @@ export default {
   name: 'Ordering',
   components: {Footer, Header},
   data: () => ({
-    name: '',
-    surname: '',
-    city: '',
-    index: '',
-    address: '',
-    country: ''
-  })
+    address: {
+      first_name: '',
+      last_name: '',
+      city: '',
+      postcode: '',
+      address_1: '',
+      country: '',
+      email: '',
+      state: '',
+      phone: ''
+    },
+    deliveryCost: 0,
+    emailValidation: true
+  }),
+  computed: {
+    cart() {
+      return this.$store.state.cart
+    },
+    total() {
+      return this.$store.getters['cartTotal']
+    },
+    isEmptyAddress() {
+      let flag = false
+      Object.values(this.address).forEach(elem => {
+        if (elem === '') {
+          flag = true
+        }
+      })
+      return flag
+    }
+  },
+  mounted() {
+    if (sessionStorage.getItem('user_noblesnob') !== null && this.$store.state.user.meta.address[0].is_default) {
+      const obj = this.$store.state.user.meta.address[0]
+      this.address.first_name = obj.first_name
+      this.address.last_name = obj.last_name
+      this.address.city = obj.city
+      this.address.country = obj.country
+      this.address.state = obj.state
+      this.address.address_1 = obj.address_1
+      this.address.postcode = obj.postcode
+      this.address.phone = obj.phone
+      this.address.email = this.$store.state.user.meta.email[0]
+    }
+  },
+  methods: {
+    goToProduct(id) {
+      this.$router.push({
+        name: 'Product',
+        params: {
+          id: id
+        }
+      })
+    },
+    emailValidate(value) {
+      if (value !== '') {
+        this.emailValidation = !!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g);
+      }
+    },
+    takeOrder() {
+      if (!this.isEmptyAddress) {
+        let obj = {
+          payment_method: 'bacs',
+          payment_method_title: 'Direct Bank Transfer',
+          set_paid: true,
+          billing: this.address,
+          shipping: this.address,
+          line_items: this.cart,
+          shipping_lines: [
+            {
+              method_id: 'flat_rate',
+              method_title: 'Flat Rate',
+              total: '10.00'
+            }
+          ]
+        }
+        this.$store.dispatch('sendOrder', obj)
+      }
+    }
+  }
 }
 </script>
 
@@ -187,7 +338,7 @@ main {
 }
 
 h1 {
-  font-family: "Partner Condensed Bold";
+  font-family: "Partner Condensed Bold", sans-serif;
   font-size: rem(18);
   text-transform: uppercase;
 }
@@ -296,6 +447,9 @@ input[value] {
 }
 
 .__you-orders__table {
+  height: rem(200);
+  overflow: auto;
+
   .__row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

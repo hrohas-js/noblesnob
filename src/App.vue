@@ -21,6 +21,16 @@ export default {
       username: 'noblesnobwp',
       password: 'Festachubko1717'
     });
+  },
+  mounted() {
+    if (sessionStorage.getItem('user_noblesnob') !== null) {
+      this.$store.commit('SET_PROFILE_MENU', {
+        name: 'аккаунт',
+        path: '/profile/main'
+      })
+    }
+    this.$store.dispatch('setCart')
+    this.$store.dispatch('setWishList')
   }
 }
 </script>
@@ -53,7 +63,7 @@ input {
 }
 
 html {
-  font-family: 'Partner Condensed';
+  font-family: 'Partner Condensed', sans-serif;
   height: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -63,11 +73,7 @@ img {
   max-width: 100%;
 }
 
-ul {
-  list-style-type: none;
-}
-
-li {
+ul, li {
   list-style-type: none;
 }
 
@@ -102,7 +108,7 @@ h1, h2, h3, h4, h5 {
   margin-bottom: rem(120);
 
   h2 {
-    font-family: "Partner Condensed Bold";
+    font-family: "Partner Condensed Bold", sans-serif;
     font-size: rem(20);
     margin-bottom: rem(35);
     text-transform: uppercase;
@@ -183,7 +189,7 @@ h1, h2, h3, h4, h5 {
   }
 
   h1, h2 {
-    font-family: 'Partner Condensed Bold';
+    font-family: 'Partner Condensed Bold', sans-serif;
     font-size: rem(18);
   }
 

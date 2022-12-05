@@ -10,6 +10,7 @@ const Basket = () => import("@/pages/Basket");
 const WishList = () => import("@/pages/WishList");
 const Ordering = () => import("@/pages/Ordering");
 const Profile = () => import("@/pages/Profile");
+const NotFound = () => import("@/pages/NotFound");
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     path: '/profile/:name',
     name:'Profile',
     component:Profile
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
@@ -63,7 +69,8 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior: () => {
-    window.scrollTo({top: 0,
+    window.scrollTo({
+      top: 0,
       left: 0,
       behavior: 'smooth'
     });

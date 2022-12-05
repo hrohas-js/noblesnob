@@ -1,14 +1,24 @@
 <template>
   <header>
     <div class="header__container">
-      <HeaderNav :menuItems="$store.state.headerNavLeft" :menuItemsMobile="'left'"></HeaderNav>
+      <HeaderNav :menuItems="$store.state.headerNavLeft" :menuItemsMobile="'left'" />
       <div class="header__container__logo">
-        <router-link to="/"><img src="@/assets/svg/noblesnob.svg" alt="logo"></router-link>
+        <router-link to="/">
+          <img src="@/assets/svg/noblesnob.svg" alt="logo">
+        </router-link>
       </div>
-      <HeaderNav :menuItems="$store.state.headerNavRight" :menuItemsMobile="'right'"></HeaderNav>
+      <HeaderNav :menuItems="$store.state.headerNavRight" :menuItemsMobile="'right'" />
     </div>
-    <div class="burger-mobile-container" v-if="$store.state.burgerShow">
-      <router-link v-for="item in $store.state.burger" :to="item.path" :key="item.name" :class="{bottom:item.name === 'избранное' || item.name === 'карьера'}" @click="$store.commit('SET_BURGER_SHOW')">{{ item.name }}</router-link>
+    <div v-if="$store.state.burgerShow" class="burger-mobile-container">
+      <router-link
+          v-for="item in $store.state.burger"
+          :to="item.path"
+          :key="item.name"
+          :class="{bottom:item.name === 'избранное' || item.name === 'карьера'}"
+          @click="$store.commit('SET_BURGER_SHOW')"
+      >
+        {{ item.name }}
+      </router-link>
     </div>
   </header>
 </template>

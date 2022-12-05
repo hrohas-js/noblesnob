@@ -3,8 +3,8 @@
     <div class="contact-form__contact-following">
       <div class="contact-form__our-contact">
         <h2>НУЖНА ПОМОЩЬ С ЗАКАЗОМ?</h2>
-        <a href="tel='+79854273757'">+7 985 427-37-57</a>
-        <p>MAIL TO : <a href="mailto='hi@noblesnob.com'">hi@noblesnob.com</a></p>
+        <a href="tel:+79854273757">+7 985 427-37-57</a>
+        <p>MAIL TO : <a href="mailto:hi@noblesnob.com">hi@noblesnob.com</a></p>
       </div>
       <div class="contact-form__following">
         <h2>БУДЬ В КУРСЕ</h2>
@@ -12,7 +12,7 @@
           <input type="email">
           <input type="submit" value="подписка">
         </div>
-        <CustomFollowingCheckbox :page="'contactForm'"></CustomFollowingCheckbox>
+        <CustomFollowingCheckbox :page="'contactForm'" />
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@ export default {
 
 <style scoped lang="scss">
 h2 {
-  font-family: "Partner Condensed Bold";
+  font-family: "Partner Condensed Bold", sans-serif;
   font-size: rem(18);
   margin-bottom: rem(33);
 }
