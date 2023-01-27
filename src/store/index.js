@@ -1,4 +1,4 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
 import axios from 'axios'
 
 export default createStore({
@@ -59,7 +59,7 @@ export default createStore({
         ],
         FooterNavLeft: [
             {
-                name: '2021 noblesnob.com',
+                name: '2022 noblesnob.com',
                 path: '/'
 
             },
@@ -213,7 +213,7 @@ export default createStore({
     },
     mutations: {
         SET_CURRENT_CATEGORY(state, value) {
-            state.curretnCategory = value;
+            state.currentCategory = value;
         },
         SET_DISPLAY_WIDTH(state, innerWidth) {
             state.display_width = innerWidth;
@@ -227,7 +227,7 @@ export default createStore({
         SER_SIZE_TABLE(state, boolean) {
             state.sizeTable = boolean
         },
-        SET_categories_MOBILE_SHOW(state, show) {
+        SET_CATEGORIES_MOBILE_SHOW(state, show) {
             state.categoriesMobileShow = show;
         },
         SET_SORT_MOBILE_SHOW(state, show) {
@@ -238,6 +238,7 @@ export default createStore({
         },
         SET_NEW_PRODUCTS(state, item) {
             state.new_products = item;
+            console.log(state.new_products);
         },
         SET_CATALOG(state, item) {
             state.catalog = item
@@ -278,7 +279,8 @@ export default createStore({
         },
         SET_AXIOS_INSTANCE(state) {
             state.axiosInstance = axios.create({
-                baseURL: '/wp-json/'
+                //baseURL: '/wp-json/'
+                baseURL: 'https://tdsfashiongroup.com/wp-json/'
             });
         },
         SET_JWT(state, jwt) {
@@ -378,7 +380,7 @@ export default createStore({
     },
     actions: {
         async FetchAllBrands({state, commit}) {
-            const response = await state.axiosInstance.get(`wc/v3/products/attributes/57/terms`, {
+            const response = await state.axiosInstance.get(`wc/v3/products/attributes/68/terms`, {
                 headers: {
                     Authorization: `Bearer ${state.jwt}`,
                 },
@@ -432,9 +434,9 @@ export default createStore({
         async FetchCatalog({state, commit}, post_info) {
             let category_id = 0;
             if (post_info.sex === 'men') {
-                category_id = 786;
+                category_id = 977;
             } else {
-                category_id = 794;
+                category_id = 899;
             }
             if (post_info.id !== 'all') {
                 category_id = post_info.id;
@@ -466,7 +468,7 @@ export default createStore({
                 }
             })
             console.log(response)
-            if (response.status === 200 && response.statusText === 'OK') {
+            if (response.status === 200) {
                 commit('SET_SEARCH_PRELOAD', false);
                 commit('SET_SEARCH_RESULT', response.data);
             }
@@ -474,9 +476,9 @@ export default createStore({
         async FetchPagination({state, commit}, post_info) {
             let category_id = 0;
             if (post_info.sex === 'men') {
-                category_id = 786;
+                category_id = 977;
             } else {
-                category_id = 794;
+                category_id = 899;
             }
             if (post_info.id !== 'all') {
                 category_id = post_info.id;

@@ -8,7 +8,7 @@ module.exports = defineConfig({
       }
     }
   },
-  configureWebpack: config => {
+  /*configureWebpack: config => {
     return {
       devServer: {
         proxy: {
@@ -20,5 +20,5 @@ module.exports = defineConfig({
         }
       }
     }
-  }
+  }*/
 })

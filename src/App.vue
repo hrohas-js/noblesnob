@@ -87,11 +87,6 @@ h1, h2, h3, h4, h5 {
   font-weight: normal;
 }
 
-.wrapper {
-  max-width: rem(1440);
-  margin: 0 auto;
-}
-
 .container {
   padding: rem(16) rem(35) 0;
   display: flex;
@@ -174,7 +169,7 @@ h1, h2, h3, h4, h5 {
   }
 
   input:checked + label::before {
-    background-image: url('https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/checkbox_rule/closeRule.svg');
+    background-image: url('https://tdsfashiongroup.com/NOBLESNOB__TEMP/checkbox_rule/closeRule.svg');
     background-size: cover;
   }
 }
@@ -219,6 +214,23 @@ h1, h2, h3, h4, h5 {
 @media (max-width: em(724, 16)) and (min-width: em(220, 16)) {
   .container {
     padding: calc(0.5rem + (16 - 8) * ((100vw - 13.75rem) / (724 - 220))) calc(0.3125rem + (16 - 5) * ((100vw - 13.75rem) / (724 - 220))) 0;
+  }
+  .custom__grin-box, .custom__cross {
+    input + label::before {
+      margin-right: rem(14);
+    }
+  }
+  .custom__grin-box {
+    input + label::before {
+      width: rem(18);
+      height: rem(18);
+    }
+  }
+  .custom__cross {
+    input + label::before {
+      width: rem(11);
+      height: rem(11);
+    }
   }
 }
 </style>

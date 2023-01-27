@@ -8,13 +8,13 @@
           <input
               type="submit"
               value="СОЗДАТЬ АККАУНТ"
-              :class="{active:$store.state.CabinetIn === 'registration'}"
+              :class="{active: $store.state.CabinetIn === 'registration'}"
               @click="changeForm('registration')"
           />
           <input
               type="submit"
               value="ВОЙТИ"
-              :class="{active:$store.state.CabinetIn === 'auf'}"
+              :class="{active: $store.state.CabinetIn === 'auf'}"
               @click="changeForm('auf')"
           />
         </div>
@@ -26,21 +26,21 @@
               type="text"
               placeholder="ИМЯ"
               v-model="registration.name"
-              :class="{empty:emptyRegistrationCheck && registration.name === ''}"
+              :class="{empty: emptyRegistrationCheck && registration.name === ''}"
               @input="registration.name = registration.name.replace(/[^ a-zа-яё]/ui,'')"
           />
           <input
               type="text"
               placeholder="ФАМИЛИЯ"
               v-model="registration.surname"
-              :class="{empty:emptyRegistrationCheck && registration.surname === ''}"
+              :class="{empty: emptyRegistrationCheck && registration.surname === ''}"
               @input="registration.surname = registration.surname.replace(/[^ a-zа-яё]/ui,'')"
           />
           <input
               type="email"
               placeholder="EMAIL"
               v-model="registration.email"
-              :class="{empty:(emptyRegistrationCheck && registration.email === '') || !emailValidation}"
+              :class="{empty: (emptyRegistrationCheck && registration.email === '') || !emailValidation}"
               @blur="emailValidate(registration.email)"
           />
           <input
@@ -186,9 +186,9 @@ export default {
 
 input {
   width: 100%;
-  height: rem(60);
+  height: rem(40);
   background-color: #fff;
-  font-size: rem(19);
+  font-size: rem(14);
 }
 
 .registration__container {
@@ -203,7 +203,7 @@ input {
 .registration__form,.forget-password__container {
   width: rem(648);
   input {
-    margin-bottom: rem(33);
+    margin-bottom: rem(21);
   }
 }
 
@@ -219,8 +219,6 @@ input {
   input[type='submit']:nth-child(2) {
     left: 0;
     border-right: none;
-
-
   }
 
   input[type='submit']:last-child {
@@ -236,7 +234,7 @@ input {
     &::placeholder {
       border-left: 1px solid #3ADD9D;
       padding-left: rem(10);
-      font-size: rem(24);
+      font-size: rem(14);
     }
   }
 }
@@ -246,7 +244,9 @@ input {
   flex-direction: column;
   align-items: center;
   h1 {
+    font-family: "Partner Condensed Bold", sans-serif;
     text-align: center;
+    font-size: rem(12);
   }
 }
 
@@ -267,12 +267,12 @@ input {
 .__forget{
   cursor: pointer;
   color: #636363;
-  font-size: 14px;
+  font-size: rem(14);
   margin-bottom: rem(40);
 }
 .__auf-button{
   cursor: pointer;
-  font-size: rem(24);
+  font-size: rem(14);
   padding: rem(11) rem(42);
   background-color: #3ADD9D;
   color: white;

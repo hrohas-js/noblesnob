@@ -2,47 +2,120 @@
   <div class="catalog container">
     <Header></Header>
     <main>
-      <div class="side-mobile" v-if="$store.state.display_width <= 768 && $store.state.categoriesMobileShow">
-        <SiteBarMenu></SiteBarMenu>
+      <div
+          v-if="$store.state.display_width <= 768 && $store.state.categoriesMobileShow"
+          class="side-mobile"
+      >
+        <SiteBarMenu />
       </div>
-      <div class="catalog__main-container" :class="{mobile:$store.state.categoriesMobileShow}">
-        <div class="site-bar-menu__container" v-if="$store.state.display_width > 768">
-          <SiteBarMenu></SiteBarMenu>
+      <div
+          class="catalog__main-container"
+          :class="{mobile:$store.state.categoriesMobileShow}"
+      >
+        <div
+            v-if="$store.state.display_width > 768"
+            class="site-bar-menu__container"
+        >
+          <SiteBarMenu />
         </div>
-        <div class="catalog__container" :class="{mobile:$store.state.sortMobileShow}">
+        <div
+            class="catalog__container"
+            :class="{mobile:$store.state.sortMobileShow}"
+        >
           <div>
-            <h1 v-if="$store.state.display_width > 768">{{ upper }}</h1>
-            <div class="filters-mobile" v-if="$store.state.display_width <= 768">
-              <div class="filters-mobile__item" @click="$store.commit('SET_SORT_MOBILE_SHOW', true)">фильтры</div>
-              <div class="filters-mobile__item" @click="$store.commit('SET_categories_MOBILE_SHOW', true)">категории
+            <h1 v-if="$store.state.display_width > 768">
+              {{ upper }}
+            </h1>
+            <div
+                v-if="$store.state.display_width <= 768"
+                class="filters-mobile"
+            >
+              <div
+                  class="filters-mobile__item"
+                  @click="$store.commit('SET_SORT_MOBILE_SHOW', true)"
+              >
+                фильтры
+              </div>
+              <div
+                  class="filters-mobile__item"
+                  @click="$store.commit('SET_CATEGORIES_MOBILE_SHOW', true)"
+              >
+                категории
               </div>
             </div>
-            <div class="catalog__goods" v-if="$store.state.catalog.length > 0">
-              <GoodsItem v-for="good in $store.state.catalog" :key="good.id" :good="good"></GoodsItem>
+            <div
+                v-if="$store.state.catalog.length > 0"
+                class="catalog__goods"
+            >
+              <GoodsItem
+                  v-for="good in $store.state.catalog"
+                  :key="good.id"
+                  :good="good"
+              />
             </div>
             <div class="catalog__goods" v-else>
               ТОВАРЫ ОТСУТСТВУЮТ!
             </div>
           </div>
-          <div class="pagination__container" v-if="$store.state.display_width > 768">
-            <PaginationPage v-if="$store.state.pagination.length >1"></PaginationPage>
+          <div
+              v-if="$store.state.display_width > 768"
+              class="pagination__container"
+          >
+            <PaginationPage v-if="$store.state.pagination.length > 1" />
           </div>
         </div>
-        <ul class="catalog__sort"
-            :class="{sortMobile:$store.state.display_width <= 768, show: $store.state.sortMobileShow}">
-          <div class="sort-close" v-if="$store.state.display_width <= 768"
-               @click="$store.commit('SET_SORT_MOBILE_SHOW', false)">закрыть
+        <ul
+            class="catalog__sort"
+            :class="{
+              sortMobile:$store.state.display_width <= 768,
+              show: $store.state.sortMobileShow
+            }"
+        >
+          <div
+              v-if="$store.state.display_width <= 768"
+              class="sort-close"
+              @click="$store.commit('SET_SORT_MOBILE_SHOW', false)"
+          >
+            закрыть
           </div>
-          <h2 v-if="$store.state.display_width > 768">СОРТИРОВАТЬ ПО:</h2>
-          <h2 v-else>СОРТИРОВАТЬ ПО</h2>
-          <li class="__sort__item" @click="sort('desc','date',1)" :class="{sort:sortFlag == 1}">Новинки</li>
-          <li class="__sort__item" @click="sort('desc','date',2)" :class="{sort:sortFlag == 2}">Цена по умолчанию</li>
-          <li class="__sort__item" @click="sort('asc','price',3)" :class="{sort:sortFlag == 3}">Цена по возрастанию</li>
-          <li class="__sort__item" @click="sort('desc','price',4)" :class="{sort:sortFlag == 4}">Цена по убыванию</li>
+          <h2 v-if="$store.state.display_width > 768">
+            СОРТИРОВАТЬ ПО:
+          </h2>
+          <h2 v-else>
+            СОРТИРОВАТЬ ПО
+          </h2>
+          <li
+              class="__sort__item"
+              :class="{sort:sortFlag === 1}"
+              @click="sort('desc','date',1)"
+          >
+            Новинки
+          </li>
+          <li
+              class="__sort__item"
+              :class="{sort:sortFlag === 2}"
+              @click="sort('desc','date',2)"
+          >
+            Цена по умолчанию
+          </li>
+          <li
+              class="__sort__item"
+              :class="{sort:sortFlag === 3}"
+              @click="sort('asc','price',3)"
+          >
+            Цена по возрастанию
+          </li>
+          <li
+              class="__sort__item"
+              :class="{sort:sortFlag === 4}"
+              @click="sort('desc','price',4)"
+          >
+            Цена по убыванию
+          </li>
         </ul>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 
@@ -63,10 +136,10 @@ export default {
     this.$store.dispatch('FetchCatalog', {
       sex: this.$route.params.sex,
       page_number: 1,
-      id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory
+      id: this.$route.params.subCategory === 'null' ? this.$route.params.category : this.$route.params.subCategory
     });
     this.$store.commit('SET_CATEGORY', this.$route.params.sex);
-    if (this.$route.params.subCategory != 'null') {
+    if (this.$route.params.subCategory !== 'null') {
       this.$store.commit('SET_SUB_CATEGORY', this.$route.params.category);
     }
   },
@@ -77,11 +150,11 @@ export default {
   },
   methods: {
     sort(order, orderby, count) {
-      if (this.$route.params.brand == 'all-brands') {
+      if (this.$route.params.brand === 'all-brands') {
         this.$store.dispatch('FetchCatalog', {
           sex: this.$route.params.sex,
           page_number: 1,
-          id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory,
+          id: this.$route.params.subCategory === 'null' ? this.$route.params.category : this.$route.params.subCategory,
           order: order,
           orderby: orderby
         });
@@ -90,7 +163,7 @@ export default {
         this.$store.dispatch('FetchCatalog', {
           sex: this.$route.params.sex,
           page_number: 1,
-          id: this.$route.params.subCategory == 'null' ? this.$route.params.category : this.$route.params.subCategory,
+          id: this.$route.params.subCategory === 'null' ? this.$route.params.category : this.$route.params.subCategory,
           order: order,
           orderby: orderby,
           attribute: 'pa_brand',
@@ -105,7 +178,7 @@ export default {
 
 <style scoped lang="scss">
 .sort {
-  font-family: "Partner Condensed Bold" !important;
+  font-family: "Partner Condensed Bold", sans-serif !important;
 }
 
 main {
@@ -116,7 +189,7 @@ main {
   position: absolute;
   background-color: white;
   width: 100%;
-  height: 100vh;
+  z-index: 99999;
 }
 
 .catalog__main-container {
@@ -142,7 +215,7 @@ main {
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: rem(24);
   grid-row-gap: rem(132);
-  margin-top: rem(158);
+  margin-top: rem(10);
 }
 
 .sort-close {
@@ -159,6 +232,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  font-size: rem(14);
 }
 
 .sortMobile {
@@ -178,7 +252,8 @@ main {
 }
 
 h1 {
-  font-family: "Partner Condensed Bold";
+  font-family: "Partner Condensed Bold", sans-serif;
+  margin-bottom: rem(40);
 }
 
 .pagination__container {
@@ -197,8 +272,8 @@ h1 {
 .filters-mobile__item {
   flex: 1 1 50%;
   text-align: center;
-  font-size: rem(24);
-  padding: rem(20) 0;
+  font-size: rem(12);
+  padding: rem(17) 0;
   text-transform: uppercase;
   cursor: pointer;
 
@@ -211,6 +286,7 @@ h1 {
   .catalog__goods {
     margin-top: rem(20);
     grid-template-columns: repeat(2, 1fr);
+    grid-row-gap: rem(30);
   }
   .filters-mobile {
     margin-left: calc(-0.3125rem + (-16 + 5) * ((100vw - 13.75rem) / (724 - 220)));

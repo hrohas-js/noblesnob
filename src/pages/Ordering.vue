@@ -1,6 +1,6 @@
 <template>
   <div class="ordering container">
-    <Header></Header>
+    <Header />
     <main>
       <h1>ОФОРМЛЕНИЕ ЗАКАЗА</h1>
       <div class="ordering__container">
@@ -350,7 +350,7 @@ p {
 
 input {
   width: 100%;
-  padding: rem(20) rem(16);
+  padding: rem(16);
   margin-bottom: rem(27);
 
   &:last-child {

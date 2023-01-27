@@ -9,25 +9,26 @@
       <div v-else class="region">страна/регион: россия</div>
       <div class="footer-ico">
         <a href="">
-          <img src="@/assets/png/social/telegrammIco.png" alt="telegramm social">
+          <img src="@/assets/svg/tg.svg" alt="telegramm social">
         </a>
         <a href="">
-          <img src="@/assets/png/social/facebookIco.png" alt="facebook social">
+          <img src="@/assets/svg/fb.svg" alt="facebook social">
         </a>
         <a href="">
-          <img src="@/assets/png/social/insagramIco.png" alt="instagram social">
+          <img src="@/assets/svg/inst.svg" alt="instagram social">
         </a>
       </div>
       <header-nav
           :page="'footer'"
           :menuItems="$store.state.FooterNavRight"
+          :menuItemsMobile="'right'"
       />
       <router-link
           v-if="$store.state.display_width <= 768"
           to="/"
           class="region"
       >
-        2021 noblesnob.com
+        2023 noblesnob.com
       </router-link>
     </div>
   </footer>
@@ -52,6 +53,9 @@ footer{
 }
 .footer-ico{
   gap:rem(12);
+  img {
+    height: rem(20);
+  }
 }
 .region {
   font-size: rem(12);
@@ -60,10 +64,17 @@ footer{
 
 @media (max-width: em(768, 16)) {
   footer {
-    margin-top: rem(50);
+    margin: rem(26) 0;
   }
   .footer__container {
     flex-direction: column;
+    gap: rem(10);
+  }
+  .footer-ico{
+    gap:rem(8);
+    img {
+      height: rem(16);
+    }
   }
 }
 </style>

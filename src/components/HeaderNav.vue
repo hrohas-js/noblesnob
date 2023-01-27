@@ -1,16 +1,23 @@
 <template>
-  <nav v-if="$store.state.display_width >= 1024 || page === 'footer'">
+  <nav
+      v-if="$store.state.display_width >= 1024 || page === 'footer'"
+      :class="{'right': menuItemsMobile === 'right'}"
+  >
     <router-link
         v-for="item in menuItems" :to="item.path"
         :key="item.name"
-        :class="{'active':$route.path === item.path || (item.name === 'поиск' && isVisibleSearch)}"
+        :class="{
+          'active': ($route.path === item.path && page !== 'footer') || (item.name === 'поиск' && isVisibleSearch),
+          'up': page !== 'footer',
+          'down': page === 'footer'
+        }"
         @click="menuAction(item.destination)"
     >
       {{ item.name }}
     </router-link>
-    <Search v-if="isVisibleSearch && menuItemsMobile === 'right'" />
+    <Search v-if="isVisibleSearch && menuItemsMobile === 'right'"/>
   </nav>
-  <nav v-else>
+  <nav v-else :class="{'right': menuItemsMobile === 'right'}">
     <div v-if="menuItemsMobile === 'left'" class="header-nav__container">
       <div class="header-nav__item header-nav__burger-menu" @click="$store.commit('SET_BURGER_SHOW')">
         <img src="@/assets/svg/burger-menu.svg" alt="menu">
@@ -27,12 +34,12 @@
         <img src="@/assets/svg/basket.svg" alt="basket" @click="this.$router.push('/basket')">
       </div>
     </div>
-    <Search v-if="isVisibleSearch && menuItemsMobile === 'right'" />
   </nav>
 </template>
 
 <script>
 import Search from "@/components/Search";
+
 export default {
   name: 'HeaderNav',
   components: {Search},
@@ -50,13 +57,13 @@ export default {
       }
       if (destination === 'catalog') {
         this.$store.dispatch('FetchCatalog', {
-            sex: this.$route.params.sex,
-            id: 'all',
-            page_number: 1
+          sex: this.$route.params.sex,
+          id: 'all',
+          page_number: 1
         })
         this.$store.dispatch('FetchPagination', {
-            sex: this.$route.params.sex,
-            id:'all'
+          sex: this.$route.params.sex,
+          id: 'all'
         })
       }
       if (destination === 'search') {
@@ -71,16 +78,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.active{
+.active {
   background-color: #3adc9c;
   color: white;
 }
+
+nav {
+  flex: 1 1 33%;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
 nav, .header-nav__container {
   display: flex;
   align-items: center;
 
   a {
-    font-size: rem(10);
     text-transform: uppercase;
     margin-left: rem(18);
     padding: rem(5);
@@ -89,16 +104,24 @@ nav, .header-nav__container {
     &:first-child {
       margin-left: 0;
     }
-
-    &:hover {
-      background-color: #3adc9c;
-      color: white;
-    }
   }
+}
+
+.up {
+  font-size: rem(16);
+  &:hover {
+    background-color: #3adc9c;
+    color: white;
+  }
+}
+
+.down {
+  font-size: rem(12);
 }
 
 nav {
   position: relative;
+
   &:first-child {
     .header-nav__item {
       margin-left: rem(27.5);
@@ -127,6 +150,12 @@ nav {
 .header-nav__item {
   img {
     height: rem(34);
+  }
+}
+
+@media (max-width: em(1600, 16)) and (min-width: em(1024, 16)) {
+  .up {
+    font-size: calc(0.625rem + (16 - 10) * ((100vw - 64rem) / (1600 - 1024)));
   }
 }
 
@@ -164,6 +193,9 @@ nav {
     img {
       height: calc(1rem + (34 - 16) * ((100vw - 13.75rem) / (724 - 220)));
     }
+  }
+  .down {
+    font-size: rem(9);
   }
 }
 

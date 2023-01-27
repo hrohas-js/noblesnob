@@ -1,14 +1,26 @@
 <template>
   <div class="basket container">
-    <Header></Header>
+    <Header/>
     <main>
       <div class="basket__container">
         <div class="__item">
-          <h1>Корзина</h1>
-          <div v-if="cart.length > 0" class="__basket-table">
-            <div v-for="item in cart" :key="item.product_id" class="__row">
+          <h1>
+            Корзина
+          </h1>
+          <div
+              v-if="cart.length > 0"
+              class="__basket-table"
+          >
+            <div
+                v-for="item in cart"
+                :key="item.product_id"
+                class="__row"
+            >
               <div class="__coll __coll__picture">
-                <img src="@/assets/temp/tempJpg.jpg" alt="some photo">
+                <img
+                    src="@/assets/temp/tempJpg.jpg"
+                    alt="some photo"
+                />
               </div>
               <div class="__coll">
                 <ul>
@@ -24,7 +36,10 @@
                     <p>
                       размер:{{ item.current_size }}
                     </p>
-                    <p style="cursor: pointer" @click="goToProduct(item.product_id)">
+                    <p
+                        style="cursor: pointer"
+                        @click="goToProduct(item.product_id)"
+                    >
                       изменить
                     </p>
                   </li>
@@ -34,71 +49,121 @@
                     </p>
                   </li>
                   <li class="__coll__count">
-                    <p>КОЛЛИЧЕСТВО:</p>
+                    <p>
+                      КОЛЛИЧЕСТВО:
+                    </p>
                     <div class="__count__item">
                       {{ item.quantity }}
-                      <input type="submit" value="+" @click="plusQuantity(item.product_id)">
-                      <input type="submit" value="-" @click="minusQuantity(item.quantity, item.product_id)">
+                      <input type="submit" value="+" @click="plusQuantity(item.product_id)"/>
+                      <input type="submit" value="-" @click="minusQuantity(item.quantity, item.product_id)"/>
                     </div>
                     <!--<p class="little-count">1 экземпляр!</p>-->
                   </li>
-                  <li class="__coll__go-wishlist" @click="addToWishlist(item)">
-                    <p>переместить в избранное</p>
+                  <li
+                      class="__coll__go-wishlist"
+                      @click="addToWishlist(item)"
+                  >
+                    <p>
+                      переместить в избранное
+                    </p>
                   </li>
                 </ul>
               </div>
               <div class="__coll close-mobile">
-                <p>₽ {{ item.price * item.quantity }} RUB</p>
-                <img v-if="$store.state.display_width <= 768" src="@/assets/svg/close__button.svg" alt="close button" @click="deleteFromCart(item.product_id)">
+                <p>
+                  {{ item.price * item.quantity }} RUB
+                </p>
+                <p @click="deleteFromCart(item.product_id)">
+                  УДАЛИТЬ
+                </p>
               </div>
-              <div v-if="$store.state.display_width > 768" class="__coll dell-item">
-                <img src="@/assets/svg/close__button.svg" alt="close button" @click="deleteFromCart(item.product_id)">
+              <div
+                  v-if="$store.state.display_width > 768"
+                  class="__coll dell-item"
+              >
+                <img
+                    src="@/assets/svg/close__button.svg"
+                    alt="close button"
+                    @click="deleteFromCart(item.product_id)"
+                />
               </div>
             </div>
-            <div class="__row">
+            <div class="__row _total-row">
               <div class="__coll grid-start">
                 <ul class="cart-totals">
                   <li>
-                    <p>ИТОГО</p>
-                    <p>ДОСТАВКА</p>
+                    <p>
+                      ИТОГО
+                    </p>
+                    <p>
+                      ДОСТАВКА
+                    </p>
                   </li>
                   <li>
-                    <p>Всего</p>
+                    <p class="_bold-total">
+                      Всего
+                    </p>
                   </li>
                 </ul>
               </div>
-              <div class="__coll">
+              <div class="__coll _right-total">
                 <ul>
                   <li>
-                    <p>₽ {{ total }} RUB</p>
-                    <p>Рассчитывается при оформлении заказа</p>
+                    <p>
+                      ₽ {{ total }} RUB
+                    </p>
+                    <p>
+                      Рассчитывается при оформлении заказа
+                    </p>
                   </li>
                   <li>
-                    <p>₽ {{ total }} RUB</p>
+                    <p class="_bold-total">
+                      ₽ {{ total }} RUB
+                    </p>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div v-if="cart.length === 0" class="cart-empty">
+          <div
+              v-if="cart.length === 0"
+              class="cart-empty"
+          >
             корзина пуста
           </div>
         </div>
-        <div v-if="cart.length > 0" class="__item">
+        <div
+            v-if="cart.length > 0"
+            class="__item"
+        >
           <div class="__action-order__description">
-            <h2>ОФОРМЛЕНИЕ ЗАКАЗА</h2>
-            <p>введите адрес электронной почты, чтобы войти в систему либо продолжайте покупки без авторизации</p>
-            <p> Возврат товара конфиденциальность</p>
+            <h2>
+              ОФОРМЛЕНИЕ ЗАКАЗА
+            </h2>
+            <p>
+              введите адрес электронной почты, чтобы войти в систему либо продолжайте покупки без авторизации
+            </p>
+            <p>
+              <router-link to="/about/payback">
+                Возврат товара
+              </router-link>
+            </p>
+            <p>
+              <router-link to="/about/confident">
+                конфиденциальность
+              </router-link>
+            </p>
           </div>
           <div class="__action-order__form">
-            <p>EMAIL</p>
-            <input type="text">
-            <router-link to="/ordering"><input type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ"></router-link>
+            <input type="text" placeholder="EMAIL">
+            <router-link to="/ordering">
+              <input type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ"/>
+            </router-link>
           </div>
         </div>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer/>
   </div>
 </template>
 
@@ -282,7 +347,8 @@ export default {
 
   input {
     width: 100%;
-    height: rem(46);
+    padding: 0 rem(20);
+    height: rem(32);
   }
 
   input[type='submit'] {
@@ -297,34 +363,74 @@ export default {
 @media (max-width: em(1024, 16)) {
   .basket__container {
     flex-direction: column;
-    .__item {
+    gap: rem(30);
+
+    .__item, .__basket-table {
       margin-top: rem(30);
+    }
+
+    .__basket-table {
+      border-top: 1px solid black;
     }
   }
 }
 
 @media (max-width: em(768, 16)) {
+  h1 {
+    text-transform: uppercase;
+  }
   p {
-    font-size: rem(12);
+    font-size: rem(8);
   }
   .__row {
-    grid-template-columns: rem(133) 1fr 0.5fr;
+    grid-template-columns: 1fr 3fr 1fr;
     grid-gap: rem(20);
+  }
+  ._total-row {
+    grid-template-columns: 1fr 2fr 2fr;
+  }
+  ._right-total {
+    text-align: right;
+  }
+  ._bold-total {
+    font-weight: bold;
   }
   .close-mobile {
     display: flex;
     justify-content: space-between;
+
+    p {
+      text-align: right;
+    }
+
     img {
       height: rem(30);
     }
   }
   .__coll__count {
-    flex-direction: column;
+    margin-bottom: 0 !important;
+
     .__count__item {
       width: fit-content;
     }
   }
+  .__action-order__description {
+    h2 {
+      font-size: rem(12);
+    }
+
+    p {
+      font-size: rem(9);
+      text-transform: uppercase;
+      margin-top: rem(12);
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
 }
+
 @media (max-width: em(428, 16)) {
   .close-mobile {
     flex-direction: column;

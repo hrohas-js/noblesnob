@@ -46,6 +46,7 @@ export default {
 }
 
 .pagination__item {
+  font-size: rem(14);
   padding: rem(2) rem(8);
   transition: all 0.2s;
   cursor: pointer;

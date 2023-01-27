@@ -1,61 +1,145 @@
 <template>
   <div class="product container">
-    <Header></Header>
+    <Header />
     <Transition name="fade">
-      <div class="__container__size-table" v-if="this.$store.state.sizeTable">
-        <SizeTable></SizeTable>
-      </div>
+      <SizeTable v-if="this.$store.state.sizeTable" />
     </Transition>
     <main>
       <div class="product__container">
         <ul class="product__description">
           <li v-if="$store.state.display_width >= 768">
-            <h2>{{ brand }}</h2>
-            <div>{{ name }}</div>
-          </li>
-          <li><div v-html="description"></div></li>
-          <li>
-            <p>Страна производства: {{ prodCountry }} </p>
-            <p> Состав: {{ props }} </p>
-          </li>
-          <li><p>Цвет: {{ color }}</p></li>
-          <li><p>{{ article }}</p></li>
-        </ul>
-        <div class="product__good">
-          <!--          <img :src=".picture" alt="some photo">-->
-        </div>
-        <div class="product__choose-size">
-          <div class="mobile-description" v-if="$store.state.display_width <= 768">
+            <h2>
+              {{ brand }}
+            </h2>
             <div>
-              <h2>{{ brand }}</h2>
-              <p>{{ name }}</p>
+              {{ name }}
             </div>
-            <p>{{ price }}&nbsp;₽</p>
+          </li>
+          <li>
+            <div v-html="description" />
+          </li>
+          <li>
+            <p>
+              Страна производства: {{ prodCountry }}
+            </p>
+            <p>
+              Состав: {{ props }}
+            </p>
+          </li>
+          <li>
+            <p>
+              Цвет: {{ color }}
+            </p>
+          </li>
+          <li>
+            <p>
+              {{ article }}
+            </p>
+          </li>
+        </ul>
+        <div v-if="$store.state.display_width > 768" class="product__good">
+          <div v-for="item in images" :key="item.id">
+            <img :src="item.src" :alt="item.name" />
           </div>
-          <p v-else>{{ price }}&nbsp;₽</p>
-          <div class="__choose-size__item" @click="this.showSubMenu = !this.showSubMenu">
-            <p>{{chooseSize}}</p>
-            <img v-if="size.length > 0" src="@/assets/svg/arrow_down.svg" alt="arrow down" :class="{show:this.showSubMenu && size.length > 0}">
+        </div>
+        <Swiper v-else :slides-per-view="1" class="product__good">
+          <SwiperSlide v-for="item in images" :key="item.id">
+            <img :src="item.src" :alt="item.name" />
+          </SwiperSlide>
+        </Swiper>
+        <div class="product__choose-size">
+          <div
+              v-if="$store.state.display_width <= 768"
+              class="mobile-description"
+          >
+            <div>
+              <h2>
+                {{ brand }}
+              </h2>
+              <p>
+                {{ name }}
+              </p>
+            </div>
+            <p>
+              {{ price }}&nbsp;₽
+            </p>
+          </div>
+          <p v-else>
+            {{ price }}&nbsp;₽
+          </p>
+          <div
+              class="__choose-size__item"
+              @click="this.showSubMenu = !this.showSubMenu"
+          >
+            <p>
+              {{chooseSize}}
+            </p>
+            <img
+                v-if="size.length > 0"
+                src="@/assets/svg/arrow_down.svg"
+                alt="arrow down"
+                :class="{show:this.showSubMenu && size.length > 0}"
+            />
             <Transition name="slide-fade">
-              <div class="__choose-size__sub" v-if="showSubMenu && size.length > 0">
-                <div class="__sub__item" v-for="item in size"  :key="item.id" @click="chooseValue(item)">
-                  <p>{{ item.name }}</p>
+              <div
+                  v-if="showSubMenu && size.length > 0"
+                  class="__choose-size__sub"
+              >
+                <div
+                    v-for="item in size"
+                    :key="item.id"
+                    class="__sub__item"
+                    @click="chooseValue(item)"
+                >
+                  <p>
+                    {{ item.name }}
+                  </p>
                 </div>
               </div>
             </Transition>
           </div>
-          <p v-if="size.length === 0">Остался один размер</p>
+          <p v-if="size.length === 0">
+            Остался один размер
+          </p>
           <div class="__choose-size__buttons">
-            <input type="text">
-            <input type="submit" class="__buttons__button" value="в корзину" @click="addToCart">
-            <input v-if="$store.state.display_width > 768" type="submit" class="__buttons__button" value="в избранное" @click="toggleWish">
-            <button v-else type="submit" class="__buttons__button" @click="toggleWish">
-              <img src="@/assets/svg/heart.svg" alt="">
+            <input
+                type="text"
+            />
+            <input
+                type="submit"
+                class="__buttons__button"
+                value="в корзину"
+                @click="addToCart"
+            />
+            <input
+                v-if="$store.state.display_width > 768"
+                type="submit"
+                class="__buttons__button"
+                value="в избранное"
+                @click="toggleWish"
+            />
+            <button
+                v-else
+                type="submit"
+                class="__buttons__button"
+                @click="toggleWish"
+            >
+              <img
+                  src="@/assets/svg/heart.svg"
+                  alt="heart"
+              />
             </button>
           </div>
-          <div class="__choose-size__description" v-if="$store.state.display_width >= 1280">
-            <p>размер модели:{{ chooseSize }}</p>
-            <p @click="this.$store.commit('SER_SIZE_TABLE',true)">размерная таблица</p>
+          <div
+              v-if="$store.state.display_width >= 1280"
+              class="__choose-size__description"
+          >
+            <p>
+              размер модели:{{ chooseSize }}
+            </p>
+            <p @click="this.$store.commit('SER_SIZE_TABLE',true)">
+              размерная таблица
+            </p>
           </div>
         </div>
       </div>
@@ -80,7 +164,7 @@
         </div>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 
@@ -89,10 +173,19 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoodsItem from "@/components/GoodsItem";
 import SizeTable from "@/components/SizeTable";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
 
 export default {
   name: 'Product',
-  components: {SizeTable, GoodsItem, Footer, Header},
+  components: {
+    SizeTable,
+    GoodsItem,
+    Footer,
+    Header,
+    Swiper,
+    SwiperSlide
+  },
   data: () => ({
     showSubMenu: false,
     chooseSize: 'выбрать размер',
@@ -112,7 +205,7 @@ export default {
     },
     brand() {
       if (this.product.attributes) {
-        return this.product.attributes[3].options[0];
+        return this.product.attributes[6].options[0];
       } else {
         return 'гружусь';
       }
@@ -126,21 +219,21 @@ export default {
     },
     prodCountry() {
       if (this.brand !== 'гружусь') {
-        return this.product.attributes[5].options[0];
+        return this.product.attributes[3].options[0];
       } else {
         return 'гружусь'
       }
     },
     props() {
       if (this.brand !== 'гружусь') {
-        return this.product.attributes[4].options[0];
+        return this.product.attributes[1].options[0];
       } else {
         return 'гружусь'
       }
     },
     color() {
       if (this.brand !== 'гружусь') {
-        return this.product.attributes[0].options[0];
+        return this.product.attributes[4].options[0];
       } else {
         return 'гружусь'
       }
@@ -181,12 +274,19 @@ export default {
         }
       })
       return flag
+    },
+    images() {
+      if (this.product.images) {
+        return this.product.images;
+      } else {
+        return null
+      }
     }
   },
   watch: {
     size: function(newValue) {
       if (typeof newValue === 'object' && newValue.length === 0) {
-        this.chooseSize = this.product.attributes[1].options[0]
+        this.chooseSize = this.product.attributes[5].options[0]
       } else if (typeof newValue === 'object' && newValue.length > 0) {
         this.chooseSize = 'выберете размер'
       }
@@ -257,7 +357,6 @@ input {
   opacity: 0;
 }
 
-//
 .slide-fade-enter-active {
   transition: all 0.2s ease-out;
 }
@@ -273,7 +372,7 @@ input {
 }
 
 .product__container {
-  margin-top: rem(163);
+  margin-top: rem(88);
   display: flex;
   justify-content: space-between;
 }
@@ -289,19 +388,19 @@ input {
 }
 
 .product__description {
-  flex: 1 1 35%;
-
+  flex: 1 1 30%;
+  padding-top: rem(113);
   li {
     margin-bottom: rem(42);
   }
 
   h2 {
-    font-family: "Partner Condensed Bold";
-    font-size: rem(21);
+    font-family: "Partner Condensed Bold", sans-serif;
+    font-size: rem(14);
   }
 
   p {
-    font-size: rem(18);
+    font-size: rem(14);
   }
 }
 
@@ -312,18 +411,27 @@ input {
 }
 
 .product__good {
-  flex: 1 1 35%;
+  flex: 1 1 40%;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: rem(670);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .product__choose-size {
   position: relative;
   flex: 1 1 30%;
+  padding-top: rem(113);
   display: flex;
   flex-direction: column;
   text-transform: uppercase;
-
 }
 
 .__choose-size__sub {
@@ -380,6 +488,7 @@ input {
     text-transform: uppercase;
     position: absolute;
     width: 50%;
+    font-size: rem(12);
   }
 
   input[type="submit"]:nth-child(2) {
@@ -398,6 +507,7 @@ input {
 .__choose-size__description {
   display: flex;
   gap: rem(33);
+  font-size: rem(12);
 
   p:last-child {
     text-decoration: underline;
@@ -431,6 +541,10 @@ input {
   }
   .product__good, .__choose-size__item {
     order: 1;
+  }
+  .product__good {
+    height: auto;
+    width: 100%;
   }
   .__choose-size__description {
     justify-content: space-between;

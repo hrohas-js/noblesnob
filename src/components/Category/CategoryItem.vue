@@ -1,20 +1,44 @@
 <template>
-  <li v-if="allCategory && brand==false" class="site-bar-menu__item main-category"
-      :class="{'active':$route.params.category == 'all'}">
-    <router-link to="" @click="request">Все категории</router-link>
+  <li
+      v-if="allCategory && brand === false"
+      class="site-bar-menu__item main-category"
+      :class="{'active':$route.params.category === 'all'}"
+  >
+    <router-link to="" @click="request">
+      Все категории
+    </router-link>
   </li>
-  <li v-else-if="brand==false" class="site-bar-menu__item main-category"
-      :class="{'active':$route.params.category == category.id}">
-    <router-link to="" @click="request">{{ category.name }}</router-link>
-    <ul class="site-bar-menu__sub-menu"
-        v-if="$store.state.sub_category.length != 0 && category.id == $route.params.category">
-      <li class="site-bar-menu__item __sub-menu__item" v-for="item in $store.state.sub_category" :key="item.id"
-          :class="{'active_sub':$route.params.subCategory == item.id}" @click="sub_request(item)">{{ item.name }}
+  <li
+      v-else-if="brand === false"
+      class="site-bar-menu__item main-category"
+      :class="{'active':$route.params.category === category.id}"
+  >
+    <router-link to="" @click="request">
+      {{ category.name }}
+    </router-link>
+    <ul
+        v-if="$store.state.sub_category.length !== 0 && category.id === parseInt($route.params.category)"
+        class="site-bar-menu__sub-menu"
+    >
+      <li
+          v-for="item in $store.state.sub_category"
+          :key="item.id"
+          class="site-bar-menu__item __sub-menu__item"
+          :class="{'active_sub':parseInt($route.params.subCategory) === item.id}"
+          @click="sub_request(item)"
+      >
+        {{ item.name }}
       </li>
     </ul>
   </li>
-  <li v-else-if="brand" class="site-bar-menu__item main-category" :class="{'active':$route.params.brand == category.id}">
-    <router-link to="" @click="brand_request">{{ category.name }}</router-link>
+  <li
+      v-else-if="brand"
+      class="site-bar-menu__item __sub-menu__item"
+      :class="{'active':parseInt($route.params.brand) === category.id}"
+  >
+    <router-link to="" @click="brand_request">
+      {{ category.name }}
+    </router-link>
   </li>
 </template>
 
@@ -76,6 +100,7 @@ export default {
     },
     sub_request(item) {
       this.$store.commit('SET_CURRENT_CATEGORY', item.name);
+      this.$store.commit('SET_CATEGORIES_MOBILE_SHOW', false);
       this.$store.dispatch('FetchCatalog', {
         sex: this.$route.params.sex,
         id: item.id,
@@ -100,7 +125,7 @@ export default {
       this.$store.commit('SET_PAGINATION', Math.ceil(this.category.count / 12));
       this.$store.dispatch('FetchCatalog', {
         sex: this.$route.params.sex,
-        id: this.$route.params.subCategory != 'null' ? this.$route.params.subCategory : this.$route.params.category,
+        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
         page_number: 1,
         attribute: 'pa_brand',
         attribute_term: this.category.id
@@ -122,20 +147,21 @@ export default {
 
 <style lang="scss" scoped>
 .active, .active_sub {
-  font-family: "Partner Condensed Bold" !important;
+  font-family: "Partner Condensed Bold", sans-serif !important;
 }
 
 .__sub-menu__item {
   text-transform: none;
-  font-family: "Partner Condensed";
+  font-family: "Partner Condensed", sans-serif;
   cursor: pointer;
+  font-size: rem(14);
 }
 
 .site-bar-menu__item {
   padding-bottom: rem(10);
 
   a {
-    font-size: rem(18);
+    font-size: rem(14);
     text-transform: uppercase;
   }
 
@@ -152,20 +178,19 @@ export default {
 @media (max-width: em(768, 16)) {
   .main-category {
     padding-bottom: rem(40) !important;
+    a:after {
+      display: inline-block;
+      content: url("https://tdsfashiongroup.com/NOBLESNOB__TEMP/arrow.svg");
+    }
   }
   .site-bar-menu__item {
-    font-size: rem(46);
+    font-size: rem(22);
     text-transform: uppercase;
 
     a {
       display: flex;
       justify-content: space-between;
-      font-size: rem(46);
-
-      &:after {
-        display: inline-block;
-        content: url("https://u1600792.isp.regruhosting.ru/NOBLESNOB__TEMP/arrow.svg");
-      }
+      font-size: rem(22);
     }
 
     &:first-child a:after {

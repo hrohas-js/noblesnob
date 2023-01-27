@@ -204,6 +204,7 @@ export default {
 <style scoped lang="scss">
 .size-table {
   height: 100%;
+  width: 97%;
   position: absolute;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.93);

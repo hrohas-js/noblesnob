@@ -55,6 +55,7 @@ export default {
   }
   .wishList__goods {
     grid-template-columns: repeat(2, 1fr);
+    margin-top: rem(33);
   }
 }
 </style>

@@ -9,10 +9,10 @@
       <div class="contact-form__following">
         <h2>БУДЬ В КУРСЕ</h2>
         <div class="__following__submit">
-          <input type="email">
+          <input type="email" placeholder="EMAIL">
           <input type="submit" value="подписка">
         </div>
-        <CustomFollowingCheckbox :page="'contactForm'" />
+        <CustomFollowingCheckbox :page="'contactForm'"/>
       </div>
     </div>
   </div>
@@ -20,6 +20,7 @@
 
 <script>
 import CustomFollowingCheckbox from "@/components/CustomFallowCheckbox";
+
 export default {
   name: 'ContactForm',
   components: {CustomFollowingCheckbox}
@@ -68,6 +69,11 @@ h2 {
   color: white;
   text-transform: uppercase;
 }
+
+input[type="email"] {
+  padding-left: rem(10);
+}
+
 @media (max-width: em(768, 16)) {
   .contact-form__contact-following {
     gap: 0;
@@ -82,7 +88,7 @@ h2 {
   .contact-form__following {
     margin-top: rem(30);
     border-top: 1.5px solid black;
-    padding: rem(30) rem(35) 0 rem(35);
+    padding: rem(16) rem(20) 0 rem(20);
   }
 }
 </style>

@@ -1,17 +1,18 @@
 <template>
   <div class="about container">
-    <Header></Header>
+    <Header />
     <main>
-      <AboutMenu v-if="$store.state.display_width > 768"></AboutMenu>
+      <AboutMenu v-if="$store.state.display_width > 768" />
       <div class="about__content">
-        <Delivery v-if="$route.params.aboutVariant == 'delivery'"></Delivery>
-        <Confident v-if="$route.params.aboutVariant == 'confident'"></Confident>
-        <Payback v-if="$route.params.aboutVariant == 'payback'"></Payback>
-        <Oferta v-if="$route.params.aboutVariant == 'oferta'"></Oferta>
-        <Partnership v-if="$route.params.aboutVariant == 'partnership'"></Partnership>
+        <Delivery v-if="$route.params.aboutVariant === 'delivery'" />
+        <Confident v-if="$route.params.aboutVariant === 'confident'" />
+        <Payback v-if="$route.params.aboutVariant === 'payback'" />
+        <Oferta v-if="$route.params.aboutVariant === 'oferta'" />
+        <Partnership v-if="$route.params.aboutVariant === 'partnership'" />
+        <ContactsFooter v-if="$route.params.aboutVariant === 'contact'" />
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 
@@ -24,10 +25,11 @@ import Confident from "@/components/Confident";
 import Payback from "@/components/Payback";
 import Oferta from "@/components/Oferta";
 import Partnership from "@/components/Partnership";
+import ContactsFooter from "@/components/ContactsFooter";
 
 export default {
   name: 'About',
-  components: {Partnership, Oferta, Payback, Confident, Delivery, AboutMenu, Header, Footer}
+  components: {Partnership, Oferta, Payback, Confident, Delivery, AboutMenu, Header, Footer, ContactsFooter}
 }
 </script>
 

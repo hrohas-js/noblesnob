@@ -6,7 +6,7 @@
             :to="{name:'About',params:{aboutVariant:'delivery'}}"
             :class="{active:$route.params.aboutVariant === 'delivery'}"
         >
-          ДОСТАВКИ И<br> ОПЛАТА
+          ДОСТАВКА И<br> ОПЛАТА
         </router-link>
       </li>
       <li>
@@ -77,8 +77,8 @@ export default {
 
 <style scoped lang="scss">
 li {
-  margin-bottom: rem(46);
-  font-size: rem(24);
+  margin-bottom: rem(30);
+  font-size: rem(14);
 }
 
 .active {

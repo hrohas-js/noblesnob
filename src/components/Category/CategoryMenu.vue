@@ -1,16 +1,34 @@
 <template>
   <div class="site-bar-menu">
-    <div class="close-side-mobile" v-if="$store.state.display_width < 768"
-         @click="$store.commit('SET_categories_MOBILE_SHOW', false)">назад
+    <div
+        v-if="$store.state.display_width < 768"
+        class="close-side-mobile"
+        @click="$store.commit('SET_CATEGORIES_MOBILE_SHOW', false)"
+    >
+      назад
     </div>
     <menu>
-      <CategoryItem :all-category="true" :brand="false"></CategoryItem>
-      <CategoryItem v-for="item in $store.state.parent_category" :brand="false" :key="item.id"
-                    :category="item"></CategoryItem>
+      <CategoryItem
+          :all-category="true"
+          :brand="false"
+      />
+      <CategoryItem
+          v-for="item in $store.state.parent_category"
+          :brand="false"
+          :key="item.id"
+          :category="item"
+      />
     </menu>
     <menu>
-      <h2 class="brands-title">бренды</h2>
-      <CategoryItem v-for="item in $store.state.brands" :key="item.id" :brand="true" :category="item"></CategoryItem>
+      <h2 class="brands-title">
+        бренды
+      </h2>
+      <CategoryItem
+          v-for="item in $store.state.brands"
+          :key="item.id"
+          :brand="true"
+          :category="item"
+      />
     </menu>
   </div>
 </template>
@@ -43,8 +61,9 @@ export default {
 }
 
 .brands-title {
-  font-size: rem(18);
+  font-size: rem(22);
   text-transform: uppercase;
+  padding-bottom: rem(10);
 }
 
 @media (max-width: em(768, 16)) {
@@ -55,7 +74,7 @@ export default {
   }
   .close-side-mobile {
     text-transform: uppercase;
-    font-size: rem(24);
+    font-size: rem(12);
     cursor: pointer;
   }
 }
