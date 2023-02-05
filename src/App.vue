@@ -6,14 +6,16 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import StatusBox from "@/components/StatusBox";
+
 export default {
   name: 'App',
   components: { StatusBox },
   computed: {
-    statuses() {
-      return this.$store.state.statuses
-    }
+    ...mapState({
+      statuses: 'statuses'
+    })
   },
   created() {
     this.$store.commit('SET_AXIOS_INSTANCE');

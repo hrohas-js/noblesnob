@@ -238,7 +238,6 @@ export default createStore({
         },
         SET_NEW_PRODUCTS(state, item) {
             state.new_products = item;
-            console.log(state.new_products);
         },
         SET_CATALOG(state, item) {
             state.catalog = item
@@ -251,23 +250,21 @@ export default createStore({
         },
         SET_ALL_CATEGORY(state, item) {
             state.all_category = item;
-            console.log(state.all_category);
             if (sessionStorage.getItem('categories') == null) {
                 sessionStorage.setItem('categories', JSON.stringify(state.all_category));
             }
         },
         SET_CATEGORY(state, item) {
             let category_id = 0;
-            console.log(item);
             if (item === 'men') {
                 category_id = 977;
-            } else {
+            }
+            if (item === 'woman') {
                 category_id = 899;
             }
             state.parent_category = state.all_category.filter(elem => {
                 return elem.parent === category_id;
             }).reverse();
-            console.log(state.parent_category)
         },
         SET_SUB_CATEGORY(state, item) {
             state.sub_category = state.all_category.filter(elem => {
@@ -328,7 +325,6 @@ export default createStore({
         SET_SEARCH_PRELOAD(state, item) {
             state.searchPreload = item
         },
-
         SET_CART(state, cart) {
             state.cart = cart
         },
@@ -354,7 +350,6 @@ export default createStore({
                 }
             })
         },
-
         SET_VARIATIONS(state, variations) {
             state.variations = []
             variations.forEach(elem => {
@@ -368,7 +363,6 @@ export default createStore({
                 })
             })
         },
-
         SET_WISHLIST(state, cart) {
             state.wishlist = cart
         },
@@ -438,12 +432,14 @@ export default createStore({
             let category_id = 0;
             if (post_info.sex === 'men') {
                 category_id = 977;
-            } else {
+            }
+            if (post_info.sex === 'woman') {
                 category_id = 899;
             }
             if (post_info.id !== 'all') {
                 category_id = post_info.id;
             }
+            console.log(category_id);
             const response = await state.axiosInstance.get('wc/v3/products', {
                 headers: {
                     Authorization: `Bearer ${state.jwt}`,

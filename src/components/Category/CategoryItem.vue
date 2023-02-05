@@ -91,7 +91,7 @@ export default {
             sex: this.$route.params.sex,
             category: this.category.id,
             subCategory: 'null',
-            brand: 'all-brands',
+            brand: 'all-brand',
             pageNumber: 1
           }
         })

@@ -18,8 +18,8 @@ export default {
         sex: this.$route.params.sex,
         page_number: this.count,
         id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
-        attribute: this.$route.params.brand !== 'all-brands' ? 'pa_brand' : '',
-        attribute_term: this.$route.params.brand !== 'all-brands' ? this.$route.params.brand : ''
+        attribute: this.$route.params.brand !== 'all-brand' ? 'pa_brand' : '',
+        attribute_term: this.$route.params.brand !== 'all-brand' ? this.$route.params.brand : ''
       })
       this.$router.push({
         name: 'Catalog',
@@ -32,7 +32,7 @@ export default {
       });
       this.$store.dispatch('FetchPagination', {
         sex: this.$route.params.sex,
-        id: this.$route.params.subCategory != 'null' ? this.$route.params.subCategory : this.$route.params.category,
+        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
       })
     }
   }

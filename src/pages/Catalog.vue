@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     sort(order, orderby, count) {
-      if (this.$route.params.brand === 'all-brands') {
+      if (this.$route.params.brand === 'all-brand') {
         this.$store.dispatch('FetchCatalog', {
           sex: this.$route.params.sex,
           page_number: 1,
