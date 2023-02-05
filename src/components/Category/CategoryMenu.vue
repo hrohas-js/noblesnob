@@ -20,7 +20,11 @@
       />
     </menu>
     <menu>
-      <h2 class="brands-title">
+      <h2
+          class="brands-title"
+          :class="{'brands-title_active': $route.params.brand === 'all-brand'}"
+          @click="fetchAllBrands"
+      >
         бренды
       </h2>
       <CategoryItem
@@ -40,6 +44,20 @@ export default {
   name: 'SiteBarMenu',
   components: {
     CategoryItem
+  },
+  methods: {
+    fetchAllBrands () {
+      this.$router.push({
+        name: 'Catalog',
+        params: {
+          sex: this.$route.params.sex,
+          category: this.$route.params.category,
+          subCategory: this.$route.params.subCategory,
+          brand: 'all-brand',
+          pageNumber: 1
+        }
+      })
+    }
   }
 }
 </script>
@@ -61,9 +79,14 @@ export default {
 }
 
 .brands-title {
-  font-size: rem(22);
+  font-size: rem(14);
   text-transform: uppercase;
   padding-bottom: rem(10);
+  cursor: pointer;
+}
+
+.brands-title_active {
+  font-weight: bold;
 }
 
 @media (max-width: em(768, 16)) {

@@ -251,20 +251,23 @@ export default createStore({
         },
         SET_ALL_CATEGORY(state, item) {
             state.all_category = item;
+            console.log(state.all_category);
             if (sessionStorage.getItem('categories') == null) {
                 sessionStorage.setItem('categories', JSON.stringify(state.all_category));
             }
         },
         SET_CATEGORY(state, item) {
             let category_id = 0;
+            console.log(item);
             if (item === 'men') {
-                category_id = 786;
+                category_id = 977;
             } else {
-                category_id = 794;
+                category_id = 899;
             }
             state.parent_category = state.all_category.filter(elem => {
                 return elem.parent === category_id;
             }).reverse();
+            console.log(state.parent_category)
         },
         SET_SUB_CATEGORY(state, item) {
             state.sub_category = state.all_category.filter(elem => {

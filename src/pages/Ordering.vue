@@ -176,7 +176,7 @@
           <div class="__you-orders__table">
             <div v-for="item in cart" :key="item.product_id" class="__row">
               <div class="__coll">
-                <img src="@/assets/temp/tempJpg.jpg" alt="some photo">
+                <img src="@/assets/temp/tempJpg.jpg" alt="some photo"/>
               </div>
               <div class="__coll">
                 <ul>
@@ -192,7 +192,10 @@
                     <p>
                       РАЗМЕР: {{ item.current_size }}
                     </p>
-                    <p style="cursor: pointer" @click="goToProduct(item.product_id)">
+                    <p
+                        style="cursor: pointer"
+                        @click="goToProduct(item.product_id)"
+                    >
                       изменить размер
                     </p>
                   </li>
@@ -218,21 +221,39 @@
                 </p>
               </li>
               <li>
-                <p>СУММА ЗАКАЗА</p>
-                <p>₽ {{ total }} </p>
+                <p>
+                  СУММА ЗАКАЗА
+                </p>
+                <p>
+                  ₽ {{ total }}
+                </p>
               </li>
               <li>
-                <p>ДОСТАВКА</p>
-                <p>₽ {{ deliveryCost }} </p>
+                <p>
+                  ДОСТАВКА
+                </p>
+                <p>
+                  ₽ {{ deliveryCost }}
+                </p>
               </li>
               <li>
-                <p>ИТОГО</p>
-                <p>₽ {{ total + deliveryCost }} </p>
+                <p>
+                  ИТОГО
+                </p>
+                <p>
+                  ₽ {{ total + deliveryCost }}
+                </p>
               </li>
             </ul>
           </div>
-          <div class="__you-orders__button" @click="takeOrder">
-            <input type="submit" value="ОПЛАТИТЬ">
+          <div
+              class="__you-orders__button"
+              @click="takeOrder"
+          >
+            <input
+                type="submit"
+                value="ОПЛАТИТЬ"
+            />
           </div>
         </div>
       </div>

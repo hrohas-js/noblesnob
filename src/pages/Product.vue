@@ -2,7 +2,7 @@
   <div class="product container">
     <Header />
     <Transition name="fade">
-      <SizeTable v-if="this.$store.state.sizeTable" />
+      <SizeTable v-if="$store.state.sizeTable" />
     </Transition>
     <main>
       <div class="product__container">
@@ -78,7 +78,7 @@
                 v-if="size.length > 0"
                 src="@/assets/svg/arrow_down.svg"
                 alt="arrow down"
-                :class="{show:this.showSubMenu && size.length > 0}"
+                :class="{show: showSubMenu && size.length > 0}"
             />
             <Transition name="slide-fade">
               <div
@@ -372,9 +372,10 @@ input {
 }
 
 .product__container {
-  margin-top: rem(88);
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: calc(20rem / 16 + (100 - 20) * ((100vw - 768rem / 16) / (1920 - 768)));
 }
 
 .__container__size-table {
@@ -389,9 +390,9 @@ input {
 
 .product__description {
   flex: 1 1 30%;
-  padding-top: rem(113);
+  position: sticky;
   li {
-    margin-bottom: rem(42);
+    margin-bottom: rem(21);
   }
 
   h2 {
@@ -415,29 +416,32 @@ input {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: rem(670);
+  gap: rem(80);
+  height: 100vh;
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 
+  & > div {
+    height: 100%;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .product__choose-size {
-  position: relative;
+  position: sticky;
   flex: 1 1 30%;
-  padding-top: rem(113);
   display: flex;
   flex-direction: column;
   text-transform: uppercase;
 }
 
 .__choose-size__sub {
-  width: 100.3%;
+  width: 100%;
   position: absolute;
-  top: rem(55);
+  top: 100%;
   left: 0;
   border: 1px solid;
   z-index: 1;
@@ -494,7 +498,6 @@ input {
   input[type="submit"]:nth-child(2) {
     background-color: #3ADD9D;
     color: white;
-    border: none;
     left: 0;
   }
 
