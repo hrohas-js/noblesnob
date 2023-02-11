@@ -55,17 +55,6 @@ export default {
         this.$store.commit('SET_CABINETIN', 'registration');
         this.$store.commit('SET_FORGETPASSWORD', false);
       }
-      if (destination === 'catalog') {
-        this.$store.dispatch('FetchCatalog', {
-          sex: this.$route.params.sex,
-          id: 'all',
-          page_number: 1
-        })
-        this.$store.dispatch('FetchPagination', {
-          sex: this.$route.params.sex,
-          id: 'all'
-        })
-      }
       if (destination === 'search') {
         this.$store.commit('SET_SHOW_SEARCH')
       }

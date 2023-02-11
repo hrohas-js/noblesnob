@@ -128,9 +128,15 @@
               />
               <div class="__sub-item">
                 <p>КОММЕНТАРИИ К ЗАКАЗУ</p>
-                <input type="text" value="">
-                <div class="address__checkbox custom__cross">
-                  <input type="checkbox" id="address_use">
+                <input
+                    type="text"
+                    v-model="comment"
+                />
+                <div
+                    v-if="isUserExist"
+                    class="address__checkbox custom__cross"
+                >
+                  <input type="checkbox" id="address_use" />
                   <label for="address">Использовать в качестве платежного адреса</label>
                 </div>
               </div>
@@ -144,20 +150,40 @@
             <div class="__address-delivery__item">
               <div class="__row">
                 <div class="__coll custom__grin-box">
-                  <input type="radio" name="delivery" id="sdek">
-                  <label for="sdek">СДЭК</label>
+                  <input
+                      type="radio"
+                      name="delivery"
+                      id="post"
+                      value="post"
+                      v-model="deliveryVariant"
+                  />
+                  <label for="post">
+                    ПОЧТА РОССИИ
+                  </label>
                 </div>
                 <div class="__coll">
-                  <p>расчитывается</p>
+                  <p>
+                    расчитывается
+                  </p>
                 </div>
               </div>
               <div class="__row">
                 <div class="__coll custom__grin-box">
-                  <input type="radio" name="delivery" id="pickUp">
-                  <label for="pickUp">САМОВЫВОЗ</label>
+                  <input
+                      type="radio"
+                      name="delivery"
+                      id="pickup"
+                      value="pickup"
+                      v-model="deliveryVariant"
+                  />
+                  <label for="pickup">
+                    САМОВЫВОЗ
+                  </label>
                 </div>
                 <div class="__coll">
-                  <p>₽ 0</p>
+                  <p>
+                    ₽ 0
+                  </p>
                 </div>
               </div>
             </div>
@@ -281,7 +307,9 @@ export default {
       state: '',
       phone: ''
     },
+    comment: '',
     deliveryCost: 0,
+    deliveryVariant: '',
     emailValidation: true
   }),
   computed: {
@@ -299,6 +327,9 @@ export default {
         }
       })
       return flag
+    },
+    isUserExist() {
+      return Object.keys(this.$store.state.user).length > 0
     }
   },
   mounted() {
@@ -332,21 +363,38 @@ export default {
     takeOrder() {
       if (!this.isEmptyAddress) {
         let obj = {
-          payment_method: 'bacs',
-          payment_method_title: 'Direct Bank Transfer',
+          payment_method: 'cod',
+          payment_method_title: 'Оплата при доставке',
           set_paid: true,
           billing: this.address,
           shipping: this.address,
-          line_items: this.cart,
-          shipping_lines: [
-            {
-              method_id: 'flat_rate',
-              method_title: 'Flat Rate',
-              total: '10.00'
-            }
-          ]
+          line_items: [],
+          shipping_lines: []
         }
-        this.$store.dispatch('sendOrder', obj)
+        this.cart.forEach(elem => {
+          obj.line_items.push({
+            product_id: elem.product_id,
+            variation_id: elem.variation_id,
+            quantity: elem.quantity,
+            name: elem.name,
+            price: elem.price
+          })
+        })
+        if (this.deliveryVariant === 'post') {
+          obj.shipping_lines.push({
+            method_id: 'flat_rate',
+            method_title: 'Единая ставка',
+          })
+        } else if (this.deliveryVariant === 'pickup') {
+          obj.shipping_lines.push({
+            method_id: 'free_shipping',
+            method_title: 'Бесплатная доставка'
+          })
+        }
+        this.$store.dispatch('sendOrder', {
+          order: obj,
+          comment: this.comment
+        })
       }
     }
   }

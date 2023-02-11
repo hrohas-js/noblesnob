@@ -17,6 +17,24 @@ export default {
       statuses: 'statuses'
     })
   },
+  watch: {
+    $route: function (value) {
+      if (value.name === 'Catalog') {
+        console.log(value)
+        this.$store.dispatch('FetchCatalog', {
+          sex: value.params.sex,
+          page_number: value.params.pageNumber,
+          id: value.params.subCategory !== 'null' ? value.params.subCategory : value.params.category,
+          attribute: value.params.brand !== 'all-brand' ? 'pa_brand' : '',
+          attribute_term: value.params.brand !== 'all-brand' ? value.params.brand : ''
+        })
+        this.$store.dispatch('FetchPagination', {
+          sex: value.params.sex,
+          id: value.params.subCategory !== 'null' ? value.params.subCategory : value.params.category,
+        })
+      }
+    }
+  },
   created() {
     this.$store.commit('SET_AXIOS_INSTANCE');
     this.$store.dispatch('FetchAuthToken', {

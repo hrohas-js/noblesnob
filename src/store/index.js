@@ -455,6 +455,7 @@ export default createStore({
                 }
             })
             commit('SET_CATALOG', response.data);
+            console.log(response.data);
         },
         async FetchSearch({state, commit}, search) {
             commit('SET_SEARCH_PRELOAD', true);
@@ -676,6 +677,9 @@ export default createStore({
             commit('DELETE_FROM_WISHLIST', id)
             dispatch('updateWishList')
             commit('ADD_STATUS', 'Товар удален из избранного')
+        },
+        async createOrderComment({rootState, commit}, commentInfo) {
+            await rootState.axiosInstance.post('wc/v3/orders/'+ commentInfo.id +'/notes/?consumer_key=ck_18ccd29743dd71a690f7374a831875c48e45ea6f&consumer_secret=cs_5eb4190e1f1d1e79419184928cad25fadaf676da', commentInfo.data)
         },
         sendOrder({commit}, order) {
             commit('ADD_STATUS', 'Заказ в обработке')

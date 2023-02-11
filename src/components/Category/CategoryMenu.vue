@@ -47,13 +47,6 @@ export default {
   },
   methods: {
     fetchAllBrands () {
-      this.$store.dispatch('FetchCatalog', {
-        sex: this.$route.params.sex,
-        page_number: 1,
-        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
-        attribute: this.$route.params.brand !== 'all-brand' ? 'pa_brand' : '',
-        attribute_term: this.$route.params.brand !== 'all-brand' ? this.$route.params.brand : ''
-      })
       this.$router.push({
         name: 'Catalog',
         params: {

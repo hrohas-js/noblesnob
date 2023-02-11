@@ -56,15 +56,6 @@ export default {
       }
       this.$store.commit('CLEAR_SUB_CATEGORY');
       if (this.allCategory) {
-        this.$store.dispatch('FetchCatalog', {
-          sex: this.$route.params.sex,
-          id: 'all',
-          page_number: 1
-        })
-        this.$store.dispatch('FetchPagination', {
-          sex: this.$route.params.sex,
-          id: 'all'
-        })
         this.$router.push({
           name: 'Catalog',
           params: {
@@ -76,15 +67,6 @@ export default {
           }
         })
       } else {
-        this.$store.dispatch('FetchCatalog', {
-          sex: this.$route.params.sex,
-          id: this.category.id,
-          page_number: 1
-        })
-        this.$store.dispatch('FetchPagination', {
-          sex: this.$route.params.sex,
-          id: this.category.id
-        })
         this.$router.push({
           name: 'Catalog',
           params: {
@@ -101,15 +83,6 @@ export default {
     sub_request(item) {
       this.$store.commit('SET_CURRENT_CATEGORY', item.name);
       this.$store.commit('SET_CATEGORIES_MOBILE_SHOW', false);
-      this.$store.dispatch('FetchCatalog', {
-        sex: this.$route.params.sex,
-        id: item.id,
-        page_number: 1
-      });
-      this.$store.dispatch('FetchPagination', {
-        sex: this.$route.params.sex,
-        id: item.id
-      });
       this.$router.push({
         name: 'Catalog',
         params: {
@@ -123,13 +96,6 @@ export default {
     },
     brand_request() {
       this.$store.commit('SET_PAGINATION', Math.ceil(this.category.count / 12));
-      this.$store.dispatch('FetchCatalog', {
-        sex: this.$route.params.sex,
-        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
-        page_number: 1,
-        attribute: 'pa_brand',
-        attribute_term: this.category.id
-      });
       this.$router.push({
         name: 'Catalog',
         params: {

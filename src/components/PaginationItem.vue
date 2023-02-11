@@ -14,13 +14,6 @@ export default {
   props: ['count'],
   methods: {
     request() {
-      this.$store.dispatch('FetchCatalog', {
-        sex: this.$route.params.sex,
-        page_number: this.count,
-        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
-        attribute: this.$route.params.brand !== 'all-brand' ? 'pa_brand' : '',
-        attribute_term: this.$route.params.brand !== 'all-brand' ? this.$route.params.brand : ''
-      })
       this.$router.push({
         name: 'Catalog',
         params: {
@@ -30,10 +23,6 @@ export default {
           pageNumber: this.count
         }
       });
-      this.$store.dispatch('FetchPagination', {
-        sex: this.$route.params.sex,
-        id: this.$route.params.subCategory !== 'null' ? this.$route.params.subCategory : this.$route.params.category,
-      })
     }
   }
 }

@@ -133,11 +133,6 @@ export default {
     sortFlag: ''
   }),
   created() {
-    this.$store.dispatch('FetchCatalog', {
-      sex: this.$route.params.sex,
-      page_number: 1,
-      id: this.$route.params.subCategory === 'null' ? this.$route.params.category : this.$route.params.subCategory
-    });
     this.$store.commit('SET_CATEGORY', this.$route.params.sex);
     if (this.$route.params.subCategory !== 'null') {
       this.$store.commit('SET_SUB_CATEGORY', this.$route.params.category);
