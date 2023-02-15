@@ -1,29 +1,54 @@
 <template>
   <div class="history-profile">
-    <h1>ИСТОРИЯ ЗАКАЗОВ</h1>
-    <p>Ваши прошлые и текущие заказы</p>
+    <h1>
+      ИСТОРИЯ ЗАКАЗОВ
+    </h1>
+    <p>
+      Ваши прошлые и текущие заказы
+    </p>
     <div class="history-profile__table">
       <div class="__row">
-        <div class="__coll">заказ</div>
-        <div class="__coll">сумма</div>
-        <div class="__coll">дата заказа</div>
-        <div class="__coll">статус</div>
-        <div class="__coll">внести изменения</div>
+        <div class="__coll">
+          детали
+        </div>
+        <div class="__coll">
+          сумма
+        </div>
+        <div class="__coll">
+          дата заказа
+        </div>
+        <div class="__coll">
+          статус
+        </div>
       </div>
-      <div class="__row">
+      <div
+          v-for="order in orders"
+          :key="order.id"
+          class="__row"
+      >
         <div class="__coll">
           <ul>
-            <li>
-              <p>GCDS</p>
-              <p>Свитер вязки интарсия</p>
-            </li>
-            <li>
-              <p>TJ21M020001-13</p>
+            <li
+                v-for="item in order.line_items"
+                :key="item.id"
+            >
+              <p>
+                {{ item.name }}
+              </p>
+              <p>
+                {{ item.sku }}
+              </p>
             </li>
           </ul>
         </div>
-        <div class="__coll">₽ 16.000 RUB</div>
-        <div class="__coll">25.07.21</div>
+        <div class="__coll">
+          ₽ {{ parseInt(order.total) }} RUB
+        </div>
+        <div class="__coll">
+          {{ new Date(Date.parse(order.date_created)).getDate() }}.
+          {{ new Date(Date.parse(order.date_created)).getMonth() + 1 }}.
+          {{ new Date(Date.parse(order.date_created)).getFullYear() }}
+        </div>
         <div class="__coll">ДОСТАВЛЕН</div>
       </div>
     </div>
@@ -31,8 +56,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
-  name: 'HistoryProfile'
+  name: 'HistoryProfile',
+  computed: {
+    ...mapState({
+      orders: 'orders'
+    })
+  }
 }
 </script>
 
@@ -48,7 +80,7 @@ export default {
 }
 .__row{
   display: grid;
-  grid-template-columns: repeat(5,1fr);
+  grid-template-columns: repeat(4, 1fr);
   border-bottom: 1px solid;
   &:last-child{
     padding: rem(10) 0;

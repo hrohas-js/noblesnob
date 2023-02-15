@@ -51,6 +51,7 @@ export default {
     }
     this.$store.dispatch('setCart')
     this.$store.dispatch('setWishList')
+    this.$store.dispatch('fetchOrders')
   }
 }
 </script>

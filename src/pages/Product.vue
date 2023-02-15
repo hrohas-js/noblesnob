@@ -37,14 +37,33 @@
             </p>
           </li>
         </ul>
-        <div v-if="$store.state.display_width > 768" class="product__good">
-          <div v-for="item in images" :key="item.id">
-            <img :src="item.src" :alt="item.name" />
+        <div
+            v-if="$store.state.display_width > 768"
+            class="product__good"
+        >
+          <div
+              v-for="item in images"
+              :key="item.id"
+          >
+            <img
+                :src="item.src"
+                :alt="item.name"
+            />
           </div>
         </div>
-        <Swiper v-else :slides-per-view="1" class="product__good">
-          <SwiperSlide v-for="item in images" :key="item.id">
-            <img :src="item.src" :alt="item.name" />
+        <Swiper
+            v-else
+            :slides-per-view="1"
+            class="product__good"
+        >
+          <SwiperSlide
+              v-for="item in images"
+              :key="item.id"
+          >
+            <img
+                :src="item.src"
+                :alt="item.name"
+            />
           </SwiperSlide>
         </Swiper>
         <div class="product__choose-size">
@@ -134,9 +153,9 @@
               v-if="$store.state.display_width >= 1280"
               class="__choose-size__description"
           >
-            <p>
+            <!--<p>
               размер модели:{{ chooseSize }}
-            </p>
+            </p>-->
             <p @click="this.$store.commit('SER_SIZE_TABLE',true)">
               размерная таблица
             </p>
@@ -188,7 +207,7 @@ export default {
   },
   data: () => ({
     showSubMenu: false,
-    chooseSize: 'выбрать размер',
+    chooseSize: 'выберете размер',
     currentPrice: 0,
     currentVariationID: 0,
     inCart: false
@@ -290,6 +309,11 @@ export default {
       } else if (typeof newValue === 'object' && newValue.length > 0) {
         this.chooseSize = 'выберете размер'
       }
+    },
+    product: function(value) {
+      if (value.price) {
+        this.currentPrice = parseInt(value.price)
+      }
     }
   },
   methods: {
@@ -299,31 +323,37 @@ export default {
       this.currentPrice = item.price
     },
     addToCart() {
-      if (!this.inCart) {
-        if (this.size.length > 0) {
-          this.$store.dispatch('addToCart', {
-            product_id: this.product.id,
-            variation_id: this.currentVariationID,
-            quantity: 1,
-            name: this.product.name,
-            price: parseInt(this.currentPrice),
-            brand: this.brand,
-            current_size: this.chooseSize,
-            sku: this.article
-          })
-        } else {
-          this.$store.dispatch('addToCart', {
-            product_id: this.product.id,
-            variation_id: this.product.id + 1,
-            quantity: 1,
-            name: this.product.name,
-            price: parseInt(this.currentPrice),
-            brand: this.brand,
-            current_size: this.chooseSize,
-            sku: this.article
-          })
+      if (this.chooseSize !== 'выберете размер') {
+        if (!this.inCart) {
+          if (this.size.length > 0) {
+            this.$store.dispatch('addToCart', {
+              product_id: this.product.id,
+              variation_id: this.currentVariationID,
+              quantity: 1,
+              name: this.product.name,
+              price: parseInt(this.currentPrice),
+              brand: this.brand,
+              current_size: this.chooseSize,
+              sku: this.article,
+              image: this.product.images[0].src
+            })
+          } else {
+            this.$store.dispatch('addToCart', {
+              product_id: this.product.id,
+              variation_id: this.product.id + 1,
+              quantity: 1,
+              name: this.product.name,
+              price: parseInt(this.currentPrice),
+              brand: this.brand,
+              current_size: this.chooseSize,
+              sku: this.article,
+              image: this.product.images[0].src
+            })
+          }
+          this.inCart = true
         }
-        this.inCart = true
+      } else {
+        this.$store.commit('ADD_STATUS', 'выберете размер')
       }
     },
     toggleWish() {

@@ -18,8 +18,8 @@
             >
               <div class="__coll __coll__picture">
                 <img
-                    src="@/assets/temp/tempJpg.jpg"
-                    alt="some photo"
+                    :src="item.image"
+                    :alt="item.name"
                 />
               </div>
               <div class="__coll">

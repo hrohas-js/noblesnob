@@ -202,7 +202,10 @@
           <div class="__you-orders__table">
             <div v-for="item in cart" :key="item.product_id" class="__row">
               <div class="__coll">
-                <img src="@/assets/temp/tempJpg.jpg" alt="some photo"/>
+                <img
+                    :src="item.image"
+                    :alt="item.name"
+                />
               </div>
               <div class="__coll">
                 <ul>
@@ -333,17 +336,19 @@ export default {
     }
   },
   mounted() {
-    if (sessionStorage.getItem('user_noblesnob') !== null && this.$store.state.user.meta.address[0].is_default) {
-      const obj = this.$store.state.user.meta.address[0]
-      this.address.first_name = obj.first_name
-      this.address.last_name = obj.last_name
-      this.address.city = obj.city
-      this.address.country = obj.country
-      this.address.state = obj.state
-      this.address.address_1 = obj.address_1
-      this.address.postcode = obj.postcode
-      this.address.phone = obj.phone
-      this.address.email = this.$store.state.user.meta.email[0]
+    if (sessionStorage.getItem('user_noblesnob') !== null && this.$store.state.user.meta.address.length > 0) {
+      if (this.$store.state.user.meta.address[0].is_default) {
+        const obj = this.$store.state.user.meta.address[0]
+        this.address.first_name = obj.first_name
+        this.address.last_name = obj.last_name
+        this.address.city = obj.city
+        this.address.country = obj.country
+        this.address.state = obj.state
+        this.address.address_1 = obj.address_1
+        this.address.postcode = obj.postcode
+        this.address.phone = obj.phone
+        this.address.email = this.$store.state.user.meta.email[0]
+      }
     }
   },
   methods: {

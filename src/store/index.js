@@ -195,7 +195,10 @@ export default createStore({
 
         variations: [],
 
-        wishlist: []
+        wishlist: [],
+
+        orders: [],
+        ordersID: []
     },
     getters: {
         isUserExist(state) {
@@ -307,7 +310,6 @@ export default createStore({
         },
         SET_USER(state, item) {
             state.user = item
-            console.log(state.user)
         },
         ADD_STATUS(state, item) {
             state.statuses.push(item);
@@ -330,6 +332,7 @@ export default createStore({
         },
         ADD_TO_CART(state, item) {
             state.cart.push(item)
+            console.log(state.cart)
         },
         DELETE_FROM_CART(state, id) {
             state.cart = state.cart.filter(elem => {
@@ -362,6 +365,13 @@ export default createStore({
                     price: price
                 })
             })
+            const filteredArray = [];
+            state.variations.filter((item) => {
+                if (!filteredArray.some((element) => element.name === item.name)) {
+                    filteredArray.push(item);
+                }
+            });
+            state.variations = filteredArray;
         },
         SET_WISHLIST(state, cart) {
             state.wishlist = cart
@@ -373,6 +383,19 @@ export default createStore({
             state.wishlist = state.wishlist.filter(elem => {
                 return elem.id !== id
             })
+        },
+        SET_ORDERS_ID(state, ordersID) {
+            state.ordersID = ordersID
+        },
+        ADD_TO_ORDERS(state, item) {
+            state.orders.push(item)
+        },
+        ADD_TO_ORDERS_ID(state, item) {
+            state.ordersID.push(item)
+        },
+        CLEAN_ORDERS(state) {
+            state.orders = []
+            state.ordersID = []
         }
     },
     actions: {
@@ -439,7 +462,6 @@ export default createStore({
             if (post_info.id !== 'all') {
                 category_id = post_info.id;
             }
-            console.log(category_id);
             const response = await state.axiosInstance.get('wc/v3/products', {
                 headers: {
                     Authorization: `Bearer ${state.jwt}`,
@@ -496,7 +518,6 @@ export default createStore({
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
-            console.log(response.data)
             commit('SET_VARIATIONS', response.data);
         },
         async FetchProduct({state, commit, dispatch}, url) {
@@ -538,6 +559,7 @@ export default createStore({
                 }
             })
             commit('SET_USER', response.data);
+            dispatch('fetchOrders');
             sessionStorage.setItem('user_noblesnob',JSON.stringify(response.data));
         },
         async updateUser({state, commit}, fields) {
@@ -546,8 +568,7 @@ export default createStore({
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
-            console.log(response)
-            if (response.status === 200 && response.statusText === 'OK') {
+            if (response.status === 200) {
                 commit('SET_USER', response.data);
                 sessionStorage.setItem('user_noblesnob',JSON.stringify(response.data));
                 commit('ADD_STATUS', 'Изменения сохранены')
@@ -559,7 +580,6 @@ export default createStore({
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
-            console.log(response)
             if (JSON.parse(response.data).code === 200) {
                 commit('ADD_STATUS', 'Пароль успешно изменен')
             }
@@ -603,7 +623,7 @@ export default createStore({
                     Authorization: `Bearer ${state.jwt}`,
                 }
             })
-            if (response.status === 201 && response.statusText === 'Created') {
+            if (response.status === 201) {
                 commit('SET_CABINETIN', 'auf');
                 commit('ADD_STATUS', 'Регистрация прошла успешно')
             }
@@ -678,11 +698,45 @@ export default createStore({
             dispatch('updateWishList')
             commit('ADD_STATUS', 'Товар удален из избранного')
         },
-        async createOrderComment({rootState, commit}, commentInfo) {
-            await rootState.axiosInstance.post('wc/v3/orders/'+ commentInfo.id +'/notes/?consumer_key=ck_18ccd29743dd71a690f7374a831875c48e45ea6f&consumer_secret=cs_5eb4190e1f1d1e79419184928cad25fadaf676da', commentInfo.data)
+        async fetchOrders({state, commit}) {
+            if (Object.keys(state.user).length > 0 && state.user.meta.orders.length > 0) {
+                commit('SET_ORDERS_ID', state.user.meta.orders)
+                for(let i = 0; i < state.ordersID.length; i++) {
+                    const response = await state.axiosInstance.get('wc/v3/orders/'+ state.ordersID[i].id +'/?consumer_key=ck_18ccd29743dd71a690f7374a831875c48e45ea6f&consumer_secret=cs_5eb4190e1f1d1e79419184928cad25fadaf676da')
+                    response.data.comment = state.ordersID[i].comment
+                    commit('ADD_TO_ORDERS', response.data)
+                }
+            }
         },
-        sendOrder({commit}, order) {
-            commit('ADD_STATUS', 'Заказ в обработке')
+        async createOrderComment({state, commit}, commentInfo) {
+            await state.axiosInstance.post('wc/v3/orders/'+ commentInfo.id +'/notes/?consumer_key=ck_18ccd29743dd71a690f7374a831875c48e45ea6f&consumer_secret=cs_5eb4190e1f1d1e79419184928cad25fadaf676da', commentInfo.data)
+        },
+        async sendOrder({state, commit, dispatch}, order) {
+            const response = await state.axiosInstance.post('wc/v3/orders/?consumer_key=ck_18ccd29743dd71a690f7374a831875c48e45ea6f&consumer_secret=cs_5eb4190e1f1d1e79419184928cad25fadaf676da', order.order)
+            if (response.status === 201) {
+
+                response.data.comment = order.comment
+                if (order.comment.length > 0) {
+                    dispatch('createOrderComment', {
+                        id: response.data.id,
+                        data: {
+                            note: order.comment
+                        }
+                    })
+                }
+                commit('ADD_TO_ORDERS_ID', {
+                    id: response.data.id,
+                    comment: order.comment
+                })
+                commit('ADD_TO_ORDERS', response.data)
+                commit('ADD_STATUS', 'Заказ в обработке')
+                dispatch('updateUser', {
+                    meta: {
+                        orders: state.ordersID
+                    }
+                })
+                commit('SET_CART', [])
+            }
         },
         async ResetPassword({state, commit}, email) {
             const response = await state.axiosInstance.post('bdpwr/v1/reset-password', {
