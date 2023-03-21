@@ -281,6 +281,7 @@
           >
             <input
                 type="submit"
+                btn-pay-jtfl0ps0mny6q7i950v85chl3
                 value="ОПЛАТИТЬ"
             />
           </div>
@@ -336,6 +337,35 @@ export default {
     }
   },
   mounted() {
+    const insertScript = document.createElement('script')
+    insertScript.setAttribute('src', 'https://paymaster.ru/cpay/sdk/payment-widget.js')
+    document.body.appendChild(insertScript)
+    if (document.querySelector("[btn-pay-jtfl0ps0mny6q7i950v85chl3]")) {
+      document.querySelector("[btn-pay-jtfl0ps0mny6q7i950v85chl3]").addEventListener("click", () => {
+        let paymentWidget = new cpay.PaymentWidget();
+        paymentWidget.init({
+          "merchantId": "c13c7ea7-ab3c-437c-8f3b-b4be28ccc6c2",
+          "invoice": {
+            "description": "NOBLESNOB"
+          },
+          "amount":{
+            "currency": "RUB",
+            "value": this.total + this.deliveryCost
+          },
+          "receipt":null,
+          "paymentForm": {
+            "theme": "light",
+            "primaryColor": "#3add9d",
+            "productCard": {
+              "title":"NOBLESNOB",
+              "description":"Оплата заказа",
+              "imageUrl":null
+            },
+            "fields": null
+          }
+        });
+      });
+    }
     if (sessionStorage.getItem('user_noblesnob') !== null && this.$store.state.user.meta.address.length > 0) {
       if (this.$store.state.user.meta.address[0].is_default) {
         const obj = this.$store.state.user.meta.address[0]
